@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Processing</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      background-color: #f5f5f5;
+      font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .title {
+      font-weight: bold;
+      color: #333;
+      font-size: 32px;
+      margin-bottom: 15px;
+    }
+
+    .author {
+      font-weight: bold;
+      color: #555;
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+
+    .bpm {
+      font-weight: bold;
+      color: #888;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 30px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+      transition: background-color 0.3s, color 0.3s;
+
+      position: relative;
+    }
+
+    .section {
+      color: #e76f51;
+      font-weight: bold;
+      font-size: 20px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    .chords, .lyrics {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .chords {
+      font-weight: bold;
+      color: #007acc;
+    }
+
+    .lyrics {
+      color: #333;
+    }
+
+    .comment {
+      color: #e76f51;
+      font-weight: bold;
+    }
+
+    .no-highlight {
+      margin-left: 40px;
+      margin-right: 40px;
+    }
+
+    .highlight, .highlight2, .highlight3 {
+      border-radius: 8px;
+      padding: 15px 15px 5px;
+      margin-bottom: 15px;
+      margin-left: 40px;
+      margin-right: 40px;
+    }
+
+    .highlight {
+      background-color: #fff2cc;
+      border: 1px solid #ffe09d;
+    }
+
+    .highlight2 {
+      background-color: #ffffe0;
+      border: 1px solid #ddd;
+    }
+
+    .highlight3 {
+      background-color: #ffebcc;
+      border: 1px solid #f7d7b4;
+    }
+
+    .new-line {
+      margin-bottom: 20px;
+    }
+
+    .page {
+      max-width: 768px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Night Mode Styles */
+    body.night-mode {
+      background-color: #333;
+      color: #f5f5f5;
+    }
+
+    body.night-mode .container {
+      background-color: #444;
+      color: #f5f5f5;
+    }
+
+    body.night-mode .comment,
+    body.night-mode .section {
+      color: #f39c12;
+    }
+
+    body.night-mode .chords {
+      color: #1abc9c;
+    }
+
+    body.night-mode .lyrics {
+      color: #f5f5f5;
+    }
+
+    body.night-mode .highlight {
+      background-color: #555;
+      border: 1px solid #666;
+    }
+
+    body.night-mode .highlight2 {
+      background-color: #666;
+      border: 1px solid #777;
+    }
+
+    body.night-mode .highlight3 {
+      background-color: #777;
+      border: 1px solid #888;
+    }
+
+    .toggle-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #007acc;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .toggle-btn.night-mode {
+      background-color: #333;
+      color: #f5f5f5;
+    }
+
+    /** **/
+    .time {
+      display: none;
+    }
+
+    .scroll-button {
+      float: right;
+      margin-top: -80px;
+      right: 40px;
+      height: 60px;
+    }
+
+    .scroll-button.running {
+      position: fixed;
+      bottom: 20px;
+      margin-top: 0px;
+    }
+  </style>
+</head>
+<body class="night-mode">
+  <!--<button class="toggle-btn" id="toggleMode">Night Mode</button>-->
+  <div class="page">
+
+
+
+    <div class="container" id="everybody_wants_to_rule_the_world">
+      <div class="title">Everybody Wants To Rule The World</div>
+      <div class="author">Tears For Fears</div>
+      <div class="bpm">BPM: 112 (56 OR 224)</div>
+      <div class="time">4:11</div>
+
+      <!-- Botão para controlar o scroll -->
+      <button class="scroll-button">Scroll to End</button>
+
+      <div class="section">INTRO</div>
+      <div class="no-highlight">
+        <div class="chords">CONTAGEM DA BATERIA 1 2 3 4</div>
+        <div class="chords">GUITAR RIFF</div>
+        <div class="chords">| A G | - | <span>4x</span></div>
+      </div>
+
+      <div class="section">PARTE 1</div>
+      <div class="no-highlight">
+        <div class="chords">| A G | - | <span>4x</span></div>
+        <div class="lyrics">Welcome to your life,</div>
+        <div class="lyrics">There's no turning back,</div>
+        <div class="lyrics">Even while we sleep,</div>  
+        <div class="lyrics">We will find you</div>
+      </div>
+
+      <div class="highlight">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">Acting on your best behavior, Turn your back on Mother Nature</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+
+      <div class="no-highlight">
+        <div class="chords">| A G | - | <span>2x</span></div>
+      </div>
+
+      <div class="section">PARTE 2</div>
+      <div class="no-highlight">
+        <div class="chords">| A G | - | <span>4x</span></div>
+        <div class="lyrics">It's my own design,</div>
+        <div class="lyrics">It's my own remorse,</div>
+        <div class="lyrics">Help me to decide,</div>
+        <div class="lyrics">Help me make the most of</div>
+      </div>
+
+      <div class="highlight">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">Freedom and of pleasure, Nothing ever lasts forever</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+
+      <div class="highlight3">
+        <div class="chords">| G | D A | <span>3x</span></div>
+        <div class="lyrics">There's a room where the light won't find you</div>
+        <div class="lyrics">Holding hands while the walls come tumbling down</div>
+        <div class="lyrics">When they do I'll be right behind you</div>
+      </div>
+
+      <div class="highlight">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">So glad we've almost made it, So sad they had to fade it</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+
+      <div class="section">SOLO 1</div>
+      <div class="highlight2">
+        <div class="comment">GUITAR RIFF</div>
+        <div class="chords">| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |</div>
+        <div class="new-line"></div>
+        
+        <div class="comment">KEYBOARD SOLO</div>
+        <div class="chords">| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |</div>
+        <div class="new-line"></div>
+        
+        <div class="comment">GUITAR SOLO</div>
+        <div class="chords">| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |</div>
+      </div>
+      
+      <div class="section">PARTE 3</div>
+      <div class="highlight">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">I can't stand this indecision, Married with a lack of vision</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+
+      <div class="highlight3">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">Say that you'll never, never, never, never need it</div>
+        <div class="lyrics">One headline, why believe it?</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+
+      <div class="highlight2">
+        <div class="comment">SMALL GUITAR SOLO</div>
+        <div class="chords">| 1 | 2 | 3 | 4 |</div>
+      </div>
+
+      <div class="highlight">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">Freedom and of pleasure, Nothing ever lasts forever</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+
+      <div class="highlight2">
+        <div class="comment">FINAL GUITAR SOLO</div>
+        <div class="chords">| A/D G/D | - | <span>6x</span></div>
+      </div>
+    </div>  
+
+    <div class="container" id="message-in-a-bottle">
+      <div class="title">Message In A Bottle</div>
+      <div class="author">The Police</div>
+      <div class="bpm">BPM: 151 (75 and 302)</div>
+      <div class="time">4:50</div>
+
+      <!-- Botão para controlar o scroll -->
+      <button class="scroll-button">Scroll to End</button>
+
+      <div class="section">INTRO</div>
+      <div class="no-highlight">
+        <div class="chords">CONTAGEM DA BATERIA 1 2 3 4 (BATERIA CHAMA DIFERENTE)</div>
+        <div class="chords">RIFF - SLOW | C#m A | B F# |</div>
+        <div class="chords">RIFF | C#m A | B F# | 2x</div>
+      </div>
+
+      <div class="section">PARTE 1</div>
+      <div class="no-highlight">
+        <div class="chords">| C#m A | B F# | 8x</div>
+        <div class="lyrics">Just a castaway, an island lost at sea, oh</div>
+        <div class="lyrics">Another lonely day with no one here but me, oh</div>
+        <div class="lyrics">More loneliness than any man could bear</div>
+        <div class="lyrics">Rescue me before I fall into despair, oh</div>
+      </div>
+
+      <div class="highlight">
+        <div class="chords">| A | D5 E5 | 2x</div>
+        <div class="lyrics">I'll send an S.O.S to the world</div>
+        <div class="lyrics">I'll send an S.O.S to the world</div>
+        <div class="chords">| F#m | D | 3x</div>
+        <div class="lyrics">I hope that someone gets my</div>
+        <div class="lyrics">I hope that someone gets my</div>
+        <div class="lyrics">I hope that someone gets my</div>
+      </div>
+
+      <div class="highlight">
+        <div class="chords">| C#m | A | C#m | A |</div>
+        <div class="lyrics">Message in a bottle, yeah</div>
+        <div class="chords">| C#m | A | F#m | F#m |</div>
+        <div class="lyrics">Message in a bottle, yeah</div>
+      </div>
+
+      <div class="section">PARTE 2</div>
+      <div class="no-highlight">
+        <div class="chords">| C#m A | B F# | 8x</div>
+        <div class="lyrics">A year has passed since I wrote my note</div>
+        <div class="lyrics">I should have known this right from the start</div>
+        <div class="lyrics">Only hope can keep me together</div>
+        <div class="lyrics">Love can mend your life or love can break your heart</div>
+      </div>
+
+      <div class="highlight">
+        <div class="chords">| A | D5 E5 | 2x</div>
+        <div class="lyrics">I'll send an S.O.S to the world</div>
+        <div class="lyrics">I'll send an S.O.S to the world</div>
+        <div class="chords">| F#m | D | 3x</div>
+        <div class="lyrics">I hope that someone gets my</div>
+        <div class="lyrics">I hope that someone gets my</div>
+        <div class="lyrics">I hope that someone gets my</div>
+      </div>
+
+      <div class="highlight">
+        <div class="chords">| C#m | A | C#m | A |</div>
+        <div class="lyrics">Message in a bottle, yeah</div>
+        <div class="chords">| C#m | A | C#m | A |</div>
+        <div class="lyrics">Message in a bottle, yeah</div>        
+        <div class="chords">| C#m | A | C#m | A |</div>
+        <div class="lyrics">Oh, message in a bottle, yeah</div>
+        <div class="chords">| C#m | A | F#m | F#m | F#m | F#m |</div>
+        <div class="lyrics">Message in a bottle, yeah</div>
+      </div>
+
+      <div class="section">PARTE 3</div>
+      <div class="no-highlight">
+        <div class="chords">| C#m A | B F# | 8x</div>
+        <div class="lyrics">Walked out this morning, I don't believe what I saw</div>
+        <div class="lyrics">Hundred billion bottles washed up on the shore</div>
+        <div class="lyrics">Seems I'm not alone at being alone</div>
+        <div class="lyrics">Hundred billion castaways, looking for a home</div>
+      </div>
+
+      <div class="highlight">
+        <div class="chords">| A | D5 E5 | 2x</div>
+        <div class="lyrics">I'll send an S.O.S to the world</div>
+        <div class="lyrics">I'll send an S.O.S to the world</div>
+        <div class="chords">| F#m | D | 3x</div>
+        <div class="lyrics">I hope that someone gets my</div>
+        <div class="lyrics">I hope that someone gets my</div>
+        <div class="lyrics">I hope that someone gets my</div>
+      </div>
+
+      <div class="highlight">
+        <div class="chords">| C#m | A | C#m | A |</div>
+        <div class="lyrics">Message in a bottle, yeah</div>
+        <div class="chords">| C#m | A | C#m | A |</div>
+        <div class="lyrics">Message in a bottle, yeah</div>        
+        <div class="chords">| C#m | A | C#m | A |</div>
+        <div class="lyrics">Oh, message in a bottle, yeah</div>
+        <div class="chords">| C#m | A | F#m | F#m |</div>
+        <div class="lyrics">Message in a bottle, yeah</div>
+      </div>
+
+      <div class="section">FINAL</div>
+      <div class="highlight">
+        <div class="chords">RIFF | C#m A | B F# | 4x</div>
+      </div>
+
+      <div class="highlight">
+        <div class="chords">RIFF | C#m A | B F# |...</div>
+        <div class="lyrics">Sending out an S.O.S</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    /*/ Alternar entre modos
+    document.getElementById('toggleMode').addEventListener('click', function() {
+      document.body.classList.toggle('night-mode');
+      this.classList.toggle('night-mode');
+      this.textContent = document.body.classList.contains('night-mode') ? 'Day Mode' : 'Night Mode';
+    });*/
+
+    $(document).ready(function() {
+      let scrollAnimation = null;
+
+      $('.scroll-button').on('click', function() {
+        const $button = $(this);
+        const $container = $button.closest('.container');
+        
+        // Se já houver uma animação em execução, pare-a e mude o texto do botão
+        if (scrollAnimation) {
+          $('html, body').stop(true, false);
+          scrollAnimation = null;
+          $button.text('Scroll to End');
+          $button.removeClass('running');
+          return;
+        }
+
+        // Obtém o tempo da div .time
+        const timeText = $container.find('.time').text();
+        const [minutes, seconds] = timeText.split(':').map(Number);
+        const totalTime = (minutes * 60 + seconds) * 1000;
+        
+        // Calcula a altura do cabeçalho
+        const headerHeight = $('header').outerHeight() || 0; // Ajuste o seletor conforme necessário
+        
+        // Calcula a posição final do scroll considerando o cabeçalho
+        const containerTop = $container.offset().top - headerHeight;
+        const containerBottom = containerTop + $container.outerHeight();
+        const scrollTop = $(window).scrollTop();
+        const windowHeight = $(window).height();
+        
+        // A distância para o final da div
+        const distanceToBottom = containerBottom - (scrollTop + windowHeight);
+        
+        // Calcula o tempo ajustado proporcionalmente à distância restante
+        const adjustedTime = (distanceToBottom / $container.outerHeight()) * totalTime;
+        
+        // Scroll suave até o final da div
+        scrollAnimation = $('html, body').animate({
+          scrollTop: containerTop + $container.outerHeight() - $(window).height() + headerHeight
+        }, adjustedTime, function() {
+          scrollAnimation = null; // Animação concluída
+          $button.text('Scroll to End'); // Restaura o texto do botão
+          $button.removeClass('running');
+        });
+
+        // Muda o texto do botão para "Cancel Scroll"
+        $button.text('Cancel Scroll');
+        $button.addClass('running');
+      });
+    });
+
+</script>
+
+
+</body>
+</html>
