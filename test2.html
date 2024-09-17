@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test IPAD</title>
+  <title>Test 2 IPAD</title>
   <style>
     body {
       background-color: #f5f5f5;
@@ -425,6 +425,7 @@
 
   <script>
 
+
 document.addEventListener('DOMContentLoaded', function() {
     var scrollAnimation = null;
 
@@ -436,64 +437,66 @@ document.addEventListener('DOMContentLoaded', function() {
         window.scrollTo(0, newScrollTop);
 
         if (easedProgress < 1) {
-            scrollAnimation = requestAnimationFrame(function() {
+            scrollAnimation = setTimeout(function() {
                 smoothScroll(startTime, duration, startScrollTop, targetScrollTop);
-            });
+            }, 16); // Aproximadamente 60 FPS
         } else {
-            scrollAnimation = null; // Animation complete
+            scrollAnimation = null; // Animação completa
         }
     }
 
-    document.querySelectorAll('.scroll-button').forEach(function(button) {
-        button.addEventListener('click', function() {
-            var $button = this;
-            var $container = $button.closest('.container');
+    var buttons = document.querySelectorAll('.scroll-button');
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', function() {
+            var button = this;
+            var container = button.closest('.container');
             
-            // If an animation is running, stop it and reset button text
+            // Se uma animação está rodando, pare-a e redefina o texto do botão
             if (scrollAnimation) {
-                cancelAnimationFrame(scrollAnimation);
+                clearTimeout(scrollAnimation);
                 scrollAnimation = null;
-                $button.textContent = 'Scroll to End';
-                $button.classList.remove('running');
+                button.textContent = 'Scroll to End';
+                button.classList.remove('running');
                 return;
             }
 
-            // Get time from .time div
-            var timeText = $container.querySelector('.time').textContent;
+            // Obtém o tempo da div .time
+            var timeText = container.querySelector('.time').textContent;
             var parts = timeText.split(':');
             var minutes = parseInt(parts[0], 10);
             var seconds = parseInt(parts[1], 10);
             var totalTime = (minutes * 60 + seconds) * 1000;
 
-            // Calculate header height
+            // Calcula a altura do cabeçalho
             var header = document.querySelector('header');
             var headerHeight = header ? header.offsetHeight : 0;
 
-            // Calculate final scroll position
-            var containerRect = $container.getBoundingClientRect();
+            // Calcula a posição final do scroll
+            var containerRect = container.getBoundingClientRect();
             var containerTop = containerRect.top + window.pageYOffset - headerHeight;
-            var containerBottom = containerTop + $container.offsetHeight;
+            var containerBottom = containerTop + container.offsetHeight;
             var scrollTop = window.pageYOffset;
             var windowHeight = window.innerHeight;
 
-            // Distance to bottom of container
+            // Distância até o final do container
             var distanceToBottom = containerBottom - (scrollTop + windowHeight);
 
-            // Calculate adjusted time proportionally to remaining distance
-            var adjustedTime = (distanceToBottom / $container.offsetHeight) * totalTime;
+            // Calcula o tempo ajustado proporcionalmente à distância restante
+            var adjustedTime = (distanceToBottom / container.offsetHeight) * totalTime;
 
-            // Start smooth scroll
+            // Inicia o scroll suave
             var startTime = (new Date()).getTime();
-            scrollAnimation = requestAnimationFrame(function() {
-                smoothScroll(startTime, adjustedTime, scrollTop, containerTop + $container.offsetHeight - window.innerHeight + headerHeight);
-            });
+            scrollAnimation = setTimeout(function() {
+                smoothScroll(startTime, adjustedTime, scrollTop, containerTop + container.offsetHeight - windowHeight + headerHeight);
+            }, 16); // Aproximadamente 60 FPS
 
-            // Change button text to "Cancel Scroll"
-            $button.textContent = 'Cancel Scroll';
-            $button.classList.add('running');
+            // Muda o texto do botão para "Cancel Scroll"
+            button.textContent = 'Cancel Scroll';
+            button.classList.add('running');
         });
-    });
+    }
 });
+
 
 
 
