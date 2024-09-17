@@ -432,56 +432,70 @@
       this.textContent = document.body.classList.contains('night-mode') ? 'Day Mode' : 'Night Mode';
     });*/
 
-    $(document).ready(function() {
-      let scrollAnimation = null;
+    document.addEventListener('DOMContentLoaded', function() {
+    let scrollAnimation = null;
 
-      $('.scroll-button').on('click', function() {
-        const $button = $(this);
-        const $container = $button.closest('.container');
-        
-        // Se já houver uma animação em execução, pare-a e mude o texto do botão
-        if (scrollAnimation) {
-          $('html, body').stop(true, false);
-          scrollAnimation = null;
-          $button.text('Scroll to End');
-          $button.removeClass('running');
-          return;
-        }
+    document.querySelectorAll('.scroll-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const $button = this;
+            const $container = $button.closest('.container');
+            
+            // Se já houver uma animação em execução, pare-a e mude o texto do botão
+            if (scrollAnimation) {
+                cancelAnimationFrame(scrollAnimation);
+                scrollAnimation = null;
+                $button.textContent = 'Scroll to End';
+                $button.classList.remove('running');
+                return;
+            }
 
-        // Obtém o tempo da div .time
-        const timeText = $container.find('.time').text();
-        const [minutes, seconds] = timeText.split(':').map(Number);
-        const totalTime = (minutes * 60 + seconds) * 1000;
-        
-        // Calcula a altura do cabeçalho
-        const headerHeight = $('header').outerHeight() || 0; // Ajuste o seletor conforme necessário
-        
-        // Calcula a posição final do scroll considerando o cabeçalho
-        const containerTop = $container.offset().top - headerHeight;
-        const containerBottom = containerTop + $container.outerHeight();
-        const scrollTop = $(window).scrollTop();
-        const windowHeight = $(window).height();
-        
-        // A distância para o final da div
-        const distanceToBottom = containerBottom - (scrollTop + windowHeight);
-        
-        // Calcula o tempo ajustado proporcionalmente à distância restante
-        const adjustedTime = (distanceToBottom / $container.outerHeight()) * totalTime;
-        
-        // Scroll suave até o final da div
-        scrollAnimation = $('html, body').animate({
-          scrollTop: containerTop + $container.outerHeight() - $(window).height() + headerHeight
-        }, adjustedTime, function() {
-          scrollAnimation = null; // Animação concluída
-          $button.text('Scroll to End'); // Restaura o texto do botão
-          $button.removeClass('running');
+            // Obtém o tempo da div .time
+            const timeText = $container.querySelector('.time').textContent;
+            const [minutes, seconds] = timeText.split(':').map(Number);
+            const totalTime = (minutes * 60 + seconds) * 1000;
+            
+            // Calcula a altura do cabeçalho
+            const headerHeight = document.querySelector('header') ? document.querySelector('header').offsetHeight : 0;
+            
+            // Calcula a posição final do scroll considerando o cabeçalho
+            const containerTop = $container.getBoundingClientRect().top + window.scrollY - headerHeight;
+            const containerBottom = containerTop + $container.offsetHeight;
+            const scrollTop = window.scrollY;
+            const windowHeight = window.innerHeight;
+            
+            // A distância para o final da div
+            const distanceToBottom = containerBottom - (scrollTop + windowHeight);
+            
+            // Calcula o tempo ajustado proporcionalmente à distância restante
+            const adjustedTime = (distanceToBottom / $container.offsetHeight) * totalTime;
+            
+            // Função para scroll suave
+            const startScroll = performance.now();
+            function smoothScroll(currentTime) {
+                if (scrollAnimation === null) return; // Parar animação se cancelada
+                
+                const progress = (currentTime - startScroll) / adjustedTime;
+                const easedProgress = Math.min(progress, 1);
+                const scrollTopTarget = containerTop + $container.offsetHeight - window.innerHeight + headerHeight;
+                window.scrollTo(0, scrollTop + (scrollTopTarget - scrollTop) * easedProgress);
+                
+                if (easedProgress < 1) {
+                    scrollAnimation = requestAnimationFrame(smoothScroll);
+                } else {
+                    scrollAnimation = null; // Animação concluída
+                    $button.textContent = 'Scroll to End'; // Restaura o texto do botão
+                    $button.classList.remove('running');
+                }
+            }
+            scrollAnimation = requestAnimationFrame(smoothScroll);
+
+            // Muda o texto do botão para "Cancel Scroll"
+            $button.textContent = 'Cancel Scroll';
+            $button.classList.add('running');
         });
-
-        // Muda o texto do botão para "Cancel Scroll"
-        $button.text('Cancel Scroll');
-        $button.addClass('running');
-      });
     });
+});
+
 
 </script>
 
