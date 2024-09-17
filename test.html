@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<!-- saved from url=(0067)file:///Users/marlonleandropereira/Developer/repertorios/index.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Processing</title>
+  <script src="./test_files/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      background-color: #f5f5f5;
+      font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .title {
+      font-weight: bold;
+      color: #333;
+      font-size: 32px;
+      margin-bottom: 15px;
+    }
+    
+    .author {
+      font-weight: bold;
+      color: #555;
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+
+    .bpm {
+      font-weight: bold;
+      color: #888;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 30px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .section {
+      color: #e76f51;
+      font-weight: bold;
+      font-size: 20px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    .chords, .lyrics {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .chords {
+      font-weight: bold;
+      color: #007acc;
+    }
+
+    .lyrics {
+      color: #333;
+    }
+
+    .comment {
+      color: #e76f51;
+      font-weight: bold;
+    }
+
+    .no-highlight {
+      margin-left: 40px;
+    }
+    .highlight, .highlight2, .highlight3 {
+      border-radius: 8px;
+      padding: 15px 15px 5px;
+      margin-bottom: 15px;
+      margin-left: 40px;
+    }
+
+    .highlight {
+      background-color: #fff2cc;
+      border: 1px solid #ffe09d;
+    }
+
+    .highlight2 {
+      background-color: #ffffe0;
+      border: 1px solid #ddd;
+    }
+
+    .highlight3 {
+      background-color: #ffebcc;
+      border: 1px solid #f7d7b4;
+    }
+
+    .new-line {
+      margin-bottom: 20px;
+    }
+
+    .page {
+      max-width: 768px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Night Mode Styles */
+    body.night-mode {
+      background-color: #333;
+      color: #f5f5f5;
+    }
+
+    body.night-mode .container {
+      background-color: #444;
+      color: #f5f5f5;
+    }
+
+    body.night-mode .comment,
+    body.night-mode .section {
+      color: #f39c12;
+    }
+
+    body.night-mode .chords {
+      color: #1abc9c;
+    }
+
+    body.night-mode .lyrics {
+      color: #f5f5f5;
+    }
+
+    body.night-mode .highlight {
+      background-color: #555;
+      border: 1px solid #666;
+    }
+
+    body.night-mode .highlight2 {
+      background-color: #666;
+      border: 1px solid #777;
+    }
+
+    body.night-mode .highlight3 {
+      background-color: #777;
+      border: 1px solid #888;
+    }
+
+    .toggle-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #007acc;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    
+    .toggle-btn.night-mode {
+      background-color: #333;
+      color: #f5f5f5;
+    }
+  </style>
+</head>
+<body class="night-mode">
+  <button class="toggle-btn night-mode" id="toggleMode">Day Mode</button>
+
+  <div class="page">
+    <div class="container" id="everybody_wants_to_rule_the_world">
+      <div class="title">Everybody Wants To Rule The World</div>
+      <div class="author">Tears For Fears</div>
+      <div class="bpm">BPM: 112 (56 OR 224)</div>
+
+      <div class="section">INTRO</div>
+      <div class="no-highlight">
+        <div class="chords">CONTAGEM DA BATERIA 1 2 3 4</div>
+        <div class="chords">GUITAR RIFF</div>
+        <div class="chords">| A G | - | <span>4x</span></div>
+      </div>
+
+      <div class="section">PARTE 1</div>
+      <div class="no-highlight">
+        <div class="chords">| A G | - | <span>4x</span></div>
+        <div class="lyrics">Welcome to your life,</div>
+        <div class="lyrics">There's no turning back,</div>
+        <div class="lyrics">Even while we sleep,</div>  
+        <div class="lyrics">We will find you</div>
+      </div>
+
+      <div class="highlight">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">Acting on your best behavior, Turn your back on Mother Nature</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+
+      <div class="no-highlight">
+        <div class="chords">| A G | - | <span>2x</span></div>
+      </div>
+
+      <div class="section">PARTE 2</div>
+      <div class="no-highlight">
+        <div class="chords">| A G | - | <span>4x</span></div>
+        <div class="lyrics">It's my own design,</div>
+        <div class="lyrics">It's my own remorse,</div>
+        <div class="lyrics">Help me to decide,</div>
+        <div class="lyrics">Help me make the most of</div>
+      </div>
+
+      <div class="highlight">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">Freedom and of pleasure, Nothing ever lasts forever</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+
+      <div class="highlight3">
+        <div class="chords">| G | D A | <span>3x</span></div>
+        <div class="lyrics">There's a room where the light won't find you</div>
+        <div class="lyrics">Holding hands while the walls come tumbling down</div>
+        <div class="lyrics">When they do I'll be right behind you</div>
+      </div>
+
+      <div class="highlight">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">So glad we've almost made it, So sad they had to fade it</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+
+      <div class="section">SOLO 1</div>
+      <div class="highlight2">
+        <div class="comment">GUITAR RIFF</div>
+        <div class="chords">| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |</div>
+        <div class="new-line"></div>
+        
+        <div class="comment">KEYBOARD SOLO</div>
+        <div class="chords">| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |</div>
+        <div class="new-line"></div>
+        
+        <div class="comment">GUITAR SOLO</div>
+        <div class="chords">| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |</div>
+      </div>
+      
+      <div class="section">PARTE 3</div>
+      <div class="highlight">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">I can't stand this indecision, Married with a lack of vision</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+
+      <div class="highlight3">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">Say that you'll never, never, never, never need it</div>
+        <div class="lyrics">One headline, why believe it?</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+
+      <div class="highlight2">
+        <div class="comment">SMALL GUITAR SOLO</div>
+        <div class="chords">| 1 | 2 | 3 | 4 |</div>
+      </div>
+
+      <div class="highlight">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">Freedom and of pleasure, Nothing ever lasts forever</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+
+      <div class="highlight2">
+        <div class="comment">FINAL GUITAR SOLO</div>
+        <div class="chords">| A/D G/D | - | <span>6x</span></div>
+      </div>
+    </div>  
+  </div>
+  <script>
+    document.getElementById('toggleMode').addEventListener('click', function() {
+      document.body.classList.toggle('night-mode');
+      this.classList.toggle('night-mode');
+      this.textContent = document.body.classList.contains('night-mode') ? 'Day Mode' : 'Night Mode';
+    });
+  </script>
+
+
+</body></html>
