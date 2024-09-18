@@ -143,14 +143,11 @@
         list-style-type: none;
         padding: 0;
         margin: 0;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px; /* Adds space between items */
         margin-bottom: 80px;
     }
     #container-list li {
-        width: calc(50% - 10px); /* Adjust width to fit two columns */
         box-sizing: border-box;
+        margin-bottom: 10px;
     }
     #container-list a {
         text-decoration: none;
@@ -166,29 +163,6 @@
         color: #eee;
         text-decoration: underline;
     }
-
-    /* Scroll to Top Button */
-    #scroll-to-top {
-        position: fixed;
-        bottom: 100px;
-        right: 10px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        text-align: center;
-        line-height: 50px;
-        font-size: 24px;
-        cursor: pointer;
-        display: none; /* Hidden by default */
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        z-index: 99999000;
-    }
-    #scroll-to-top:hover {
-        background-color: #0056b3;
-    }
   </style>
 
   <!-- // -------------------------------------------------------------- // -->
@@ -197,11 +171,6 @@
 <body class="night-mode">
 
   <div class="page" id="page"> 
-
-
-
-    <!-- Scroll to Top Button -->
-    <button id="scroll-to-top" title="Go to top">&#8679;</button>
 
     <h1>Studebakker - Maestro 4.0</h1>
 
@@ -4454,143 +4423,182 @@
   <!-- // -------------------------------------------------------------- // -->
 
   <script>
+// Polyfill for closest() - Safari 9 doesn't support this
+if (!Element.prototype.closest) {
+    Element.prototype.closest = function(selector) {
+        var el = this;
+        while (el) {
+            if (el.matches(selector)) {
+                return el;
+            }
+            el = el.parentElement;
+        }
+        return null;
+    };
+}
 
-    document.addEventListener('DOMContentLoaded', function() {
-      var scrollAnimation = null;
+document.addEventListener('DOMContentLoaded', function() {
+    var scrollAnimation = null;
 
-      function smoothScroll(startTime, duration, startScrollTop, targetScrollTop) {
-          var currentTime = (new Date()).getTime() - startTime;
-          var progress = currentTime / duration;
-          var easedProgress = Math.min(progress, 1);
-          var newScrollTop = startScrollTop + (targetScrollTop - startScrollTop) * easedProgress;
-          window.scrollTo(0, newScrollTop);
+    function smoothScroll(startTime, duration, startScrollTop, targetScrollTop, callback) {
+        var currentTime = (new Date()).getTime() - startTime;
+        var progress = currentTime / duration;
+        var easedProgress = Math.min(progress, 1);
+        var newScrollTop = startScrollTop + (targetScrollTop - startScrollTop) * easedProgress;
+        window.scrollTo(0, newScrollTop);
 
-          if (easedProgress < 1) {
-              scrollAnimation = setTimeout(function() {
-                  smoothScroll(startTime, duration, startScrollTop, targetScrollTop);
-              }, 16); // Aproximadamente 60 FPS
-          } else {
-              scrollAnimation = null; // Animação completa
-          }
-      }
+        if (easedProgress < 1) {
+            scrollAnimation = setTimeout(function() {
+                smoothScroll(startTime, duration, startScrollTop, targetScrollTop, callback);
+            }, 16); // Aproximadamente 60 FPS
+        } else {
+            scrollAnimation = null; // Animação completa
+            if (callback) callback(); // Executa a função de callback quando o scroll termina
+        }
+    }
 
-      var buttons = document.querySelectorAll('.scroll-button');
-      for (var i = 0; i < buttons.length; i++) {
+    var buttons = document.querySelectorAll('.scroll-button');
+
+    for (var i = 0; i < buttons.length; i++) {
         buttons[i].addEventListener('click', function() {
-          var button = this;
-          var container = button.closest('.container');
-          
-          // Se uma animação está rodando, pare-a e redefina o texto do botão
-          if (scrollAnimation) {
-              clearTimeout(scrollAnimation);
-              scrollAnimation = null;
-              button.textContent = 'Scroll to End';
-              button.classList.remove('running');
-              return;
-          }
+            var button = this;
+            var container = button.closest('.container');
 
-          // Obtém o tempo da div .time
-          var timeText = container.querySelector('.time').textContent;
-          var parts = timeText.split(':');
-          var minutes = parseInt(parts[0], 10);
-          var seconds = parseInt(parts[1], 10);
-          var totalTime = (minutes * 60 + seconds) * 1000;
+            // Se uma animação está rodando, pare-a e redefina o texto do botão
+            if (scrollAnimation) {
+                clearTimeout(scrollAnimation);
+                scrollAnimation = null;
+                button.textContent = 'Scroll to End';
+                button.classList.remove('running');
+                return;
+            }
 
-          // Calcula a altura do cabeçalho
-          var header = document.querySelector('header');
-          var headerHeight = header ? header.offsetHeight : 0;
+            // Obtém o tempo da div .time
+            var timeText = container.querySelector('.time').textContent;
+            var parts = timeText.split(':');
+            var minutes = parseInt(parts[0], 10);
+            var seconds = parseInt(parts[1], 10);
+            var totalTime = (minutes * 60 + seconds) * 1000;
 
-          // Calcula a posição final do scroll
-          var containerRect = container.getBoundingClientRect();
-          var containerTop = containerRect.top + window.pageYOffset - headerHeight;
-          var containerBottom = containerTop + container.offsetHeight;
-          var scrollTop = window.pageYOffset;
-          var windowHeight = window.innerHeight;
+            // Calcula a altura do cabeçalho
+            var header = document.querySelector('header');
+            var headerHeight = header ? header.offsetHeight : 0;
 
-          // Distância até o final do container
-          var distanceToBottom = containerBottom - (scrollTop + windowHeight);
+            // Calcula a posição final do scroll
+            var containerRect = container.getBoundingClientRect();
+            var containerTop = containerRect.top + window.pageYOffset - headerHeight;
+            var containerBottom = containerTop + container.offsetHeight;
+            var scrollTop = window.pageYOffset;
+            var windowHeight = window.innerHeight;
 
-          // Calcula o tempo ajustado proporcionalmente à distância restante
-          var adjustedTime = (distanceToBottom / container.offsetHeight) * totalTime;
+            // Distância até o final do container
+            var distanceToBottom = containerBottom - (scrollTop + windowHeight);
 
-          // Inicia o scroll suave
-          var startTime = (new Date()).getTime();
-          scrollAnimation = setTimeout(function() {
-              smoothScroll(startTime, adjustedTime, scrollTop, containerTop + container.offsetHeight - windowHeight + headerHeight);
-          }, 16); // Aproximadamente 60 FPS
+            // Calcula o tempo ajustado proporcionalmente à distância restante
+            var adjustedTime = (distanceToBottom / container.offsetHeight) * totalTime;
 
-          // Muda o texto do botão para "Cancel Scroll"
-          button.textContent = 'Cancel Scroll';
-          button.classList.add('running');
+            // Função de callback para pular para o próximo container
+            function scrollToNextContainer() {
+                var nextContainer = container.nextElementSibling;
+                if (nextContainer && nextContainer.classList.contains('container')) {
+                    // Obter o nome da próxima música ou ID da div
+                    var nextContainerName = nextContainer.id.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, function(l) {
+                        return l.toUpperCase();
+                    });
+
+                    // Criar um botão dinâmico para o próximo scroll
+                    var nextButton = document.createElement('button');
+                    nextButton.textContent = 'Go to Next: ' + nextContainerName;
+                    nextButton.classList.add('next-button');
+                    document.body.appendChild(nextButton);
+
+                    // Posicionar o botão na parte inferior
+                    nextButton.style.position = 'fixed';
+                    nextButton.style.bottom = '20px';
+                    nextButton.style.right = '20px';
+                    nextButton.style.zIndex = '9999999999'; // Atualizado conforme solicitado
+                    nextButton.style.height = '50px'; // Definir altura
+                    nextButton.style.backgroundColor = 'blue'; // Cor de fundo
+                    nextButton.style.color = 'white'; // Cor do texto
+                    nextButton.style.border = 'none'; // Sem borda
+                    nextButton.style.textAlign = 'center'; // Alinhamento centralizado
+                    nextButton.style.fontSize = '12px'; // Tamanho da fonte
+                    nextButton.style.cursor = 'pointer'; // Cursor do tipo 'pointer' para indicar clicável
+
+
+                    // Função para rolar para a próxima música
+                    nextButton.addEventListener('click', function() {
+                        var nextContainerTop = nextContainer.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                        scrollAnimation = setTimeout(function() {
+                            smoothScroll((new Date()).getTime(), 1000, window.pageYOffset, nextContainerTop, function() {
+                                // Quando o scroll para o próximo container termina, redefine o botão
+                                button.textContent = 'Scroll to End';
+                                button.classList.remove('running');
+                                nextButton.remove(); // Remove o botão ao chegar à próxima música
+                            });
+                        }, 16);
+                    });
+                }
+
+                // Se não houver próximo container, redefina o botão
+                button.textContent = 'Scroll to End';
+                button.classList.remove('running');
+            }
+
+            // Inicia o scroll suave e passa o callback para pular para o próximo container
+            var startTime = (new Date()).getTime();
+            scrollAnimation = setTimeout(function() {
+                smoothScroll(startTime, adjustedTime, scrollTop, containerTop + container.offsetHeight - windowHeight + headerHeight, scrollToNextContainer);
+            }, 16); // Aproximadamente 60 FPS
+
+            // Muda o texto do botão para "Cancel Scroll"
+            button.textContent = 'Cancel Scroll';
+            button.classList.add('running');
         });
-      }
-    });
+    }
+});
+
+
 
   </script>
 
   <!-- // -------------------------------------------------------------- // -->
 
   <script>
-    (function() {
-            // Function to convert ID to friendly text
-            function formatText(id) {
-                return id
-                    .replace(/_/g, ' ')               // Replace underscores with spaces
-                    .toLowerCase()                   // Convert to lowercase
-                    .replace(/\b\w/g, function(l) {  // Capitalize first letter of each word
-                        return l.toUpperCase();
-                    });
-            }
-
-            // Get the container-list element
-            var list = document.getElementById('container-list');
-
-            // Get all divs with the class 'container'
-            var containers = Array.from(document.querySelectorAll('.container'));
-
-            // Sort containers alphabetically by ID
-            containers.sort(function(a, b) {
-                return a.id.localeCompare(b.id);
+(function() {
+    // Function to convert ID to friendly text
+    function formatText(id) {
+        return id
+            .replace(/_/g, ' ')               // Replace underscores with spaces
+            .replace(/-/g, ' ')               // Replace underscores with spaces
+            .toLowerCase()                   // Convert to lowercase
+            .replace(/\b\w/g, function(l) {  // Capitalize the first letter of each word
+                return l.toUpperCase();
             });
+    }
 
-            // Loop through each container and create a list item with a link
-            containers.forEach(function(container) {
-                var id = container.id;
-                if (id) {
-                    var listItem = document.createElement('li');
-                    var link = document.createElement('a');
-                    link.href = '#' + id;
-                    link.textContent = 'Go to ' + formatText(id); // Use the formatted text
-                    listItem.appendChild(link);
-                    list.appendChild(listItem);
-                }
-            });
+    // Get the container-list element
+    var list = document.getElementById('container-list');
 
-            // Adjust the list if the number of items is odd
-            var listItems = list.children;
-            if (listItems.length % 2 !== 0) {
-                // Move the last item to the first column if the number of items is odd
-                var lastItem = listItems[listItems.length - 1];
-                list.insertBefore(lastItem, list.firstChild);
-            }
+    // Get all divs with the class 'container'
+    var containers = document.querySelectorAll('.container');
 
-            // Get the scroll-to-top button
-            var scrollToTopButton = document.getElementById('scroll-to-top');
+    // Loop through each container and create a list item with a link
+    containers.forEach(function(container, index) {
+        var id = container.id;
+        if (id) {
+            var listItem = document.createElement('li');
+            var link = document.createElement('a');
+            link.href = '#' + id;
+            // Add the order number before the formatted text
+            link.textContent = (index + 1) + '. ' + formatText(id); // Numbering starts from 1
+            listItem.appendChild(link);
+            list.appendChild(listItem);
+        }
+    });
+})();
 
-            // Show the button when the user scrolls down
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 200) { // Show button after scrolling down 200px
-                    scrollToTopButton.style.display = 'block';
-                } else {
-                    scrollToTopButton.style.display = 'none';
-                }
-            });
 
-            // Scroll to top when the button is clicked
-            scrollToTopButton.addEventListener('click', function() {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-        })();
   </script>
 
   <!-- // -------------------------------------------------------------- // -->
