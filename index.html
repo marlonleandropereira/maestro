@@ -39,7 +39,7 @@
     }
 
     .container {
-      background-color: #444;
+      background-color: #434343;
       padding: 30px 20px;
       border-radius: 12px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -4570,7 +4570,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function formatText(id) {
         return id
             .replace(/_/g, ' ')               // Replace underscores with spaces
-            .replace(/-/g, ' ')               // Replace underscores with spaces
+            .replace(/-/g, ' ')               // Replace dashes with spaces
             .toLowerCase()                   // Convert to lowercase
             .replace(/\b\w/g, function(l) {  // Capitalize the first letter of each word
                 return l.toUpperCase();
@@ -4583,8 +4583,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Get all divs with the class 'container'
     var containers = document.querySelectorAll('.container');
 
-    // Loop through each container and create a list item with a link
-    containers.forEach(function(container, index) {
+    // Convert NodeList to array for compatibility with older browsers
+    Array.prototype.slice.call(containers).forEach(function(container, index) {
         var id = container.id;
         if (id) {
             var listItem = document.createElement('li');
@@ -4597,6 +4597,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 })();
+
 
 
   </script>
