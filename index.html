@@ -12,59 +12,60 @@
       white-space: pre-line;
       font-size: 16px;
     }
-
+  
     body {
       background-color: #111;
       font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
       margin: 0;
       padding: 0;
       color: #f5f5f5;
+      -webkit-transition: background-color 0.3s, color 0.3s;
       transition: background-color 0.3s, color 0.3s;
+      max-width: 728px;
+      margin: 0 auto; /* Centraliza o conteúdo na tela */
     }
-
+  
     .hr {
       border: none;
       border-top: 1px solid #333;
       margin: 60px 0px;
     }
-
+  
     .page {
       max-width: 768px;
-      min-width: 768px;
-      width: 768px;
+      width: 100%; /* Garantir que a página se ajuste ao máximo de 768px */
       margin: 0 auto;
-      padding: 20px;
     }
-
+  
     .container {
       padding: 0px 5px;
       position: relative;
-      z-index: 9999999999;
+      z-index: 1000;
     }
-
+  
     /* --------------------------------------------------------------------- */
-
+  
     .title {
       font-weight: bold;
       color: #fff;
       font-size: 32px;
       margin-bottom: 10px;
     }
-
+  
     .author {
       font-weight: bold;
       color: #888;
       font-size: 22px;
       margin-bottom: 10px;
     }
-
+  
     .bpm {
       font-weight: bold;
       color: #555;
       font-size: 18px;
       margin-bottom: 15px;
     }
-
+  
     .section {
       color: #f39c12;
       font-weight: bold;
@@ -72,42 +73,41 @@
       margin-top: 25px;
       margin-bottom: 10px;
     }
-
+  
     /* --------------------------------------------------------------------- */
-
+  
     .highlighted-char, .first-pipe {
       color: #bdc3c7;
       font-size: 10px;
       font-weight: normal !important;
     }
-
+  
     .chords, .lyrics, .comment, .alert {
       font-size: 18px;
       margin-bottom: 9px;
     }
-
+  
     .chords {
       font-weight: bold;
       color: #1abc9c;
-      color: #2ecc71;
       white-space: pre-wrap;
       word-spacing: 20px;
     }
-
+  
     .lyrics {
       color: #bdc3c7;
     }
-
+  
     .comment {
       color: #999;
       font-weight: bold;
     }
-
+  
     .alert {
       color: #fff;
       font-weight: bold;
     }
-
+  
     .no-highlight,
     .highlight, 
     .highlight2, 
@@ -118,35 +118,35 @@
       border-left: none !important;
       border-right: none !important;
     }
-
+  
     .no-highlight {
       padding: 0px 0px 0px !important;
       margin: 0px 0px 15px !important;
     }
-
+  
     .highlight {
       background-color: #222;
       border: 1px solid #666;
     }
-
+  
     .highlight2 {
       background-color: #333;
       border: 1px solid #777;
     }
-
+  
     .highlight3 {
       background-color: #444;
       border: 1px solid #888;
     }
-
+  
     .new-line {
       margin-top: 40px;
     }
-
+  
     .time {
       display: none;
     }
-
+  
     .scroll-button {
       float: right;
       margin-top: -80px;
@@ -157,9 +157,9 @@
       text-align: center;
       font-size: 12px;
       cursor: pointer;
-      z-index: 99999000;
+      z-index: 999;
     }
-
+  
     .scroll-button.running {
       position: fixed;
       bottom: 20px;
@@ -168,7 +168,7 @@
     }
     
     /* --------------------------------------------------------------------- */
-
+  
     #container-list {
         list-style-type: none;
         padding: 0;
@@ -183,6 +183,7 @@
         text-decoration: none;
         color: #fff;
         font-size: 18px;
+        -webkit-transition: color 0.3s;
         transition: color 0.3s;
         display: block;
         padding: 20px;
@@ -193,9 +194,9 @@
         color: #eee;
         text-decoration: underline;
     }
-
+  
     /* --------------------------------------------------------------------- */
-
+  
   </style>
 
   <!-- // -------------------------------------------------------------- // -->
@@ -4432,7 +4433,7 @@
 
       <div class="section">INTRO</div>
       <div class="alert">KEYBOARD ONLY</div>
-      <div class="chords">| A | B | C#m | <span>3x</span></div>
+      <div class="chords">| A | B | C#m | 3x</div>
       <div class="chords">| A | B | E |</div>
 
       <div class="alert">++ DRUMS AND BASS + GUITAR SOLO</div>
