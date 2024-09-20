@@ -4348,7 +4348,6 @@
   <!--// --------------------------------------------------------------- // -->
 
   <script>
-
     // Polyfill for closest() - Safari 9 doesn't support this
     if (!Element.prototype.closest) {
         Element.prototype.closest = function(selector) {
@@ -4410,43 +4409,18 @@
 
                 var containerRect = container.getBoundingClientRect();
                 var containerTop = containerRect.top + window.pageYOffset - headerHeight;
-                var containerBottom = containerTop + container.offsetHeight;
                 var scrollTop = window.pageYOffset;
                 var windowHeight = window.innerHeight;
 
-                var distanceToBottom = containerBottom - (scrollTop + windowHeight);
+                var distanceToBottom = containerTop + container.offsetHeight - (scrollTop + windowHeight);
                 var adjustedTime = (distanceToBottom / container.offsetHeight) * totalTime;
-
-                // Função de callback para pular para o próximo container
-                function scrollToNextContainer() {
-                    var nextContainer = container.nextElementSibling;
-                    if (nextContainer && nextContainer.classList.contains('container')) {
-                        var nextContainerName = nextContainer.id.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, function(l) {
-                            return l.toUpperCase();
-                        });
-
-                        var nextButton = document.createElement('button');
-                        nextButton.textContent = 'Go to Next: ' + nextContainerName;
-                        nextButton.classList.add('next-button');
-                        document.body.appendChild(nextButton);
-
-                        nextButton.addEventListener('click', function() {
-                            var nextContainerTop = nextContainer.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-                            smoothScroll((new Date()).getTime(), 1000, window.pageYOffset, nextContainerTop, function() {
-                                button.textContent = 'Scroll to End';
-                                button.classList.remove('running');
-                                nextButton.remove(); // Remove o botão ao chegar à próxima música
-                            });
-                        });
-                    }
-
-                    button.textContent = 'Scroll to End';
-                    button.classList.remove('running');
-                }
 
                 var startTime = (new Date()).getTime();
                 scrollAnimation = setTimeout(function() {
-                    smoothScroll(startTime, adjustedTime, scrollTop, containerTop + container.offsetHeight - windowHeight + headerHeight, scrollToNextContainer);
+                    smoothScroll(startTime, adjustedTime, scrollTop, containerTop + container.offsetHeight - windowHeight + headerHeight, function() {
+                        button.textContent = 'Scroll to End';
+                        button.classList.remove('running');
+                    });
                 }, 16); // Aproximadamente 60 FPS
 
                 button.textContent = 'Cancel Scroll';
@@ -4512,9 +4486,7 @@
             }
         });
     });
-
   </script>
-
 
   <!--// --------------------------------------------------------------- // -->
   <!--// --------------------------------------------------------------- // -->
