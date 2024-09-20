@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAESTRO</title>
+
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+
+  <style>
+    pre {
+      white-space: pre-line;
+      font-size: 16px;
+    }
+  
+    body {
+      background-color: #111;
+      font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #f5f5f5;
+      -webkit-transition: background-color 0.3s, color 0.3s;
+      transition: background-color 0.3s, color 0.3s;
+      max-width: 728px;
+      margin: 0 auto; /* Centraliza o conteúdo na tela */
+    }
+  
+    .hr {
+      border: none;
+      border-top: 1px solid #333;
+      margin: 60px 0px;
+    }
+  
+    .page {
+      max-width: 768px;
+      width: 100%; /* Garantir que a página se ajuste ao máximo de 768px */
+      margin: 0 auto;
+    }
+  
+    .container {
+      padding: 0px 5px;
+      position: relative;
+      z-index: 1;
+    }
+  
+    /* --------------------------------------------------------------------- */
+  
+    .title {
+      font-weight: bold;
+      color: #fff;
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+  
+    .author {
+      font-weight: bold;
+      color: #888;
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+  
+    .bpm {
+      font-weight: bold;
+      color: #555;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+  
+    .section {
+      color: #f39c12;
+      font-weight: bold;
+      font-size: 20px;
+      margin-top: 25px;
+      margin-bottom: 10px;
+    }
+  
+    /* --------------------------------------------------------------------- */
+  
+    .highlighted-char, .first-pipe {
+      color: #bdc3c7;
+      font-size: 10px;
+      font-weight: normal !important;
+    }
+  
+    .chords, .lyrics, .comment, .alert {
+      font-size: 18px;
+      margin-bottom: 9px;
+    }
+  
+    .chords {
+      font-weight: bold;
+      color: #1abc9c;
+      white-space: pre-wrap;
+      word-spacing: 20px;
+    }
+  
+    .lyrics {
+      color: #bdc3c7;
+    }
+  
+    .comment {
+      color: #999;
+      font-weight: bold;
+    }
+  
+    .alert {
+      color: #fff;
+      font-weight: bold;
+    }
+  
+    .no-highlight,
+    .highlight, 
+    .highlight2, 
+    .highlight3 {
+      border-radius: 0px;
+      margin: 0px -15px 15px !important;
+      padding: 15px 15px 10px !important;
+      border-left: none !important;
+      border-right: none !important;
+    }
+  
+    .no-highlight {
+      padding: 0px 0px 0px !important;
+      margin: 0px 0px 15px !important;
+    }
+  
+    .highlight {
+      background-color: #222;
+      border: 1px solid #666;
+    }
+  
+    .highlight2 {
+      background-color: #333;
+      border: 1px solid #777;
+    }
+  
+    .highlight3 {
+      background-color: #444;
+      border: 1px solid #888;
+    }
+  
+    .new-line {
+      margin-top: 40px;
+    }
+  
+    .time {
+      display: none;
+    }
+  
+    .scroll-button {
+      float: right;
+      margin-top: -100px;
+      height: 40px;
+      width: 60px;
+      background-color: #1abc9c;
+      color: white;
+      border: none;
+      text-align: center;
+      font-size: 12px;
+      cursor: pointer;
+      z-index: 9999;
+      font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
+      font-weight: bold;
+      height: 60px;
+      width: 60px;
+      border-radius: 10px; /* Corrigido para formato padrão */
+    }
+
+    .scroll-top {
+      position: fixed;
+      height: 30px;
+      width: 50px;
+      background-color: #9b59b6;
+      color: white;
+      border: none;
+      text-align: center;
+      font-size: 12px;
+      cursor: pointer;
+      z-index: 99;
+      font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
+      font-weight: bold;
+      right: 0; /* Corrigido para '0' sem 'px' */
+      top: 0;   /* Corrigido para '0' sem 'px' */
+      border-radius: 0 0 0 10px; /* Corrigido para formato padrão */
+      line-height: 30px; /* Alinha o texto verticalmente */
+      opacity: 0.7; /* 70% opacidade */
+    }
+  
+    .scroll-button.running {
+      height: 60px;
+      width: 60px;
+      position: fixed;
+      bottom: 0px;
+      right: 0px;
+      background-color: #e74c3c;
+      z-index: 99999 !important;
+      border-radius: 10px 0px 0px 0px; /* Corrigido para formato padrão */
+      opacity: 0.7; /* 70% opacidade */
+    }
+      
+    /* --------------------------------------------------------------------- */
+  
+    #container-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        margin-bottom: 80px;
+    }
+    #container-list li {
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+    #container-list a {
+        text-decoration: none;
+        color: #fff;
+        font-size: 18px;
+        -webkit-transition: color 0.3s;
+        transition: color 0.3s;
+        display: block;
+        padding: 20px;
+        background-color: #555;
+        border-radius: 10px;
+    }
+    #container-list a:hover {
+        color: #eee;
+        text-decoration: underline;
+    }
+  
+    /* --------------------------------------------------------------------- */
+  
+  </style>
+
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+
+</head>
+<body>
+
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+
+  <div class="page" id="page"> 
+
+    <h1>Studebakker - Valinhos - Ziggy - 20/Set/2024</h2>
+
+    <!-- // ------------------------------------------------------------ // -->
+
+    <ul id="container-list"></ul>
+
+    <button href="#page" id="scroll-top" class="scroll-top">Menu</button>
+    <div class="hr"></div>
+
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+
+    <div class="container" id="everybody-wants-to-rule-the-world">
+      <div class="title">Everybody Wants To Rule The World</div>
+      <div class="author">Tears For Fears</div>
+      <div class="bpm">BPM: 112 (56 OR 224)</div>
+      <div class="time">4:11</div>
+      <button class="scroll-button">Scroll</button>
+    
+      <div class="section">INTRO</div>
+      <div class="highlight">
+        <div class="alert">CONTAGEM DA BATERIA 1 2 3 4</div>
+      </div>
+      <div class="highlight">
+        <div class="alert">GUITAR RIFF</div>
+        <div class="chords">| A G | - | <span>4x</span></div>
+      </div>
+    
+      <div class="section">PARTE 1</div>
+      <div class="no-highlight">
+        <div class="chords">| A G | - | <span>4x</span></div>
+        <div class="lyrics">Welcome to your life,</div>
+        <div class="lyrics">There's no turning back,</div>
+        <div class="lyrics">Even while we sleep,</div>  
+        <div class="lyrics">We will find you</div>
+      </div>
+    
+      <div class="highlight">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">Acting on your best behavior, Turn your back on Mother Nature</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+    
+      <div class="highlight">
+        <div class="chords">| A G | - | <span>2x</span></div>
+      </div>
+    
+      <div class="section">PARTE 2</div>
+      <div class="no-highlight">
+        <div class="chords">| A G | - | <span>4x</span></div>
+        <div class="lyrics">It's my own design,</div>
+        <div class="lyrics">It's my own remorse,</div>
+        <div class="lyrics">Help me to decide,</div>
+        <div class="lyrics">Help me make the most of</div>
+      </div>
+    
+      <div class="highlight">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">Freedom and of pleasure, Nothing ever lasts forever</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+    
+      <div class="highlight2">
+        <div class="alert">DISTORTION</div>
+        <div class="chords">| G | D A | 3x</div>
+        <div class="lyrics">There's a room where the light won't find you</div>
+        <div class="lyrics">Holding hands while the walls come tumbling down</div>
+        <div class="lyrics">When they do I'll be right behind you</div>
+      </div>
+    
+      <div class="highlight">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">So glad we've almost made it, So sad they had to fade it</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+    
+      <div class="section">SOLO</div>
+      <div class="highlight2">
+        <div class="alert">GUITAR RIFF</div>
+        <div class="chords">| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |</div>
+        <div class="new-line"></div>
+        
+        <div class="alert">KEYBOARD SOLO</div>
+        <div class="chords">| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |</div>
+        <div class="new-line"></div>
+        
+        <div class="alert">GUITAR SOLO</div>
+        <div class="chords">| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |</div>
+      </div>
+      
+      <div class="section">PARTE 3</div>
+      <div class="highlight">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">I can't stand this indecision, Married with a lack of vision</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+    
+      <div class="highlight2">
+        <div class="alert">NEW RIFF</div>
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">Say that you'll never, never, never, never need it</div>
+        <div class="lyrics">One headline, why believe it?</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+    
+      <div class="section">SMALL GUITAR SOLO</div>
+      <div class="highlight">
+        <div class="alert">| 1 | 2 | 3 | 4 |</div>
+      </div>
+    
+      <div class="section">LAST CHORUS</div>
+      <div class="highlight">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">Freedom and of pleasure, Nothing ever lasts forever</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+    
+      <div class="section">FINAL GUITAR SOLO</div>
+      <div class="highlight2">
+        <div class="chords">| A/D G/D | - | <span>6x</span></div>
+      </div>
+    </div><div class="hr"></div>
+
+    <div class="container" id="message-in-a-bottle">
+      <div class="title">Message In A Bottle</div>
+      <div class="author">The Police</div>
+      <div class="bpm">BPM: 151 (75 and 302)</div>
+      <div class="time">4:50</div>
+      <button class="scroll-button">Scroll</button>
+    
+      <div class="section">INTRO</div>
+      <div class="highlight">
+        <div class="alert">ONLY GUITAR</div>
+        <div class="chords">| C#m A | B F# |</div>
+      </div>
+      <div class="highlight">
+        <div class="alert">CONTAGEM DA BATERIA 1 2 3 4 (BATERIA CHAMA DIFERENTE)</div>
+      </div>
+      <div class="highlight">
+        <div class="alert">RIFF</div>
+        <div class="chords">C#m A | B F# | 2x</div>
+      </div>
+    
+      <div class="section">PARTE 1</div>
+      <div class="no-highlight">
+        <div class="chords">| C#m A | B F# | 8x</div>
+        <div class="lyrics">Just a castaway, an island lost at sea, oh</div>
+        <div class="lyrics">Another lonely day with no one here but me, oh</div>
+        <div class="lyrics">More loneliness than any man could bear</div>
+        <div class="lyrics">Rescue me before I fall into despair, oh</div>
+      </div>
+    
+      <div class="highlight">
+        <div class="chords">| A | D5 E5 | 2x</div>
+        <div class="lyrics">I'll send an S.O.S to the world</div>
+        <div class="lyrics">I'll send an S.O.S to the world</div>
+        <div class="chords">| F#m | D | 3x</div>
+        <div class="lyrics">I hope that someone gets my</div>
+        <div class="lyrics">I hope that someone gets my</div>
+        <div class="lyrics">I hope that someone gets my</div>
+      </div>
+    
+      <div class="highlight">
+        <div class="chords">| C#m | A | C#m | A |</div>
+        <div class="lyrics">Message in a bottle, yeah</div>
+        <div class="chords">| C#m | A | F#m | F#m |</div>
+        <div class="lyrics">Message in a bottle, yeah</div>
+      </div>
+    
+      <div class="section">PARTE 2</div>
+      <div class="no-highlight">
+        <div class="chords">| C#m A | B F# | 8x</div>
+        <div class="lyrics">A year has passed since I wrote my note</div>
+        <div class="lyrics">I should have known this right from the start</div>
+        <div class="lyrics">Only hope can keep me together</div>
+        <div class="lyrics">Love can mend your life or love can break your heart</div>
+      </div>
+    
+      <div class="highlight">
+        <div class="chords">| A | D5 E5 | 2x</div>
+        <div class="lyrics">I'll send an S.O.S to the world</div>
+        <div class="lyrics">I'll send an S.O.S to the world</div>
+        <div class="chords">| F#m | D | 3x</div>
+        <div class="lyrics">I hope that someone gets my</div>
+        <div class="lyrics">I hope that someone gets my</div>
+        <div class="lyrics">I hope that someone gets my</div>
+      </div>
+    
+      <div class="highlight">
+        <div class="chords">| C#m | A | C#m | A |</div>
+        <div class="lyrics">Message in a bottle, yeah</div>
+        <div class="chords">| C#m | A | C#m | A |</div>
+        <div class="lyrics">Message in a bottle, yeah</div>        
+        <div class="chords">| C#m | A | C#m | A |</div>
+        <div class="lyrics">Oh, message in a bottle, yeah</div>
+        <div class="chords">| C#m | A | F#m | F#m | F#m | F#m |</div>
+        <div class="lyrics">Message in a bottle, yeah</div>
+      </div>
+    
+      <div class="section">PARTE 3</div>
+      <div class="no-highlight">
+        <div class="chords">| C#m A | B F# | 8x</div>
+        <div class="lyrics">Walked out this morning, I don't believe what I saw</div>
+        <div class="lyrics">Hundred billion bottles washed up on the shore</div>
+        <div class="lyrics">Seems I'm not alone at being alone</div>
+        <div class="lyrics">Hundred billion castaways, looking for a home</div>
+      </div>
+    
+      <div class="highlight">
+        <div class="chords">| A | D5 E5 | 2x</div>
+        <div class="lyrics">I'll send an S.O.S to the world</div>
+        <div class="lyrics">I'll send an S.O.S to the world</div>
+        <div class="chords">| F#m | D | 3x</div>
+        <div class="lyrics">I hope that someone gets my</div>
+        <div class="lyrics">I hope that someone gets my</div>
+        <div class="lyrics">I hope that someone gets my</div>
+      </div>
+    
+      <div class="highlight">
+        <div class="chords">| C#m | A | C#m | A |</div>
+        <div class="lyrics">Message in a bottle, yeah</div>
+        <div class="chords">| C#m | A | C#m | A |</div>
+        <div class="lyrics">Message in a bottle, yeah</div>        
+        <div class="chords">| C#m | A | C#m | A |</div>
+        <div class="lyrics">Oh, message in a bottle, yeah</div>
+        <div class="chords">| C#m | A | F#m | F#m |</div>
+        <div class="lyrics">Message in a bottle, yeah</div>
+      </div>
+    
+      <div class="section">FINAL</div>
+      <div class="highlight">
+        <div class="chords">RIFF: | C#m A | B F# | 4x</div>
+      </div>
+    
+      <div class="highlight">
+        <div class="alert">RIFF</div>
+        <div class="chords">| C#m A | B F# |...</div>
+        <div class="lyrics">Sending out an S.O.S</div>
+      </div>
+    
+    </div><div class="hr"></div>
+
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+
+  </div>
+
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+
+  <script>
+    // Polyfill para closest() - Safari 9 não suporta este método
+    if (!Element.prototype.closest) {
+      Element.prototype.closest = function(selector) {
+        var el = this;
+        while (el) {
+          if (el.matches(selector)) {
+            return el;
+          }
+          el = el.parentElement;
+        }
+        return null;
+      };
+    }
+  
+    // Polyfill para scrollBehavior - Safari 9 não suporta rolagem suave
+    if (!('scrollBehavior' in document.documentElement.style)) {
+      window.smoothScrollTo = function(top, duration) {
+        var start = window.pageYOffset,
+            change = top - start,
+            currentTime = 0,
+            increment = 20;
+  
+        function animateScroll() {
+          currentTime += increment;
+          var val = Math.easeInOutQuad(currentTime, start, change, duration);
+          window.scrollTo(0, val);
+          if (currentTime < duration) {
+            setTimeout(animateScroll, increment);
+          }
+        }
+        animateScroll();
+      };
+  
+      // Easing function para suavizar a rolagem
+      Math.easeInOutQuad = function(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t + b;
+        t--;
+        return -c / 2 * (t * (t - 2) - 1) + b;
+      };
+    }
+  
+    document.addEventListener('DOMContentLoaded', function() {
+      var scrollAnimation = null;
+  
+      function smoothScroll(startTime, duration, startScrollTop, targetScrollTop, callback) {
+        var currentTime = (new Date()).getTime() - startTime;
+        var progress = currentTime / duration;
+        var easedProgress = Math.min(progress, 1);
+        var newScrollTop = startScrollTop + (targetScrollTop - startScrollTop) * easedProgress;
+        window.scrollTo(0, newScrollTop);
+  
+        if (easedProgress < 1) {
+          scrollAnimation = setTimeout(function() {
+            smoothScroll(startTime, duration, startScrollTop, targetScrollTop, callback);
+          }, 16); // Aproximadamente 60 FPS
+        } else {
+          scrollAnimation = null; // Animação completa
+          if (callback) callback(); // Executa a função de callback quando o scroll termina
+        }
+      }
+  
+      var buttons = document.querySelectorAll('.scroll-button');
+  
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', function() {
+          var button = this;
+          var container = button.closest('.container');
+  
+          // Se uma animação está rodando, pare-a e redefina o texto do botão
+          if (scrollAnimation) {
+            clearTimeout(scrollAnimation);
+            scrollAnimation = null;
+            button.textContent = 'Scroll to End';
+            button.classList.remove('running');
+            return;
+          }
+  
+          // Obtém o tempo da div .time
+          var timeText = container.querySelector('.time').textContent;
+          var parts = timeText.split(':');
+          var minutes = parseInt(parts[0], 10);
+          var seconds = parseInt(parts[1], 10);
+          var totalTime = (minutes * 60 + seconds) * 1000;
+  
+          // Calcula a altura do cabeçalho
+          var header = document.querySelector('header');
+          var headerHeight = header ? header.offsetHeight : 0;
+  
+          // Calcula a posição final do scroll
+          var containerRect = container.getBoundingClientRect();
+          var containerTop = containerRect.top + window.pageYOffset - headerHeight;
+          var containerBottom = containerTop + container.offsetHeight;
+          var scrollTop = window.pageYOffset;
+          var windowHeight = window.innerHeight;
+  
+          // Distância até o final do container
+          var distanceToBottom = containerBottom - (scrollTop + windowHeight);
+  
+          // Calcula o tempo ajustado proporcionalmente à distância restante
+          var adjustedTime = (distanceToBottom / container.offsetHeight) * totalTime;
+  
+          // Função de callback para pular para o próximo container
+          function scrollToNextContainer() {
+            var nextContainer = container.nextElementSibling;
+            if (nextContainer && nextContainer.classList.contains('container')) {
+              // Obter o nome da próxima música ou ID da div
+              var nextContainerName = nextContainer.id.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, function(l) {
+                return l.toUpperCase();
+              });
+  
+              // Criar um botão dinâmico para o próximo scroll
+              var nextButton = document.createElement('button');
+              nextButton.textContent = 'Go to Next: ' + nextContainerName;
+              nextButton.classList.add('next-button');
+              document.body.appendChild(nextButton);
+  
+              // Função para rolar para a próxima música
+              nextButton.addEventListener('click', function() {
+                var nextContainerTop = nextContainer.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                scrollAnimation = setTimeout(function() {
+                  smoothScroll((new Date()).getTime(), 1000, window.pageYOffset, nextContainerTop, function() {
+                    button.textContent = 'Scroll to End';
+                    button.classList.remove('running');
+                    nextButton.remove(); // Remove o botão ao chegar à próxima música
+                  });
+                }, 16);
+              });
+            }
+  
+            button.textContent = 'Scroll to End';
+            button.classList.remove('running');
+          }
+  
+          var startTime = (new Date()).getTime();
+          scrollAnimation = setTimeout(function() {
+            smoothScroll(startTime, adjustedTime, scrollTop, containerTop + container.offsetHeight - windowHeight + headerHeight, scrollToNextContainer);
+          }, 16); 
+  
+          button.textContent = 'Cancel Scroll';
+          button.classList.add('running');
+        });
+      }
+    });
+  </script>
+  
+  <!-- // -------------------------------------------------------------- // -->
+  
+  <script>
+    (function() {
+      function formatText(id) {
+        return id
+          .replace(/_/g, ' ')
+          .replace(/-/g, ' ')
+          .toLowerCase()
+          .replace(/\b\w/g, function(l) {
+            return l.toUpperCase();
+          });
+      }
+  
+      var list = document.getElementById('container-list');
+      var containers = document.querySelectorAll('.container');
+  
+      Array.prototype.slice.call(containers).forEach(function(container, index) {
+        var id = container.id;
+        if (id) {
+          var listItem = document.createElement('li');
+          var link = document.createElement('a');
+          link.href = '#' + id;
+          link.textContent = (index + 1) + '. ' + formatText(id); 
+          listItem.appendChild(link);
+          list.appendChild(listItem);
+        }
+      });
+    })();
+  </script>
+  
+  <!-- // -------------------------------------------------------------- // -->
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var lyricsDivs = document.querySelectorAll('.chords');
+  
+      for (var i = 0; i < lyricsDivs.length; i++) {
+        var content = lyricsDivs[i].innerHTML;
+        var firstPipeReplaced = false;
+  
+        var newContent = content.split('').map(function(char) {
+          if (char === '|' && !firstPipeReplaced) {
+            firstPipeReplaced = true;
+            return '<span class="first-pipe">|</span>';
+          } else if (char === '|') {
+            return '<span class="highlighted-char">|</span>';
+          } else {
+            return char;
+          }
+        }).join('');
+  
+        lyricsDivs[i].innerHTML = newContent;
+      }
+    });
+  
+    document.getElementById('scroll-top').addEventListener('click', function(e) {
+      if ('scrollBehavior' in document.documentElement.style) {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      } else {
+        window.smoothScrollTo(0, 500); // Polyfill para rolagem suave
+      }
+    });
+  </script>
+  
+
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+
+</body>
+</html>
