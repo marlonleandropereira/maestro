@@ -1,0 +1,2520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Badaró - Hortolândia 29/Nov/2024</title>
+
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+
+  <style>
+    pre {
+      white-space: pre-line;
+      font-size: 16px;
+    }
+  
+    body {
+      background-color: #111;
+      font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #f5f5f5;
+      -webkit-transition: background-color 0.3s, color 0.3s;
+      transition: background-color 0.3s, color 0.3s;
+      max-width: 728px;
+      margin: 0 auto; /* Centraliza o conteúdo na tela */
+    }
+  
+    .hr {
+      border: none;
+      border-top: 1px solid #333;
+      margin: 60px 0px;
+    }
+  
+    .page {
+      max-width: 768px;
+      width: 100%; /* Garantir que a página se ajuste ao máximo de 768px */
+      margin: 0 auto;
+    }
+  
+    .container {
+      padding: 0px 5px;
+      position: relative;
+      z-index: 1;
+    }
+  
+    /* --------------------------------------------------------------------- */
+  
+    .logo-bar {
+      width: 200px;
+      margin: 20px auto;
+      display: block;
+    }
+
+    .title {
+      font-weight: bold;
+      color: #fff;
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+  
+    .author {
+      font-weight: bold;
+      color: #888;
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+  
+    .bpm {
+      font-weight: bold;
+      color: #555;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+  
+    .section {
+      color: #f39c12;
+      font-weight: bold;
+      font-size: 20px;
+      margin-top: 25px;
+      margin-bottom: 10px;
+    }
+  
+    /* --------------------------------------------------------------------- */
+  
+    .highlighted-char, .first-pipe {
+      color: #bdc3c7;
+      font-size: 10px;
+      font-weight: normal !important;
+    }
+  
+    .chords, .lyrics, .comment, .alert {
+      font-size: 18px;
+      margin-bottom: 9px;
+    }
+  
+    .chords {
+      font-weight: bold;
+      color: #1abc9c;
+      white-space: pre-wrap;
+      word-spacing: 20px;
+    }
+  
+    .lyrics {
+      color: #bdc3c7;
+    }
+  
+    .comment {
+      color: #999;
+      font-weight: bold;
+    }
+  
+    .alert {
+      color: #fff;
+      font-weight: bold;
+    }
+  
+    .no-highlight,
+    .highlight, 
+    .highlight2, 
+    .highlight3 {
+      border-radius: 0px;
+      margin: 0px -15px 15px !important;
+      padding: 15px 15px 10px !important;
+      border-left: none !important;
+      border-right: none !important;
+    }
+  
+    .no-highlight {
+      padding: 0px 0px 0px !important;
+      margin: 0px 0px 15px !important;
+    }
+  
+    .highlight {
+      background-color: #222;
+      border: 1px solid #666;
+    }
+  
+    .highlight2 {
+      background-color: #333;
+      border: 1px solid #777;
+    }
+  
+    .highlight3 {
+      background-color: #444;
+      border: 1px solid #888;
+    }
+  
+    .new-line {
+      margin-top: 40px;
+    }
+  
+    .time {
+      display: none;
+    }
+  
+    .scroll-button {
+      float: right;
+      margin-top: -100px;
+      background-color: #1abc9c;
+      color: white;
+      border: none;
+      text-align: center;
+      font-size: 12px;
+      cursor: pointer;
+      z-index: 9999;
+      font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
+      font-weight: bold;
+      height: 80px;
+      width: 80px;
+      border-radius: 10px; /* Corrigido para formato padrão */
+    }
+
+    .scroll-top {
+      position: fixed;
+      height: 100px;
+      width: 100px;
+      background-color: #d85675;
+      color: white;
+      border: none;
+      text-align: center;
+      font-size: 12px;
+      cursor: pointer;
+      z-index: 99;
+      font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
+      font-weight: bold;
+      right: 0; /* Corrigido para '0' sem 'px' */
+      top: 0;   /* Corrigido para '0' sem 'px' */
+      border-radius: 0 0 0 10px; /* Corrigido para formato padrão */
+      line-height: 30px; /* Alinha o texto verticalmente */
+      opacity: 0.4; /* 70% opacidade */
+    }
+  
+    .scroll-button.running {      
+      height: 100px;
+      width: 100px;
+      position: fixed;
+      bottom: 0px;
+      right: 0px;
+      background-color: #e74c3c;
+      z-index: 99999 !important;
+      border-radius: 10px 0px 0px 0px; /* Corrigido para formato padrão */
+      opacity: 0.7; /* 70% opacidade */
+    }
+      
+    /* --------------------------------------------------------------------- */
+  
+    #container-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        margin-bottom: 80px;
+    }
+    #container-list li {
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+    #container-list a {
+        text-decoration: none;
+        color: #fff;
+        font-size: 18px;
+        -webkit-transition: color 0.3s;
+        transition: color 0.3s;
+        display: block;
+        padding: 20px;
+        background-color: #d85675;
+        border-radius: 10px;
+    }
+    #container-list a:hover {
+        color: #eee;
+        text-decoration: underline;
+    }
+  
+    /* --------------------------------------------------------------------- */
+  
+  </style>
+
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+
+</head>
+<body>
+
+  <h1>Scopia - Maestro v0.23</h1>
+
+  <h2>Badaró - Hortolândia 29/Nov/2024</h2>
+
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+
+  <div class="page" id="page">
+
+    <!-- // ------------------------------------------------------------ // -->
+
+    <ul id="container-list"></ul>
+
+    <button href="#page" id="scroll-top" class="scroll-top">Menu</button>
+    <div class="hr"></div>
+
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+
+    <div class="container" id="everybody-wants-to-rule-the-world">
+      <div class="title">Everybody Wants To Rule The World</div>
+      <div class="author">Tears For Fears</div>
+      <div class="bpm">BPM: 112 (56 OR 224)</div>
+      <div class="time">4:11</div>
+      <button class="scroll-button">Scroll</button>
+    
+      <div class="section">INTRO</div>
+      <div class="highlight">
+        <div class="alert">CONTAGEM DA BATERIA 1 2 3 4</div>
+      </div>
+      <div class="highlight">
+        <div class="alert">GUITAR RIFF</div>
+        <div class="chords">| A G | - | <span>4x</span></div>
+      </div>
+    
+      <div class="section">PARTE 1</div>
+      <div class="no-highlight">
+        <div class="chords">| A G | - | <span>4x</span></div>
+        <div class="lyrics">Welcome to your life,</div>
+        <div class="lyrics">There's no turning back,</div>
+        <div class="lyrics">Even while we sleep,</div>  
+        <div class="lyrics">We will find you</div>
+      </div>
+    
+      <div class="highlight">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">Acting on your best behavior, Turn your back on Mother Nature</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+    
+      <div class="highlight">
+        <div class="chords">| A G | - | <span>2x</span></div>
+      </div>
+    
+      <div class="section">PARTE 2</div>
+      <div class="no-highlight">
+        <div class="chords">| A G | - | <span>4x</span></div>
+        <div class="lyrics">It's my own design,</div>
+        <div class="lyrics">It's my own remorse,</div>
+        <div class="lyrics">Help me to decide,</div>
+        <div class="lyrics">Help me make the most of</div>
+      </div>
+    
+      <div class="highlight">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">Freedom and of pleasure, Nothing ever lasts forever</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+    
+      <div class="highlight2">
+        <div class="alert">DISTORTION</div>
+        <div class="chords">| G | D A | 3x</div>
+        <div class="lyrics">There's a room where the light won't find you</div>
+        <div class="lyrics">Holding hands while the walls come tumbling down</div>
+        <div class="lyrics">When they do I'll be right behind you</div>
+      </div>
+    
+      <div class="highlight">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">So glad we've almost made it, So sad they had to fade it</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+    
+      <div class="section">SOLO</div>
+      <div class="highlight2">
+        <div class="alert">GUITAR RIFF</div>
+        <div class="chords">| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |</div>
+        <div class="new-line"></div>
+        
+        <div class="alert">KEYBOARD SOLO</div>
+        <div class="chords">| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |</div>
+        <div class="new-line"></div>
+        
+        <div class="alert">GUITAR SOLO</div>
+        <div class="chords">| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |</div>
+      </div>
+      
+      <div class="section">PARTE 3</div>
+      <div class="highlight">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">I can't stand this indecision, Married with a lack of vision</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+    
+      <div class="highlight2">
+        <div class="alert">NEW RIFF</div>
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">Say that you'll never, never, never, never need it</div>
+        <div class="lyrics">One headline, why believe it?</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+    
+      <div class="section">SMALL GUITAR SOLO</div>
+      <div class="highlight">
+        <div class="alert">| 1 | 2 | 3 | 4 |</div>
+      </div>
+    
+      <div class="section">LAST CHORUS</div>
+      <div class="highlight">
+        <div class="chords">| Em | F#m | G | F#m |</div>
+        <div class="lyrics">Freedom and of pleasure, Nothing ever lasts forever</div>
+        <div class="chords">| Em F#m | G A |</div>
+        <div class="lyrics">Everybody wants to rule the world</div>
+      </div>
+    
+      <div class="section">FINAL GUITAR SOLO</div>
+      <div class="highlight2">
+        <div class="chords">| A/D G/D | - | <span>6x</span></div>
+      </div>
+    </div><div class="hr"></div>
+
+    <div class="container" id="losing-my-religion">
+      <div class="title">Losing My Religion</div>
+      <div class="author">R.E.M</div>
+      <div class="bpm">BPM: 125</div>
+      <div class="time">4:29</div>
+      <button class="scroll-button">Scroll</button>
+    
+      <div class="section">INTRO</div>
+      <div class="highlight">
+        <div class="alert">CONTAGEM BATERIA</div>
+        <div class="chords">| F | F G | Am | Am |</div>
+        <div class="chords">| F | F G | Am | G |</div>
+      </div>
+    
+      <div class="section">PARTE 1</div>
+      <div class="no-highlight">
+        <div class="lyrics">Oh life is bigger</div>
+        <div class="lyrics">It's bigger than you</div>
+        <div class="lyrics">And you are not me</div>
+        <div class="lyrics">The lengths that I will go to</div>
+        <div class="lyrics">The distance in your eyes</div>
+        <div class="lyrics">Oh no I've said too much</div>
+        <div class="lyrics">I set it up</div>
+      </div>
+
+      <div class="section"></div>
+      <div class="no-highlight">
+        <div class="lyrics">That's me in the corner</div>
+        <div class="lyrics">That's me in the spot-light</div>
+        <div class="lyrics">Losing my religion</div>
+        <div class="lyrics">Trying to keep up with you</div>
+        <div class="lyrics">And I don't know if I can do it</div>
+        <div class="lyrics">Oh no I've said too much</div>
+        <div class="lyrics">I haven't said enough</div>
+      </div>
+      <div class="highlight">
+        <div class="lyrics">I thought that I heard you laughing</div>
+        <div class="lyrics">I thought that I heard you sing</div>
+        <div class="lyrics">I think I thought I saw you try</div>
+      </div>
+
+      <div class="section">PARTE 2</div>
+      <div class="no-highlight">
+        <div class="lyrics">Every whisper, of every waking hour</div>
+        <div class="lyrics">I'm choosing my confessions</div>
+        <div class="lyrics">Trying to keep an eye on you</div>
+        <div class="lyrics">Like a hurt, lost and blinded fool, fool</div>
+        <div class="lyrics">Oh no I've said too much</div>
+        <div class="lyrics">I set it up</div>
+      </div>
+      <div class="section"></div>
+      <div class="no-highlight">
+        <div class="lyrics">Consider this</div>
+        <div class="lyrics">Consider this the hint of the century</div>
+        <div class="lyrics">Consider this the slip</div>
+        <div class="lyrics">That brought me to my knees, failed</div>
+        <div class="lyrics">What if all these fantasies come</div>
+        <div class="lyrics">Flailing around</div>
+        <div class="lyrics">Now I've said too much</div>
+      </div>
+      
+      <div class="highlight">
+        <div class="lyrics">I thought that I heard you laughing</div>
+        <div class="lyrics">I thought that I heard you sing</div>
+        <div class="lyrics">I think I thought I saw you try</div>
+      </div>
+
+      <div class="section">GUITAR SOLO</div>
+      <div class="highlight">
+        <div class="alert">4x THEME</div>
+        <div class="chords">| MI | RÉ | DÓ | LÁ |</div>
+        <div class="lyrics">But that was just a dream</div>
+        <div class="lyrics">That was just a dream</div>
+      </div>
+
+      <div class="section">PARTE FINAL</div>
+      <div class="no-highlight">
+        <div class="lyrics">That's me in the corner</div>
+        <div class="lyrics">That's me in the spot-light</div>
+        <div class="lyrics">Losing my religion</div>
+        <div class="lyrics">Trying to keep up with you</div>
+        <div class="lyrics">And I don't know if I can do it</div>
+        <div class="lyrics">Oh no I've said too much</div>
+        <div class="lyrics">I haven't said enough</div>
+      </div>
+      <div class="highlight">
+        <div class="lyrics">I thought that I heard you laughing</div>
+        <div class="lyrics">I thought that I heard you sing</div>
+        <div class="lyrics">I think I thought I saw you try</div>
+      </div>
+      <div class="highlight">
+        <div class="lyrics">But that was just a dream</div>
+        <div class="lyrics">Try, cry, fly, try</div>
+        <div class="lyrics">That was just a dream</div>
+        <div class="lyrics">Just a dream</div>
+        <div class="lyrics">Just a dream, dream</div>
+      </div>
+
+      <div class="section">FINAL GUITAR SOLO</div>
+      <div class="highlight">
+        <div class="alert">3x THEME</div>
+        <div class="chords">| MI... |</div>
+        <div class="chords">| MI RÉ DÓ LÁ RÉ DÓ LÁ DÓ LÁ |</div>
+      </div>
+    </div><div class="hr"></div>
+
+    <div class="container" id="its-my-life">
+      <div class="title">It's My Life</div>
+      <div class="author">Bon Jovi</div>
+      <div class="bpm"></div>
+      <div class="time"></div>
+      <button class="scroll-button">Scroll</button>
+    </div><div class="hr"></div>
+
+    <div class="container" id="i-want-to-break-free">
+      <div class="title">I Want To Break Free</div>
+      <div class="author">Queen</div>
+      <div class="bpm">BPM: 109 (55 or 208)</div>
+      <div class="time">3:43</div>
+      <button class="scroll-button">Scroll</button>
+
+      <div class="section">INTRO</div>
+      <div class="highlight">
+        <div class="alert">KEYBOARD ONLY</div>
+        <div class="chords">| A | B | C#m | 3x</div>
+        <div class="chords">| A | B | E |</div>
+      </div>
+      <div class="highlight">
+        <div class="alert">++ DRUMS AND BASS + GUITAR SOLO</div>
+        <div class="chords">| E | - |</div>
+        <div class="alert">++ GUITAR SOLO</div>
+        <div class="chords">| A | - | E | - |</div>
+      </div>
+      <div class="highlight">
+        <div class="alert">DISTORTION OPEN</div>
+      <div class="chords">| B | A | E | SILÊNCIO |</div>
+      </div>
+      <div class="comment">TO REMEMBER: 1e</div>
+
+      <div class="section">PARTE 1</div>
+      <div class="chords">| E | - | - | - |</div>
+      <div class="lyrics">I want to break free, I want to break free</div>
+      <div class="chords">| E | - | A | - |</div>
+      <div class="lyrics">I want to break free from your lies, You're so self-satisfied I don't need you</div>
+      <div class="chords">| E | - | B | A | E | SILÊNCIO |</div>
+      <div class="lyrics">I've got to break free, God knows, God knows I want to break free</div>
+
+      <div class="section">PARTE 2</div>
+      <div class="chords">| E | - | - | - |</div>
+      <div class="lyrics">I've fallen in love, I've fallen in love for the first time</div>
+      <div class="chords">| E | - | A | - |</div>
+      <div class="lyrics">This time I know it's for real</div>
+      <div class="chords">| E | - | B | A | E |</div>
+      <div class="lyrics">I've fallen in love, yeah, God knows, God knows I've fallen in love</div>
+
+      <div class="highlight">
+        <div class="alert">RIFF</div>
+        <pre>B|--10--9--10--7r--5--|</pre>
+      </div>
+
+      <div class="highlight2">
+        <div class="chords">| B | A | B | A |</div>
+        <div class="lyrics">It's strange but it's true, hey, I can't get over the way you love me like you do</div>
+        <div class="chords">| C#m | F# |</div>
+        <div class="lyrics">But I have to be sure when I walk out that door</div>
+        <div class="chords">| A B | C#m |</div>
+        <div class="lyrics">Oh, I want to be free, baby</div>
+        <div class="chords">| A B | C#m |</div>
+        <div class="lyrics">Oh, how I want to be free</div>
+        <div class="chords">| A B | E | SILÊNCIO |</div>
+        <div class="lyrics">Oh, I want to break free</div>
+      </div>
+
+      <div class="section">GUITAR SOLO</div>
+      <div class="highlight">
+        <div class="chords">| E | - | - | - |</div>
+        <div class="chords">| E | - | A | - |</div>
+        <div class="chords">| E | - | B | A | E | SILÊNCIO |</div>
+      </div>
+      <div class="section">BRIDGE</div>
+      <div class="highlight">
+        <div class="chords">| E | - | - | - |</div>
+        <div class="chords">| A | - | E | - |</div>
+        <div class="chords">| B | A | E | - |</div>
+        <div class="chords">| B | A | E | SILÊNCIO |</div>
+      </div>
+
+      <div class="section">PARTE 3</div>
+      <div class="chords">| E | - | - | - |</div>
+      <div class="lyrics">But life still goes on, I can't get used to living without, living without</div>
+      <div class="chords">| E | - | A | - |</div>
+      <div class="lyrics">Living without you by my side, I don't want to live alone, hey</div>
+      <div class="chords">| E | - | B | A | E | SOLINHO |</div>
+      <div class="lyrics">God knows, got to make it on my own</div>
+      <div class="chords">| E | - | B | A | E | SILÊNCIO |</div>
+      <div class="lyrics">So, baby, can't you see I've got to break free?</div>
+
+      <div class="chords">| E | - | - | - | ...</div>
+      <div class="lyrics">I've got to break free, I want to break free, yeah</div>
+      <div class="lyrics">I want, I want, I want, I want to break free</div>
+    </div><div class="hr"></div>
+
+    <div class="container" id="psycho-killer">
+      <div class="title">Psycho Killer</div>
+      <div class="author">Talking Heads</div>
+      <div class="bpm">BPM: 123 (62)</div>
+      <div class="time">4:21</div>
+      <button class="scroll-button">Scroll</button>
+
+      <div class="section">INTRO</div>
+      <div class="no-highlight">
+        <div class="alert">ONLY BASS</div>
+        <div class="chords">| SILÊNCIO | SILÊNCIO | SILÊNCIO | SILÊNCIO |</div>
+        <div class="alert">+ DRUMS</div>
+        <div class="chords">| SILÊNCIO | SILÊNCIO | SILÊNCIO | SILÊNCIO |</div>
+        <div class="alert">GUITAR</div>
+        <div class="chords">| RIFF |</div>
+      </div>
+
+      <div class="section">PARTE 1</div>
+      <div class="no-highlight">
+        <div class="chords">| A7 | - - - G | 2x</div>
+        <div class="lyrics">I can't seem to face, Up to the facts</div>
+        <div class="lyrics">I'm tense and nervous, And I can't relax</div>
+        <div class="lyrics">I can't sleep, 'Cause my bed's on fire</div>
+        <div class="lyrics">Don't touch me, I'm a real live wire</div>
+        
+        <div class="chords">| F | G | Am * * * | * * * * |</div>
+        <div class="lyrics">Psycho Killer, qu'est-ce que c'est,</div>
+        <div class="lyrics">Fa, fa, fa, fa, fa, fa, Fa, fa, fa, far better</div>
+        
+        <div class="chords">| F | G | C | - |</div>
+        <div class="lyrics">Run, run, run, run, Run, run, run away, Oh, oh, oh</div>
+        
+        <div class="chords">| F | G | Am * * * | * * * * |</div>
+        <div class="lyrics">Psycho Killer, qu'est-ce que c'est,</div>
+        <div class="lyrics">Fa, fa, fa, fa, fa, fa, Fa, fa, fa, far better</div>
+        
+        <div class="chords">| F | G | C | - |</div>
+        <div class="lyrics">Run, run, run, run, Run, run, run away</div>
+        
+        <div class="chords">| F | G |</div>
+        <div class="lyrics">Oh, oh, oh, oh, Aye-ya-ya-ya-ya</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">RIFF 2x</div>
+      </div>
+
+      <div class="section">PARTE 2</div>
+      <div class="no-highlight">
+        <div class="chords">| A7 | - - - G | 2x</div>
+        <div class="lyrics">You start a conversation,</div>
+        <div class="lyrics">You can't even finish it</div>
+        <div class="lyrics">You're talking a lot,</div>
+        <div class="lyrics">But you're not saying anything, When I have nothing to say</div>
+        <div class="lyrics">My lips are sealed, Say something once, Why say it again?</div>
+        
+        <div class="chords">| F | G | Am * * * | * * * * |</div>
+        <div class="lyrics">Psycho Killer, qu'est-ce que c'est,</div>
+        <div class="lyrics">Fa, fa, fa, fa, fa, fa, Fa, fa, fa, far better</div>
+        
+        <div class="chords">| F | G | C | - |</div>
+        <div class="lyrics">Run, run, run, run, Run, run, run away, Oh, oh, oh</div>
+        
+        <div class="chords">| F | G | Am * * * | * * * * |</div>
+        <div class="lyrics">Psycho Killer, qu'est-ce que c'est,</div>
+        <div class="lyrics">Fa, fa, fa, fa, fa, fa, Fa, fa, fa, far better</div>
+        
+        <div class="chords">| F | G | C | - |</div>
+        <div class="lyrics">Run, run, run, run, Run, run, run away</div>
+        
+        <div class="chords">| F | G |</div>
+        <div class="lyrics">Oh, oh, oh, oh, Aye-ya-ya-ya-ya</div>
+      </div>
+
+      <div class="section">PARTE 3</div>
+      <div class="highlight">
+        <div class="chords">| Bm | - | G | - |</div>
+        <div class="lyrics">Ce que j'ai fait, Ce soir-là</div>
+        
+        <div class="chords">| Bm | - | G | - |</div>
+        <div class="lyrics">Ce qu'elle a dit, Ce soir-là</div>
+      </div>
+      <div class="highlight2">
+        <div class="chords">| A | - | G | - |</div>
+        <div class="lyrics">Réalisant mon espoire,</div>
+        <div class="lyrics">Je me lance vers la gloire okay</div>
+        
+        <div class="chords">| A7 | - - - G | 4x</div>
+        <div class="lyrics">We are vain and we are blind,</div>
+        <div class="lyrics">I hate people when they're not polite</div>
+      </div>
+      <div class="no-highlight">
+        <div class="chords">| F | G | Am * * * | * * * * |</div>
+        <div class="lyrics">Psycho Killer, qu'est-ce que c'est,</div>
+        <div class="lyrics">Fa, fa, fa, fa, fa, fa, Fa, fa, fa, far better</div>
+        
+        <div class="chords">| F | G | C | - |</div>
+        <div class="lyrics">Run, run, run, run, Run, run, run away, Oh, oh, oh</div>
+        
+        <div class="chords">| F | G | Am * * * | * * * * |</div>
+        <div class="lyrics">Psycho Killer, qu'est-ce que c'est,</div>
+        <div class="lyrics">Fa, fa, fa, fa, fa, fa, Fa, fa, fa, far better</div>
+        
+        <div class="chords">| F | G | C | - |</div>
+        <div class="lyrics">Run, run, run, run, Run, run, run away</div>
+        
+        <div class="chords">| F | G |</div>
+        <div class="lyrics">Oh, oh, oh, oh, Aye-ya-ya-ya-ya</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">RIFF ...</div>
+      </div>
+    </div><div class="hr"></div>
+
+    <div class="container" id="bruno-mars-medley">
+      <div class="title">Smells Like/Billie Jean & Seven Nation Army</div>
+      <div class="author">Bruno Mars</div>
+      <div class="bpm">BPM: ?</div>
+      <div class="time">3:26</div>
+      <button class="scroll-button">Scroll</button>
+
+      <div class="section">INTRO</div>
+      <div class="highlight">
+        <div class="alert">ONLY GUITAR</div>
+        <div class="chords">| G5 C5 | Bb5 Eb5 |</div>
+      </div>
+      <div class="highlight">
+        <div class="alert">++ BAND</div>
+        <div class="chords">| G5 C5 | Bb5 Eb5 |</div>
+      </div>
+
+      <div class="section">Billie Jean</div>
+      <div class="highlight">
+        <div class="chords">| G5 C5 | Bb5 Eb5 |</div>
+      </div>
+
+      <div class="section">Seven Nation Army</div>
+      <div class="highlight">
+        <div class="chords">| E | ...</div>
+      </div>
+    </div><div class="hr"></div>
+
+    <div class="container" id="vertigo">
+      <div class="title">Vertigo</div>
+      <div class="author">U2</div>
+      <div class="bpm">BPM: 140 (70 or 280)</div>
+      <div class="time">3:13</div>
+      <button class="scroll-button">Scroll</button>
+
+      <div class="section">INTRO</div>
+      <div class="alert">CONTAGEM DA BATERIA 1 2 3 4</div>
+      <div class="lyrics">Unos, dos, tres, catorce</div>
+      <div class="lyrics">Turn it up loud, captain</div>
+
+      <div class="section">PARTE 1</div>
+      <div class="lyrics">Lights go down, it's dark</div>
+      <div class="lyrics">The jungle is your head, can't rule your heart</div>
+      <div class="lyrics">A feeling's so much stronger than a thought</div>
+      <div class="lyrics">Your eyes are wide and though your soul, it can't be bought</div>
+      <div class="lyrics">Your mind can wander</div>
+
+      <div class="lyrics">Hello, hello (hola)</div>
+      <div class="lyrics">I'm at a place called Vertigo (¿dónde está?)</div>
+      <div class="lyrics">It's everything I wish I didn't know</div>
+      <div class="lyrics">Except you give me something</div>
+      <div class="lyrics">I can feel, feel</div>
+
+      <div class="section">PARTE 2</div>
+      <div class="lyrics">The night is full of holes</div>
+      <div class="lyrics">'Cause bullets rip the sky of ink with gold</div>
+      <div class="lyrics">They twinkle as the boys play rock and roll</div>
+      <div class="lyrics">They know that they can't dance, at least they know</div>
+
+      <div class="lyrics">I can't stand the beat, I'm asking for the check</div>
+      <div class="lyrics">Girl with crimson nails has Jesus around her neck</div>
+      <div class="lyrics">Swinging to the music, swinging to the music (whoa, whoa)</div>
+      <div class="lyrics">(Whoa, whoa, whoa)</div>
+
+      <div class="lyrics">Hello, hello (hola)</div>
+      <div class="lyrics">I'm at a place called Vertigo (¿dónde está?)</div>
+      <div class="lyrics">It's everything I wish I didn't know</div>
+      <div class="lyrics">But you give me something</div>
+      <div class="lyrics">I can feel, feel</div>
+
+      <div class="lyrics">Checkmated</div>
+      <div class="lyrics">Just fun</div>
+      <div class="lyrics">She made it in, yeah</div>
+
+      <div class="section">GUITAR SOLO</div>
+      <div class="lyrics">All of this, all of this can be yours</div>
+      <div class="lyrics">All of this, all of this can be yours</div>
+      <div class="lyrics">All of this, all of this can be yours</div>
+      <div class="lyrics">Just give me what I want and no one gets hurt</div>
+
+      <div class="section">FINAL</div>
+      <div class="lyrics">Hello, hello (hola)</div>
+      <div class="lyrics">We're at a place called Vertigo (¿dónde está?)</div>
+      <div class="lyrics">Lights go down, and all I know</div>
+      <div class="lyrics">Is that you give me something</div>
+      <div class="lyrics">I can feel your love teaching me how</div>
+      <div class="lyrics">Your love is teaching me how</div>
+
+      <div class="lyrics">How to kneel</div>
+      <div class="lyrics">Kneel</div>
+      <div class="lyrics">Yeah, yeah, yeah, yeah, yeah, yeah, yeah, yeah</div>
+      <div class="lyrics">Yeah, yeah, yeah, yeah, yeah, yeah, yeah, yeah</div>
+    </div><div class="hr"></div>
+
+    <div class="container" id="overkill">
+      <div class="title">Overkill</div>
+      <div class="author">Men At Work</div>
+      <div class="bpm">BPM: 139 (70 and 278)</div>
+      <div class="time">3:49</div>
+      <button class="scroll-button">Scroll</button>      
+    
+      <div class="section">INTRO</div>
+      <div class="no-highlight">
+        <div class="alert">CONTAGEM DA BATERIA 1 2 3 4</div>
+        <div class="chords">| C#m | - | B5 | B |  2x</div>
+      </div>
+    
+      <div class="section">PARTE 1</div>
+      <div class="no-highlight">
+        <div class="chords">| E5 | B5 | D5 | A5 | 4x</div>
+        <div class="lyrics">I can't get to sleep, I think about the implications</div>
+        <div class="lyrics">Of diving in too deep, And possibly the complications</div>
+        <div class="lyrics">Especially at night, I worry over situations</div>
+        <div class="lyrics">I know will be alright, Perhaps it's just imagination</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| C#m | - | B5 | - |</div>
+        <div class="lyrics">And day after day it reappears</div>
+        <div class="chords">| C#m | - | B5 | - |</div>
+        <div class="lyrics">And night after night my heartbeat shows the fear</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| G# | - | A | - | B | - |</div>
+        <div class="lyrics">Ghosts appear and fade away</div>
+      </div>
+    
+      <div class="section">PARTE 2</div>
+      <div class="no-highlight">
+        <div class="chords">| E5 | B5 | D5 | A5 | 4x</div>
+        <div class="lyrics">Alone between the sheets, Only brings exasperation</div>
+        <div class="lyrics">It's time to walk the streets, Smell the desperation</div>
+        <div class="lyrics">At least there's pretty lights, And though there's little variation</div>
+        <div class="lyrics">It nullifies the night, From overkill</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| C#m | - | B5 | - |  2x</div>
+        <div class="lyrics">And day after day it reappears</div>
+        <div class="lyrics">And night after night my heartbeat shows the fear</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| G# | - | A | - | B | - |</div>
+        <div class="lyrics">Ghosts appear and fade away, come back another day</div>
+      </div>
+    
+      <div class="section">GUITAR SOLO</div>
+      <div class="highlight">
+        <div class="chords">| E5 | B5 | D5 | A5 | 4x</div>
+        <div class="chords">| C#m | - | B5 | - |</div>
+        <div class="chords">| G# | - | A | - |</div>
+      </div>
+    
+      <div class="section">FINAL</div>
+      <div class="no-highlight">
+        <div class="chords">| E5 | B5 | D5 | A5 | 4x</div>
+        <div class="lyrics">I can't get to sleep, I think about the implications</div>
+        <div class="lyrics">Of diving in too deep, And possibly the complications</div>
+        <div class="lyrics">Especially at night, I worry over situations</div>
+        <div class="lyrics">I know will be alright, Perhaps it's just imagination</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| C#m | - | B5 | - |</div>
+        <div class="lyrics">And day after day it reappears</div>
+        <div class="chords">| C#m | - | B5 | - |</div>
+        <div class="lyrics">And night after night my heartbeat shows the fear</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| G# | - | A | - | 3x</div>
+        <div class="lyrics">Ghosts appear and fade away</div>
+        <div class="lyrics">Ghosts appear and fade away</div>
+        <div class="lyrics">Ghosts appear and fade away</div>
+      </div>
+    </div><div class="hr"></div>
+
+    <div class="container" id="boys-dont-cry">
+      <div class="title">Boys Don't Cry</div>
+      <div class="author">The Cure</div>
+      <div class="bpm">BPM: 170</div>
+      <div class="time">2:35</div>
+      <button class="scroll-button">Scroll</button>  
+
+      <div class="section">INTRO</div>
+      <div class="highlight">
+        <div class="alert">ONLY GUITAR</div>
+        <div class="chords">| A | Bm | C#m | D |</div>
+        <div class="alert">SOLO (2x)</div>
+        <div class="chords">| DO#... RÉ MI | 2x</div>
+        <div class="chords">| MI... FÁ# SOL# LÁ | FÁ# MI RÉ |</div>
+      </div>
+
+      <div class="section">PARTE 1</div>
+      <div class="no-highlight">
+        <div class="chords">| A | Bm | C#m | D |</div>
+        <div class="lyrics">I would say I'm sorry</div>
+        <div class="lyrics">If I thought that it would change your mind</div>
+        <div class="chords">| A | Bm | C#m | D |</div>
+        <div class="lyrics">But I know that this time</div>
+        <div class="lyrics">I have said too much been too unkind</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| C#m | Bm |</div>
+        <div class="lyrics">I tried to laugh about it</div>
+        <div class="lyrics">Cover it all up with lies</div>
+        <div class="chords">| C#m | Bm |</div>
+        <div class="lyrics">I tried to laugh about it</div>
+        <div class="lyrics">Hiding the tears in my eyes</div>
+      </div>
+
+      <div class="section">REFRÃO</div>
+      <div class="highlight2">
+        <div class="alert">GUITAR RIFF 2x</div>
+        <div class="lyrics">'Cause boys don't cry</div>
+        <div class="lyrics">Boys don't cry</div>
+      </div>
+
+      <div class="section">PARTE 2</div>
+      <div class="no-highlight">
+        <div class="chords">| A | Bm | C#m | D |</div>
+        <div class="lyrics">I would break down at your feet</div>
+        <div class="lyrics">And beg forgiveness, plead with you</div>        
+        <div class="chords">| A | Bm | C#m | D |</div>
+        <div class="lyrics">But I know that it's too late</div>
+        <div class="lyrics">And now there's nothing I can do</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| C#m | Bm |</div>
+        <div class="lyrics">So I try to laugh about it</div>
+        <div class="lyrics">Cover it all up with lies</div>
+        <div class="chords">| C#m | Bm |</div>
+        <div class="lyrics">I try to laugh about it</div>
+        <div class="lyrics">Hiding the tears in my eyes</div>
+      </div>
+
+      <div class="section">REFRÃO</div>
+      <div class="highlight">
+        <div class="alert">GUITAR RIFF 2x</div>
+        <div class="lyrics">'Cause boys don't cry</div>
+        <div class="lyrics">Boys don't cry</div>
+      </div>
+
+      <div class="section">PARTE 3</div>
+      <div class="no-highlight">
+        <div class="chords">| A | Bm | C#m | D |</div>
+        <div class="lyrics">I would tell you that I loved you</div>
+        <div class="lyrics">If I thought that you would stay</div>
+        <div class="chords">| A | Bm | C#m | D |</div>
+        <div class="lyrics">But I know that it's no use</div>
+        <div class="lyrics">And you've already gone away</div>
+      </div>
+
+      <div class="section">PONTE</div>
+      <div class="highlight3">
+        <div class="chords">| E | F#m |</div>
+        <div class="lyrics">Misjudged your limits</div>
+        <div class="chords">| E | F#m |</div>
+        <div class="lyrics">Pushed you too far</div>
+        <div class="chords">| E | F#m |</div>
+        <div class="lyrics">Took you for granted</div>
+        <div class="chords">| D | E |</div>
+        <div class="lyrics">Thought that you needed me more, more, more</div>      
+      </div>
+
+      <div class="section">PARTE 4</div>
+      <div class="no-highlight">
+        <div class="chords">| A | Bm | C#m | D |</div>
+        <div class="lyrics">Now I would do most anything</div>
+        <div class="lyrics">To get you back by my side</div>
+        <div class="chords">| A | Bm | C#m | D |</div>
+        <div class="lyrics">But I just keep on laughing</div>
+        <div class="lyrics">Hiding the tears in my eyes</div>
+      </div>
+      <div class="highlight">
+        <div class="alert">GUITAR RIFF 4x</div>
+        <div class="lyrics">'Cause boys don't cry</div>
+        <div class="lyrics">Boys don't cry</div>
+      </div>
+
+    </div><div class="hr"></div>
+
+    <div class="container" id="dont-you-forget-about-me">
+      <div class="title">Don't You (Forget About Me)</div>
+      <div class="author">Simple Minds</div>
+      <div class="bpm">BPM: 111</div>
+      <div class="time">4:22</div>      
+      <button class="scroll-button">Scroll</button>
+
+      <div class="section">INTRO</div>
+      <div class="no-highlight">
+        <div class="alert">CONTAGEM DA BATERIA 1 2 3 4</div>
+        <div class="alert">INTRO 2x</div>
+        <div class="chords">| D E | E |</div>
+        <div class="chords">| D G | C D |</div>
+      </div>
+
+      <div class="section">PARTE 1</div>
+      <div class="highlight">
+        <div class="chords">| E | D | A | D | 4x</div>
+        <div class="lyrics">Won't you come see about me?, I'll be alone, dancing you know it baby</div>
+        <div class="lyrics">Tell me your troubles and doubts, Giving me everything inside and out and</div>
+        <div class="lyrics">Love's strange so real in the dark, Think of the tender things that we were working on</div>
+        <div class="lyrics">Slow change may pull us apart, When the light gets into your heart, baby</div>
+      </div>
+      <div class="highlight3">
+        <div class="chords">| E | D | A | D |</div>
+        <div class="lyrics">Don't You Forget About Me, Don't Don't Don't Don't</div>
+        <div class="lyrics">Don't You Forget About Me</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| C9 | - | G | - | D9 | - | A | - | 2x</div>
+        <div class="lyrics">Will you stand above me?, Look my way, never love me</div>
+        <div class="lyrics">Rain keeps falling, rain keeps falling, Down, down, down</div>
+        <div class="lyrics">Will you recognize me? Call my name or walk on by</div>
+        <div class="lyrics">Rain keeps falling, rain keeps falling, Down, down, down, down</div>
+      </div>
+
+      <div class="section">INTRO</div>
+      <div class="highlight">
+        <div class="alert">INTRO 2x</div>
+        <div class="chords">| D E | E |</div>
+        <div class="chords">| D G | C D |</div>
+      </div>
+
+      <div class="section">PARTE 2</div>
+      <div class="highlight">
+        <div class="chords">| E | D | A | D | 4x</div>
+        <div class="lyrics">Don't you try to pretend, It's my feeling we'll win in the end</div>
+        <div class="lyrics">I won't harm you or touch your defenses, Vanity and security</div>
+        <div class="lyrics">Don't you forget about me, I'll be alone, dancing you know it baby</div>
+        <div class="lyrics">Going to take you apart, I'll put us back together at heart, baby</div>
+      </div>
+      <div class="highlight3">
+        <div class="chords">| E | D | A | D |</div>
+        <div class="lyrics">Don't You Forget About Me, Don't Don't Don't Don't</div>
+        <div class="chords">| E | D | A | D |</div>
+        <div class="lyrics">Don't You Forget About Me</div>
+      </div>
+      <div class="highlight3">
+        <div class="chords">| E | D | A | D |</div>
+        <div class="lyrics">As you walk on by, Will you call my name?</div>
+        <div class="chords">| E | D | A | D |</div>
+        <div class="lyrics">As you walk on by, Will you call my name?</div>
+      </div>
+      <div class="highlight">
+        <div class="alert">CALM</div>
+        <div class="chords">| E | D | A | D | 4x</div>
+        <div class="lyrics">When you walk away</div>
+        <div class="lyrics">Or will you walk away? Will you walk on by</div>
+        <div class="lyrics">Come on - call my name</div>
+        <div class="lyrics">When will you call my name?</div>
+      </div>
+
+      <div class="section">FINAL</div>
+      <div class="highlight">
+        <div class="chords">| E | D | A | D | 4x</div>
+        <div class="lyrics">I say: Lá lá lá lá lá</div>
+        <div class="lyrics">Lá lá lá lá, lá lá lá lá lá</div>
+        <div class="lyrics">Lá lá lá lá lá…</div>
+      </div>
+    </div><div class="hr"></div>
+    
+    <div class="container" id="enjoy-the-silence">
+      <div class="title">Enjoy The Silence</div>
+      <div class="author">Depeche Mode</div>
+      <div class="bpm">BPM: 113 (57 and 226)</div>
+      <div class="time">7:27</div>
+      <button class="scroll-button">Scroll</button>
+    
+      <div class="section">INTRO</div>
+      <div class="highlight">
+        <div class="alert">ONLY KEYBOARD</div>
+        <div class="chords">| Fm | Ab | Cm | Bb |</div>
+        <div class="chords">| Fm | Ab | Cm | B | B |</div>
+      </div>
+      <div class="highlight">
+        <div class="alert">ONLY DRUMS</div>
+        <div class="chords">| SILÊNCIO | SILÊNCIO |</div>
+      </div>    
+      
+      <div class="highlight">
+        <div class="alert">GUITAR SOLO INTRO</div>
+        <pre>
+          E|---------|---------|---------|---------|
+          B|---------|---------|---------|---------|
+          G|---5---7-|---5-----|---------|---5-----| 2x
+          D|---------|-------8-|---6---5-|-------8-|
+          A|-6---6---|-6---6---|-3---3---|-6---6---|
+          E|---------|---------|---------|---------|
+        </pre>
+      </div>
+    
+      <div class="section">PARTE 1</div>
+      <div class="no-highlight">
+        <div class="alert">ONLY KEYBOARD</div>
+        <div class="chords">| Cm | Eb | Ab | Ab |</div>
+        <div class="lyrics">Words like violence, break the silence, come crashing in, into my little world</div>
+        <div class="lyrics">Painful to me, pierce right through me, can't you understand?, oh, my little girl</div>
+      </div>
+      <div class="highlight">   
+        <div class="chords">| Fm | Ab | Cm | Bb |</div>
+        <div class="lyrics">All I ever wanted, all I ever needed, Is here in my arms</div>
+        <div class="chords">| Fm | Ab | Cm | B | B |</div>
+        <div class="lyrics">Words are very unnecessary, they can only do harm</div>
+      </div>
+      <div class="highlight">   
+        <div class="alert">ONLY DRUMS</div>
+        <div class="chords">| SILÊNCIO | SILÊNCIO |</div>
+      </div>
+    
+      <div class="section">GUITAR SOLO INTRO</div>
+      <div class="highlight">
+        <pre>
+          E|---------|---------|---------|---------|
+          B|---------|---------|---------|---------|
+          G|---5---7-|---5-----|---------|---5-----|
+          D|---------|-------8-|---6---5-|-------8-|
+          A|-6---6---|-6---6---|-3---3---|-6---6---|
+          E|---------|---------|---------|---------|
+        </pre>
+      </div>
+    
+      <div class="section">PARTE 2</div>
+      <div class="no-highlight">
+        <div class="alert">ONLY KEYBOARD</div>
+        <div class="chords">| Cm | Eb | Ab | Ab |</div>
+        <div class="lyrics">Vows are spoken, to be broken, feelings are intense, words are trivial</div>
+        <div class="lyrics">Pleasures remain, so does the pain, words are meaningless, and forgettable</div>
+      </div>
+      <div class="highlight">   
+        <div class="chords">| Fm | Ab | Cm | Bb |</div>
+        <div class="lyrics">All I ever wanted, all I ever needed, Is here in my arms</div>
+        <div class="chords">| Fm | Ab | Cm | B | B |</div>
+        <div class="lyrics">Words are very unnecessary, they can only do harm</div>
+      </div>
+    
+      <div class="section">GUITAR SOLO MIDDLE OF THE MUSIC</div>
+      <div class="highlight">
+        <pre>
+    E|---------|---------|---------|---------|
+    B|---------|---------|---------|---------|
+    G|---5---7-|----8----|---------|---------| 2x
+    D|---------|-------8-|---8---5-|---8---5-| 
+    A|-6---6---|-6---6---|-6---6---|-6---6---|
+    E|---------|---------|---------|---------|
+        </pre>
+        <pre>
+    E|---------|---------|---------|---------|
+    B|---------|---------|---------|---------|
+    G|---5---7-|---5-----|---------|---5-----| 2x
+    D|---------|-------8-|---6---5-|-------8-| 
+    A|-6---6---|-6---6---|-3---3---|-6---6---|
+    E|---------|---------|---------|---------|
+        </pre>
+    </div>
+    
+      <div class="section">PARTE 3</div>
+      <div class="highlight">
+        <div class="chords">| Fm | Ab | Cm | Bb |</div>
+        <div class="lyrics">All I ever wanted, all I ever needed, Is here in my arms</div>
+        <div class="chords">| Fm | Ab | Cm | B |</div>
+        <div class="lyrics">Words are very unnecessary, they can only do harm</div>
+      </div>
+      <div class="highlight">   
+        <div class="chords">| Fm | Ab | Cm | Bb |</div>
+        <div class="lyrics">All I ever wanted, all I ever needed, Is here in my arms</div>
+        <div class="chords">| Fm | Ab | Cm | B | B |</div>
+        <div class="lyrics">Words are very unnecessary, they can only do harm</div>
+      </div>
+    
+      <div class="section">GUITAR SOLO FINAL</div>
+      <div class="highlight">
+        <pre>
+  E|---------|---------|---------|---------|
+  B|---------|---------|---------|---------|
+  G|---5---7-|----8----|---------|---------| 4x
+  D|---------|-------8-|---8---5-|---8---5-|
+  A|-6---6---|-6---6---|-6---6---|-6---6---|
+  E|---------|---------|---------|---------|
+        </pre>
+      </div>
+    </div><div class="hr"></div>
+
+    <div class="container" id="crazy-little-thing-called-you">
+      <div class="title">Crazy Little Thing Called You</div>
+      <div class="author">Queen</div>
+      <div class="bpm"></div>
+      <div class="time"></div>
+      <button class="scroll-button">Scroll</button>
+    </div><div class="hr"></div>
+    
+    <div class="container" id="californication">
+      <div class="title">Californication</div>
+      <div class="author">Red Hot Chilli Peppers</div>
+      <div class="bpm">96 (192)</div>
+      <div class="time">5:30</div>
+      <button class="scroll-button">Scroll</button>
+    </div><div class="hr"></div>
+
+    <div class="container" id="wicked-game">
+      <div class="title">Wicked Game</div>
+      <div class="author">HIM</div>
+      <div class="bpm">BPM: 113</div>
+      <div class="time">4:30</div>
+      <button class="scroll-button">Scroll</button>
+
+      <div class="section">INTRO</div>
+      <div class="highlight">
+        <div class="alert">CONTAGEM DA BATERIA 1 2 3 4</div>
+        <div class="chords">| Bm | A | E | - | 2x</div>
+      </div>
+
+      <div class="section">PARTE 1</div>
+      <div class="highlight">
+        <div class="alert">PULL MUTE</div>
+        <div class="chords">| Bm | A | E | - | 2x</div>
+        <div class="lyrics">The world was on fire no one could save me but you</div>
+        <div class="lyrics">It's strange what desire will make foolish people do</div>
+      </div>
+      <div class="highlight2">
+        <div class="alert">OPEN DISTORTION</div>
+        <div class="chords">| Bm | A | E | - | 2x</div>
+        <div class="lyrics">And I never dreamed that I'd knew somebody like you</div>
+        <div class="lyrics">And I'd never dreamed that I'd need somebody like you</div>
+      </div>
+      <div class="highlight3">
+        <div class="alert">OPEN NOTES</div>
+        <div class="chords">| Bm | A | E | - | 2x </div>
+        <div class="lyrics">And I wanna fall in love (This world is only gonna break your heart)</div>
+        <div class="lyrics">And I wanna fall in love (This world is only gonna break your heart)</div>
+      </div>
+      <div class="highlight2">
+        <div class="alert">MINI SOLO</div>
+        <div class="chords">| Bm | A | E | - | 1x </div>
+      </div>
+
+      <div class="section">PARTE 2</div>
+      <div class="highlight">
+        <div class="alert">PULL MUTE</div>
+        <div class="chords">| Bm | A | E | - | 2x</div>
+        <div class="lyrics">What a wicked game to play, to make me feel this way</div>
+        <div class="lyrics">What a wicked thing to do, To let me dream of you</div>
+      </div>
+      <div class="highlight2">
+        <div class="alert">OPEN DISTORTION</div>
+        <div class="chords">| Bm | A | E | - | 2x</div>
+        <div class="lyrics">What a wicked thing to say, You never felt this way</div>
+        <div class="lyrics">What a wicked thing to do, To make me dream of you</div>
+      </div>
+      <div class="highlight3">
+        <div class="alert">OPEN NOTES</div>
+        <div class="chords">| Bm | A | E | E | 2x</div>
+        <div class="lyrics">And I wanna fall in love (This world is only gonna break your heart)</div>
+        <div class="lyrics">And I wanna fall in love (This world is only gonna break your heart)</div>
+      </div>
+    
+      <div class="section">GUITAR SOLO</div>
+      <div class="highlight">
+        <div class="chords">| Bm | A | E | - | 4x</div>
+      </div>
+
+      <div class="section">ONLY KEYBOARD</div>
+      <div class="highlight">
+        <div class="chords">| Bm | A | E | - | 4x</div>
+      </div>
+
+      <div class="section">PARTE 3</div>
+      <div class="highlight">
+        <div class="alert">ONLY VOCAL</div>
+        <div class="chords">| Bm | A | E | - | 2x</div>
+        <div class="lyrics">World was on fire, no one could save me but you</div>
+        <div class="lyrics">It's strange what desire will make foolish people do</div>
+      </div>
+      <div class="highlight2">
+        <div class="alert">OPEN DISTORTION</div>
+        <div class="chords">| Bm | A | E | - | 2x</div>
+        <div class="lyrics">No and I never dreamed that I'd love somebody like you</div>
+        <div class="lyrics">And I'll never dream that I lose somebody like you, no</div>
+      </div>
+      <div class="highlight2">
+        <div class="alert">OPEN NOTES</div>
+        <div class="chords">| Bm | A | E | - | 2x</div>
+        <div class="lyrics">And I wanna fall in love (This world is only gonna break your heart)</div>
+        <div class="lyrics">And I wanna fall in love (This world is only gonna break your heart)</div>
+      </div>
+      <div class="highlight2">
+        <div class="alert">OPEN NOTES</div>
+        <div class="chords">| Bm | A | E | - | 3x</div>
+        <div class="lyrics">With you, my love (This world is only gonna break your heart)</div>
+        <div class="lyrics">And I (This world is only gonna break your heart)</div>
+        <div class="lyrics">My darling (This world is only gonna break your heart)</div>
+      </div>
+      <div class="highlight2">
+        <div class="alert">FINAL</div>
+        <div class="chords">| Bm* |</div>
+        <div class="lyrics">Nobody here loves no one</div>
+      </div>
+    </div><div class="hr"></div>
+
+    <div class="container" id="primeiros-erros">
+      <div class="title">Primeiros Erros</div>
+      <div class="author">Capital Inicial</div>
+      <div class="bpm"></div>
+      <div class="time"></div>
+      <button class="scroll-button">Scroll</button>
+    </div><div class="hr"></div>
+
+    <div class="container" id="a-sua-maneira">
+      <div class="title">A Sua Maneira</div>
+      <div class="author">Capital Inicial</div>
+      <div class="bpm"></div>
+      <div class="time"></div>
+      <button class="scroll-button">Scroll</button>
+    </div><div class="hr"></div>
+
+    <div class="container" id="a-sua-maneira">
+      <div class="title">Ana Julia</div>
+      <div class="author">Los Hermanos</div>
+      <div class="bpm"></div>
+      <div class="time"></div>
+      <button class="scroll-button">Scroll</button>
+    </div><div class="hr"></div>
+
+    <div class="container" id="tempo-perdido">
+      <div class="title">Tempo Perdido</div>
+      <div class="author">Legião Urbano</div>
+      <div class="bpm"></div>
+      <div class="time"></div>
+      <button class="scroll-button">Scroll</button>
+    </div><div class="hr"></div>
+
+    <div class="container" id="mulher-de-fases">
+      <div class="title">Mulher De Fases</div>
+      <div class="author">Raimundos</div>
+      <div class="bpm"></div>
+      <div class="time"></div>
+      <button class="scroll-button">Scroll</button>
+    </div><div class="hr"></div>
+
+    <div class="container" id="you-give-love-a-bad-name">
+      <div class="title">You Give Love A Bad Name</div>
+      <div class="author">Bon Jovi</div>
+      <div class="bpm">BPM: 123 (62 or 246)</div>
+      <div class="time">3:42</div>
+      <button class="scroll-button">Scroll</button>
+
+      <div class="section">INTRO</div>
+      <div class="lyrics">CONTAGEM DA BATERIA 1 2 3 4</div>
+
+      <div class="section">PARTE 1</div>
+      <div class="lyrics">Shot through the heart</div>
+      <div class="lyrics">And you're to blame</div>
+      <div class="lyrics">Darlin', you give love a bad name</div>
+
+      <div class="lyrics">An angel's smile is what you sell</div>
+      <div class="lyrics">You promise me Heaven, then put me through hell</div>
+      <div class="lyrics">Chains of love got a hold on me</div>
+      <div class="lyrics">When passion's a prison, you can't break free</div>
+
+      <div class="lyrics">Oh, you're a loaded gun, yeah</div>
+      <div class="lyrics">Oh, there's nowhere to run</div>
+      <div class="lyrics">No one can save me</div>
+      <div class="lyrics">The damage is done</div>
+
+      <div class="lyrics">Shot through the heart</div>
+      <div class="lyrics">And you're to blame</div>
+      <div class="lyrics">You give love a bad name (bad name)</div>
+
+      <div class="lyrics">I play my part and you play your game</div>
+      <div class="lyrics">You give love a bad name (bad name)</div>
+      <div class="lyrics">Hey, you give love, a bad name</div>
+
+      <div class="section">PARTE 2</div>
+      <div class="lyrics">Paint your smile on your lips</div>
+      <div class="lyrics">Blood red nails on your fingertips</div>
+      <div class="lyrics">A school boy's dream, you act so shy</div>
+      <div class="lyrics">Your very first kiss was your first kiss goodbye</div>
+
+      <div class="lyrics">Whoa, you're a loaded gun</div>
+      <div class="lyrics">Whoa, there's nowhere to run</div>
+      <div class="lyrics">No one can save me</div>
+      <div class="lyrics">The damage is done</div>
+
+      <div class="lyrics">Shot through the heart</div>
+      <div class="lyrics">And you're to blame</div>
+      <div class="lyrics">You give love a bad name (bad name)</div>
+      <div class="lyrics">I play my part and you play your game</div>
+      <div class="lyrics">You give love a bad name (bad name)</div>
+      <div class="lyrics">You give love, oh</div>
+
+      <div class="section">GUITAR SOLO</div>
+
+      <div class="section">FINAL</div>
+      <div class="lyrics">Oh, shot through the heart</div>
+      <div class="lyrics">And you're to blame</div>
+      <div class="lyrics">You give love a bad name</div>
+      <div class="lyrics">I play my part and you play your game</div>
+      <div class="lyrics">You give love a bad name (bad name)</div>
+
+      <div class="lyrics">Shot through the heart</div>
+      <div class="lyrics">And you're to blame</div>
+      <div class="lyrics">You give love a bad name (bad name)</div>
+      <div class="lyrics">I play my part and you play your game</div>
+      <div class="lyrics">You give love a bad name (bad name)</div>
+
+      <div class="lyrics">You give love</div>
+      <div class="lyrics">You give love (bad name)</div>
+
+      <div class="lyrics">You give love</div>
+      <div class="lyrics">You give love (bad name)</div>
+
+      <div class="lyrics">You give love</div>
+      <div class="lyrics">You give love (bad name)</div>
+
+      <div class="lyrics">You give love</div>
+      <div class="lyrics">You give love</div>
+    </div><div class="hr"></div>
+
+    <div class="container" id="stay">
+      <div class="title">Stay</div>
+      <div class="author">Oingo Boingo</div>
+      <div class="bpm">BPM: 119</div>
+      <div class="time">3:37</div>
+      <button class="scroll-button">Scroll</button>      
+    
+      <div class="section">INTRO</div>
+      <div class="no-highlight">
+        <div class="alert">TECLADO E BATERIA CHAMA</div>
+          <pre>
+    E|----------------------------------------------------|
+    B|----------------------------------------------------|
+    G|----------------2--------------------------2p0------|
+    D|----3-1---3p1--------------3-1h3p1---3p1-------1h3--|
+    A|--------3-----3--------------------3-----3----------|
+    E|-1-1-------------------1-1--------------------------|
+          </pre>
+          <pre>
+    E|-----5----6-------5----3----|
+    B|---4------4-----4------4----|
+    G|-5--------5---5--------5----|
+          </pre>
+      </div>
+    
+      <div class="section">PARTE 1</div>
+      <div class="no-highlight">
+        <div class="alert">ONLY KEYBOARD</div>
+        <div class="lyrics">This is not the first time - you tried to get away.</div>
+        <div class="lyrics">This is not a party - where people know your name.</div>
+        <div class="lyrics">This is not a classroom - with teacher at the board.</div>
+        <div class="lyrics">This is not a cat show - with prizes at the door.</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| Bbm F# | Bbm C# | 2x</div>
+        <div class="lyrics">Go -   Don't you go?</div>
+        <div class="lyrics">Stay with me one more day.</div>
+      </div>
+      <div class="highlight">   
+        <div class="chords">| G# | F# | G# | C# | 2x</div>
+        <div class="lyrics">If we get through one more night.</div>
+        <div class="lyrics">If we get through one more night.</div>
+      </div>
+      <div class="highlight">  
+        <div class="comment">RIFF 2x</div>
+      </div>
+    
+      <div class="section">PARTE 2</div>
+      <div class="no-highlight">
+        <div class="alert">ONLY KEYBOARD</div>
+        <div class="lyrics">This is not a horse race - where winner beats the time.</div>
+        <div class="lyrics">This is not a funeral - with mourners in a line.</div>
+        <div class="lyrics">This is not a sitcom - where everything's alright.</div>
+        <div class="lyrics">This is not a prison - with terror through the night.</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| Bbm F# | Bbm C# | 2x</div>
+        <div class="lyrics">Go -   Don't you go?</div>
+        <div class="lyrics">Stay with me one more day.</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| G# | F# | G# | C# | 2x</div>
+        <div class="lyrics">If we get through one more night.</div>
+        <div class="lyrics">If we get through one more night.</div>
+      </div>
+      <div class="highlight">
+        <div class="comment">RIFF 2x</div>
+      </div>
+    
+      <div class="section">PARTE 3</div>
+      <div class="no-highlight">
+        <div class="alert">ONLY KEYBOARD</div>
+        <div class="lyrics">This is not the first time - you tried to get away.</div>
+      </div>
+      <div class="highlight">
+        <div class="comment">GUITAR RIFF 1x</div>
+      </div>
+      <div class="no-highlight">
+        <div class="alert">ONLY KEYBOARD</div>
+        <div class="lyrics">This is not a party - where people know your name.</div>
+        <div class="lyrics">This is not a classroom - with teacher at the board.</div>
+      </div>
+      <div class="highlight">
+        <div class="comment">RIFF 1x</div>
+      </div>
+      <div class="no-highlight">
+        <div class="alert">ONLY KEYBOARD</div>
+        <div class="lyrics">This is not a cat show - with prizes at the door.</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| Bbm F# | Bbm C# | 2x</div>
+        <div class="lyrics">Go -   Don't you go?</div>
+        <div class="lyrics">Stay with me one more day.</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| G# | F# | G# | C# | 2x</div>
+        <div class="lyrics">If we get through one more night.</div>
+        <div class="lyrics">If we get through one more night.</div>
+      </div>
+      <div class="highlight3">
+        <div class="comment">GUITAR RIFF 2x</div>
+      </div>
+      <div class="highlight"> 
+        <div class="chords">| Bbm F# | Bbm C# | 2x</div>
+        <div class="lyrics">Go -   Don't you go?</div>
+        <div class="lyrics">Stay with me one more day.</div>
+      </div>
+      <div class="highlight">  
+        <div class="chords">| G# | F# | G# | C# | 2x</div>
+        <div class="lyrics">If we get through one more night.</div>
+        <div class="lyrics">If we get through one more night.</div>
+      </div>
+      <div class="highlight3">  
+        <div class="comment">GUITAR RIFF 2x</div>
+        <div class="lyrics">This is not the first time - you tried to get away.</div>
+        <div class="lyrics">This is not a party - where people know your name.</div>
+        <div class="lyrics">Uh, uh, uh, uh, uh, uh, uh where people know your name.</div>
+        <div class="lyrics">Uh, uh, uh, uh, uh, uh, uh where people know your name.</div>
+        <div class="lyrics">Uh, uh, uh, uh, uh, uh, uh where people know your name.</div>
+      </div>
+    </div><div class="hr"></div>
+
+    <div class="container" id="have-you-ever-seen-the-rain">
+      <div class="title">Have You Ever Seen The Rain</div>
+      <div class="author">Creedence</div>
+      <div class="bpm"></div>
+      <div class="time"></div>
+      <button class="scroll-button">Scroll</button>
+    </div><div class="hr"></div>
+
+    <div class="container" id="we-will-rock-you">
+      <div class="title">We Will Rock You</div>
+      <div class="author">Queen</div>
+      <div class="bpm"></div>
+      <div class="time"></div>
+      <button class="scroll-button">Scroll</button>
+
+      <div class="section">GUITAR INTRO</div>
+      <div class="highlight">
+        <div class="chords">| E | D | A |</div>
+      </div>
+
+      <div class="section">SOLO FINAL</div>
+      <div class="highlight">
+        <div class="chords">| C |</div>
+        <div class="chords">| A... |</div>
+      </div>
+
+    </div><div class="hr"></div>
+
+    <div class="container" id="roadhouse-blues">
+      <div class="title">Roadhouse Blues</div>
+      <div class="author">The Doors</div>
+      <div class="bpm"></div>
+      <div class="time"></div>
+      <button class="scroll-button">Scroll</button>
+
+    </div><div class="hr"></div>
+
+    <div class="container" id="rock-an-roll-all-night">
+      <div class="title">Rock And Roll All Nite</div>
+      <div class="author">KISS</div>
+      <div class="bpm"></div>
+      <div class="time"></div>
+      <button class="scroll-button">Scroll</button>
+
+    </div><div class="hr"></div>
+
+    <div class="container" id="the-wall">
+      <div class="title">The Wall</div>
+      <div class="author">Pink Floyd</div>
+      <div class="bpm"></div>
+      <div class="time"></div>
+      <button class="scroll-button">Scroll</button>
+
+    </div><div class="hr"></div>
+
+    <div class="container" id="come-together">
+      <div class="title">Come Together</div>
+      <div class="author">Beatles</div>
+      <div class="bpm"></div>
+      <div class="time"></div>
+      <button class="scroll-button">Scroll</button>
+    </div><div class="hr"></div>
+    
+    <div class="container" id="tainted-love">
+      <div class="title">Tainted Love</div>
+      <div class="author">Soft Cell</div>
+      <div class="bpm">BPM: 143 (72 and 286)</div>
+      <div class="time">2:33</div>
+      <button class="scroll-button">Scroll</button>      
+    
+      <div class="section">INTRO</div>
+      <div class="highlight">
+        <div class="alert">ONLY GUITAR</div>
+        <div class="chords">| G Bb | Eb Bb C |</div>
+      </div>
+    
+      <div class="section">PARTE 1</div>
+      <div class="highlight">
+        <div class="chords">| G Bb | Eb Bb C | 3x</div> 
+        <div class="lyrics">Sometimes I feel I've got to</div>
+        <div class="lyrics">Run away I've got to</div>
+        <div class="lyrics">Get away from the pain</div>
+        <div class="chords">| G | Bb |</div> 
+        <div class="lyrics">You drive into the heart of me</div>
+      </div>
+      <div class="highlight">      
+        <div class="chords">| G Bb | Eb Bb C | 3x</div>
+        <div class="lyrics">The love we share </div>
+        <div class="lyrics">Seems to go nowhere</div>
+        <div class="lyrics">And I've lost my light</div> 
+        <div class="chords">| G | Bb |</div> 
+        <div class="lyrics">for I toss and turn, I can't sleep at night</div>
+      </div>
+      <div class="highlight2">    
+        <div class="chords">| G | - | Bb | - |</div>
+        <div class="lyrics">Once I ran to you (I ran), Now I run from you</div>
+        <div class="chords">| Eb | - |</div>
+        <div class="lyrics">This tainted love you've given</div>
+        <div class="chords">| C | - | - | - |</div>
+        <div class="lyrics">I give you all a boy could give you, take my tears and that's not nearly all</div>
+      </div>
+      <div class="highlight3">    
+        <div class="chords">| G Bb | Eb Bb C | 2x</div>
+        <div class="lyrics">Tainted love (oh-oh-oh-oh), Tainted love</div>
+      </div>
+    
+      <div class="section">PARTE 2</div>
+      <div class="highlight">
+        <div class="chords">| G Bb | Eb Bb C | 3x</div>
+        <div class="lyrics">Now I know I've got to</div> 
+        <div class="lyrics">Run away I've got to</div> 
+        <div class="lyrics">Get away</div>
+        <div class="chords">| G | Bb |</div> 
+        <div class="lyrics">You don't really want any more from me</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| G Bb | Eb Bb C | 3x</div>
+        <div class="lyrics">To make things right you need someone</div>
+        <div class="lyrics">to hold you tight</div>
+        <div class="lyrics">And you think love is to pray</div>
+        <div class="chords">| G | Bb |</div> 
+        <div class="lyrics">But I'm sorry, I don't pray that way</div>
+      </div>
+      <div class="highlight2">    
+        <div class="chords">| G | - | Bb | - |</div>
+        <div class="lyrics">Once I ran to you (I ran), Now I run from you</div>
+        <div class="chords">| Eb | - |</div>
+        <div class="lyrics">This tainted love you've given</div>
+        <div class="chords">| C | - | - | - |</div>
+        <div class="lyrics">I give you all a boy could give you, take my tears and that's not nearly all</div>
+      </div>
+      <div class="highlight">    
+        <div class="chords">| G Bb | Eb Bb C | 2x</div>
+        <div class="lyrics">Tainted love (oh-oh-oh-oh), Tainted love</div>
+      </div>
+    
+      <div class="section">GUITAR SOLO</div>
+      <div class="highlight">
+        <div class="chords">| G Bb | Eb Bb C | 4x</div>
+      </div>
+    
+      <div class="section">PARTE 3</div>
+      <div class="highlight">
+        <div class="chords">| G Bb | Eb Bb C | 3x</div>
+        <div class="lyrics">Don't touch me, please</div>
+        <div class="lyrics">I cannot stand the way you tease</div>
+        <div class="lyrics">I love you though you hurt me so</div>
+        <div class="chords">| G | - | Bb | - |</div>
+        <div class="lyrics">Now I'm gonna pack my things and go</div>
+      </div>
+      <div class="highlight2">    
+        <div class="chords">| G | - | Bb | - |</div>
+        <div class="lyrics">Once I ran to you (I ran), Now I run from you</div>
+        <div class="chords">| Eb | - |</div>
+        <div class="lyrics">This tainted love you've given</div>
+        <div class="chords">| C | - | - | - |</div>
+        <div class="lyrics">I give you all a boy could give you, take my tears and that's not nearly all</div>
+      </div>
+      <div class="highlight">     
+        <div class="chords">| G Bb | Eb Bb C | …</div>
+        <div class="lyrics">Tainted love (oh-oh-oh-oh)...</div>
+      </div>
+
+      <div class="section">FINAL</div>
+      <div class="no-highlight">      
+        <div class="alert">BATERIA CHAMA PARA TERMINAR</div>
+        <div class="comment">DUAS BATIDAS NO SOL</div>
+      </div>
+    </div><div class="hr"></div>
+
+    <div class="container" id="dani-california">
+      <div class="title">Dani California</div>
+      <div class="author">Red Hot Chili Peppers</div>
+      <div class="bpm">BPM: 96 (192)</div>
+      <div class="time">4:42</div>
+      <button class="scroll-button">Scroll</button>
+
+      <div class="section">INTRO</div>
+      <div class="no-highlight">
+        <div class="alert">ONLY DRUMS</div>
+        <div class="chords">| SILÊNCIO | SILÊNCIO |</div>
+        <div class="alert">+ BAND</div>
+        <div class="chords">| Am G | Dm Am | 2x</div>
+      </div>
+
+      <div class="section">PARTE 1</div>
+      <div class="no-highlight">
+        <div class="chords">| Am G | Dm Am | 4x</div>
+        <div class="lyrics">Getting born in the State of Mississippi, Papa was a copper, And mama was a hippie</div>
+        <div class="lyrics">In Alabama she would swing a hammer, Price you gotta pay when you break the panorama</div>
+        <div class="lyrics">She never knew that there was, Anything more than poor</div>
+        <div class="lyrics">What in the world does your, Company take me for?</div>
+        <div class="chords">| Am G | Dm Am | 3x</div>
+        <div class="lyrics">Black bandana, sweet Louisiana, Robbin' a bank in the state of Indiana</div>
+        <div class="lyrics">She’s a runner, rebel and a stunner, On her merry way sayin’, Baby, watcha gonna?</div>
+        <div class="lyrics">Looking down the barrel of a, Hot metal forty five</div>
+      </div>
+      <div class="highlight2">  
+        <div class="chords">| Am G | Dm | Dm |</div>
+        <div class="lyrics">Just another way to survive</div>
+      </div>
+      <div class="highlight3">
+        <div class="chords">| F5 C5 | D5 G5 | 3x</div>
+        <div class="lyrics">California, rest in peace</div>
+        <div class="lyrics">Simul__taneous re__lease</div>
+        <div class="lyrics">Cali__fornia, show me your teeth</div>
+        <div class="chords">| F5 C5 | D5 | D5 |</div>
+        <div class="lyrics">She’s my priestess, I'm your priest</div>
+      </div>
+
+      <div class="section">GUITAR THEME 1</div>
+      <div class="highlight">
+        <div class="chords">E- | 11b | 10b | 13b | 15b</div>
+        <div class="chords">E- | 11b | 10b | 13b | 20b</div>
+      </div>
+
+      <div class="section">PARTE 2</div>
+      <div class="no-highlight">
+        <div class="chords">| Am G | Dm Am | 3x</div>
+        <div class="lyrics">She’s a lover, baby and a fighter, Shoulda seen it comin’ when, It got a little brighter</div>
+        <div class="lyrics">With a name like Dani California, The day was gonna come, When I was gonna mourn ya</div>
+      </div>
+      <div class="highlight">  
+        <div class="chords">| Am G | Dm | Dm |</div>
+        <div class="lyrics">A little loaded she was, Stealin’ another breath, I love my baby to death</div>
+      </div>
+      <div class="highlight2">  
+        <div class="chords">| F5 C5 | D5 G5 | 3x</div>
+        <div class="lyrics">California, rest in peace</div>
+        <div class="lyrics">Simul__taneous re__lease</div>
+        <div class="lyrics">Cali__fornia, show me your teeth</div>
+        <div class="chords">| F5 C5 | D5 | D5 |</div>
+        <div class="lyrics">She’s my priestess, I'm your priest</div>
+      </div>
+      <div class="highlight3">  
+        <div class="chords">| Bm | G F# | 3x</div>
+        <div class="lyrics">Who knew the other side of you?</div>
+        <div class="lyrics">Who knew what others died to prove?</div>
+        <div class="lyrics">Too true to say goodbye to you</div>
+        <div class="chords">| Bm | G * * * |</div>
+        <div class="lyrics">Too true to say, say, say</div>
+      </div>
+      <div class="section">PARTE 3</div>
+      <div class="no-highlight">  
+        <div class="chords">| Am G | Dm Am | 3x</div>
+        <div class="lyrics">Push the fader, gifted animator, One for the now and eleven for the later</div>
+        <div class="lyrics">Never made it up to Minnesota, North Dakota man was a gunnin', For the quota</div>
+        <div class="lyrics">Down in the badlands, She was savin’ the best for last</div>
+      </div>
+      <div class="highlight">  
+        <div class="chords">| Am G | Dm | - | E | - |</div>
+        <div class="lyrics">It only hurts when I laugh, Gone too fast</div>
+      </div>
+      <div class="highlight2">  
+        <div class="chords">| F5 C5 | D5 G5 | 3x</div>
+        <div class="lyrics">California, rest in peace</div>
+        <div class="lyrics">Simul__taneous re__lease</div>
+        <div class="lyrics">Cali__fornia, show me your teeth</div>
+        <div class="chords">| F5 C5 | D5 | D5 |</div>
+        <div class="lyrics">She’s my priestess, I'm your priest</div>
+      </div>
+      <div class="highlight2">  
+        <div class="chords">| F5 C5 | D5 G5 | 3x</div>
+        <div class="lyrics">California, rest in peace</div>
+        <div class="lyrics">Simul__taneous re__lease</div>
+        <div class="lyrics">Cali__fornia, show me your teeth</div>
+        <div class="chords">| F5 C5 | D5 | D5 |</div>
+        <div class="lyrics">She’s my priestess, I'm your priest</div>
+      </div>
+      <div class="section">FINAL GUITAR SOLO</div>
+      <div class="highlight">  
+        <div class="chords">| F C | Dm G |</div>
+        <div class="chords">| F C | Dm G |</div>
+        <div class="chords">| F C | Dm G |</div>
+        <div class="chords">| F C | Dm | Dm |</div>
+      </div>
+      <div class="highlight">  
+        <div class="chords">| F C | Dm G |</div>
+        <div class="chords">| F C | Dm G |</div>
+        <div class="chords">| F C | Dm G |</div>
+        <div class="chords">| F | - | Dm | - |</div>
+        <div class="chords">| F |</div>
+      </div>
+    </div><div class="hr"></div>
+
+    <div class="container" id="sweet-child-o-mine">
+      <div class="title">Sweet Child O' Mine</div>
+      <div class="author">Guns N' Roses</div>
+      <div class="bpm">BPM: 125 (63 or 250)</div>
+      <div class="time">5:56</div>
+      <button class="scroll-button">Scroll</button>
+
+      <div class="section">INTRO</div>
+      <div class="lyrics">She's got a smile that it seems to me</div>
+      <div class="lyrics">Reminds me of childhood memories</div>
+      <div class="lyrics">Where everything was as fresh as the bright blue sky</div>
+      <div class="lyrics">Now and then when I see her face</div>
+      <div class="lyrics">She takes me away to that special place</div>
+      <div class="lyrics">And if I stare too long, I'd probably break down and cry</div>
+
+      <div class="chorus">Whoa, oh, oh</div>
+      <div class="chorus">Sweet child o' mine</div>
+      <div class="chorus">Whoa, oh, oh, oh</div>
+      <div class="chorus">Sweet love of mine</div>
+
+      <div class="section">VERSE 2</div>
+      <div class="lyrics">She's got eyes of the bluest skies</div>
+      <div class="lyrics">As if they thought of rain</div>
+      <div class="lyrics">I'd hate to look into those eyes and see an ounce of pain</div>
+      <div class="lyrics">Her hair reminds me of a warm safe place</div>
+      <div class="lyrics">Where as a child I'd hide</div>
+      <div class="lyrics">And pray for the thunder and the rain to quietly pass me by</div>
+
+      <div class="chorus">Whoa, oh, oh</div>
+      <div class="chorus">Sweet child o' mine</div>
+      <div class="chorus">Whoa whoa, oh, oh, oh</div>
+      <div class="chorus">Sweet love of mine</div>
+
+      <div class="chorus">Whoa, yeah</div>
+      <div class="chorus">Whoa, oh, oh, oh</div>
+      <div class="chorus">Sweet child o' mine</div>
+      <div class="chorus">Whoa, oh, whoa, oh</div>
+      <div class="chorus">Sweet love of mine</div>
+      <div class="chorus">Whoa, oh, oh, oh</div>
+      <div class="chorus">Sweet child o' mine</div>
+      <div class="chorus">Ooh, yeah</div>
+      <div class="chorus">Ooh, sweet love of mine</div>
+
+      <div class="section">BRIDGE</div>
+      <div class="lyrics">Where do we go?</div>
+      <div class="lyrics">Where do we go now?</div>
+      <div class="lyrics">Where do we go?</div>
+      <div class="lyrics">Ooh, oh, where do we go?</div>
+      <div class="lyrics">Where do we go now?</div>
+      <div class="lyrics">Oh, where do we go now?</div>
+      <div class="lyrics">Where do we go? (Sweet child)</div>
+      <div class="lyrics">Where do we go now?</div>
+      <div class="lyrics">Ay, ay, ay, ay, ay, ay, ay, ay</div>
+      <div class="lyrics">Where do we go now?</div>
+      <div class="lyrics">Ah, ah</div>
+      <div class="lyrics">Where do we go?</div>
+      <div class="lyrics">Oh, where do we go now?</div>
+      <div class="lyrics">Oh, where do we go?</div>
+      <div class="lyrics">Oh, where do we go now?</div>
+      <div class="lyrics">Where do we go?</div>
+      <div class="lyrics">Oh, where do we go now?</div>
+      <div class="lyrics">Now, now, now, now, now, now, now</div>
+      <div class="lyrics">Sweet child</div>
+      <div class="lyrics">Sweet child of mine</div>
+    </div><div class="hr"></div>
+
+    <div class="container" id="holiday">
+      <div class="title">Holiday</div>
+      <div class="author">Green Day</div>
+      <div class="bpm">BPM: 147 (74 or 294)</div>
+      <div class="time">3:53</div>
+      <button class="scroll-button">Scroll</button>
+
+      <div class="section">INTRO</div>
+      <div class="alert">BATERIA CONTA 1 2 3 4</div>
+      <div class="no-highlight">
+        <div class="alert">ONLY GUITAR</div>
+        <div class="chords">| Fm (8-9) Db | Ab Eb | 4x</div>
+      </div>
+      <div class="no-highlight">
+        <div class="alert">+ BAND</div>
+        <div class="chords">| Fm Db | Ab Eb | 2x</div>
+      </div>
+      
+      <div class="section">PARTE 1</div>
+      <div class="highlight">
+        <div class="chords">| Fm Db | Ab Eb | Fm Db | Ab C |</div>
+        <div class="chords">| Fm Db | Ab Eb | C | C |</div>
+        <div class="lyrics">Hear the sound of the falling rain</div>
+        <div class="lyrics">Coming down like an Armageddon flame (hey)</div>
+        <div class="lyrics">The shame, the ones who died without a name</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| Fm Db | Ab Eb | Fm Db | Ab C |</div>
+        <div class="chords">| Fm Db | Ab Eb | C | C |</div>
+        <div class="lyrics">Hear the dogs howling out of key</div>
+        <div class="lyrics">To a hymn called "Faith and Misery" (hey)</div>
+        <div class="lyrics">And bleed, the company lost the war today</div>
+      </div>
+      <div class="highlight2">
+        <div class="chords">| Fm | Db | Ab | Eb |</div>
+        <div class="lyrics">I beg to dream and differ from the hollow lies</div>
+        <div class="chords">| Fm | Db | Ab | C5 | C * * * |</div>
+        <div class="lyrics">This is the dawning of the rest of our lives, On Holiday</div>
+      </div>
+      <div class="highlight">        
+        <div class="alert">GUITAR INTRO</div>
+        <div class="chords">| Fm (8-9) Db | Ab Eb | 2x</div>
+      </div>
+
+      <div class="section">PARTE 2</div>
+      <div class="highlight">
+        <div class="chords">| Fm Db | Ab Eb | Fm Db | Ab C |</div>
+        <div class="chords">| Fm Db | Ab Eb | C | C |</div>
+        <div class="lyrics">Hear the drum pounding out of time</div>
+        <div class="lyrics">Another protestor has crossed the line (hey)</div>
+        <div class="lyrics">To find, the money's on the other side</div>
+      </div>
+      <div class="highlight">    
+        <div class="chords">| Fm Db | Ab Eb | Fm Db | Ab C |</div>
+        <div class="chords">| Fm Db | Ab Eb | C | C |</div>
+        <div class="lyrics">Can I get another Amen? (Amen)</div>
+        <div class="lyrics">There's a flag wrapped</div>
+        <div class="lyrics">Around a score of men (hey)</div>
+        <div class="lyrics">A gag, A plastic bag on a monument</div>
+      </div>
+      <div class="highlight2">    
+        <div class="chords">| Fm | Db | Ab | Eb |</div>
+        <div class="lyrics">I beg to dream and differ from the hollow lies</div>
+        <div class="chords">| Fm | Db | Ab | C5 | C * * * |</div>
+        <div class="lyrics">This is the dawning of the rest of our lives, On Holiday</div>
+      </div>  
+
+      <div class="section">GUITAR SOLO - CHORDS</div>
+      <div class="highlight">    
+        <div class="alert">REPEAT 2 TIMES</div>
+        <div class="chords">| Fm Ab | Db Bb Eb C |</div>
+        <div class="chords">| Fm Ab | Eb C F _ |</div>
+      </div>
+      <div class="highlight2">    
+        <div class="alert">GUITAR SOLO - THEME</div>
+        <pre>
+          E|-------------------------------------------------8-----8–-|
+          B|-/6| —6-6-8-9--------------------8--5---------6-----6-----|
+          G|--------------8--6--5~-5-5-5---------5~--5----------------|
+          D|----------------------------------------------------------|
+          A|----------------------------------------------------------|
+          E|----------------------------------------------------------|
+        </pre>
+        <pre>
+          E|----------------------------------------12-12-12-12-12--13|
+          B|--6-6~--6-6-8-9-----------------8-8/13--------------------|
+          G|------------------8--6--5~--5-----------------------------|
+          D|----------------------------------------------------------|
+          A|----------------------------------------------------------|
+          E|----------------------------------------------------------|
+        </pre>
+      </div>
+
+      <div class="section">PARTE 3</div>
+      <div class="highlight">
+        <div class="alert">ONLY BASS</div>
+        <div class="lyrics">The representative from California has the floor</div>
+        <div class="lyrics">Zieg Heil to the president gasman</div>
+        <div class="lyrics">Bombs away is your punishment</div>
+        <div class="lyrics">Pulverize the Eiffel towers</div>
+        <div class="lyrics">Who criticize your government</div>
+        <div class="lyrics">Bang bang goes the broken glass</div>
+        <div class="lyrics">Kill all the fags that don't agree</div>
+        <div class="chords">| Eb C F _ | C | C | C | C |</div>
+        <div class="lyrics">Trials by fire, setting fire</div>
+        <div class="lyrics">Is not a way that's meant for me, Just cause, Just cause, because we're outlaws!</div>
+      </div>
+      <div class="highlight2">
+        <div class="chords">| Fm | Db | Ab | Eb |</div>
+        <div class="lyrics">I beg to dream and differ from the hollow lies</div>
+        <div class="chords">| Fm | Db | Ab | C |</div>
+        <div class="lyrics">This is the dawning of the rest of our lives</div>
+      </div>
+      <div class="highlight2">  
+        <div class="chords">| Fm | Db | Ab | Eb |</div>
+        <div class="lyrics">I beg to dream and differ from the hollow lies</div>
+        <div class="chords">| Fm | Db | Ab | C | C | C | C |</div>
+        <div class="lyrics">This is the dawning of the rest of our lives</div>
+        <div class="lyrics">This is our lives on Holiday</div>
+      </div>
+
+      <div class="section">FINAL</div>
+      <div class="highlight">  
+        <div class="chords">| Fm (8-9) Db | Ab Eb | 3x</div>
+        <div class="chords">| Fm (8-9) Db | Eb C Fm Fm |</div>
+      </div>
+    </div><div class="hr"></div>
+
+    <div class="container" id="poison-heart">
+      <div class="title">Poison Heart</div>
+      <div class="author">Ramones</div>
+      <div class="bpm">BPM: 148</div>
+      <div class="time">4:03</div>
+      <button class="scroll-button">Scroll</button>
+
+      <div class="section">INTRO</div>
+      <div class="alert">CONTAGEM DA BATERIA 1 2 3 4</div>
+      <div class="chords">| C#m | B | 3x</div>
+      <div class="chords">| A | - |</div>
+
+      <div class="section">PARTE 1</div>
+      <div class="chords">| C#5 | E5 | C#5 | E5 | C#5 | E5 | A5 | B5 |</div>
+      <div class="lyrics">No one ever thought this one would survive,</div>
+      <div class="lyrics">Helpless child, gonna walk a drum beat behind</div>
+
+      <div class="chords">| C#5 | E5 | C#5 | E5 | C#5 | E5 | A5 | B5 |</div>
+      <div class="lyrics">Lock you in a dream, never let you go,</div>
+      <div class="lyrics">Never let you laugh or smile, not you</div>
+    
+      <div class="highlight">
+        <div class="chords">| A5 | B5 | C#5 B5 | A5 |</div>
+        <div class="lyrics">Well, I just want to walk right out of this world,</div>
+        <div class="chords">| A5 | B5 | C#5 | - |</div>
+        <div class="lyrics">'Cause everybody has a poison heart</div>
+
+        <div class="chords">| A5 | B5 | C#5 B5 | A5 |</div>
+        <div class="lyrics">I just want to walk right out of this world,</div>
+        <div class="chords">| A5 | B5 |</div>
+        <div class="lyrics">'Cause everybody has a poison heart</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| C#m | B | C#m | B |</div>
+      </div>
+
+      <div class="section">PARTE 2</div>
+        <div class="chords">| C#5 | E5 | C#5 | E5 | C#5 | E5 | A5 | B5 |</div>
+        <div class="lyrics">Making friends with a homeless torn up man,</div>
+        <div class="lyrics">He just kind of smiles, it really shakes me up</div>
+
+        <div class="chords">| C#5 | E5 | C#5 | E5 | C#5 | E5 | A5 | B5 |</div>
+        <div class="lyrics">There's danger on every corner but I'm okay,</div>
+        <div class="lyrics">Walking down the street trying to forget yesterday</div>
+
+      <div class="highlight">
+        <div class="chords">| A5 | B5 | C#5 B5 | A5 |</div>
+        <div class="lyrics">Well, I just want to walk right out of this world,</div>
+        <div class="chords">| A5 | B5 | C#5 | - |</div>
+        <div class="lyrics">'Cause everybody has a poison heart</div>
+
+        <div class="chords">| A5 | B5 | C#5 B5 | A5 |</div>
+        <div class="lyrics">I just want to walk right out of this world,</div>
+        <div class="chords">| A5 | B5 |</div>
+        <div class="lyrics">'Cause everybody has a poison heart</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| C#m | B | C#m | B | C#m | B | A | - |</div>
+      </div>
+
+      <div class="section">GUITAR SOLO</div>
+        <div class="alert">SOL#  LÁ  SI LÁ SOL#</div>
+        <div class="alert">DÓ# RÉ MI RÉ DÓ#</div>
+
+      <div class="section">PARTE FINAL</div>
+        <div class="chords">| C#5 | E5 | C#5 | E5 | C#5 | E5 | A5 | B5 |</div>
+        <div class="lyrics">You know that life really takes its toll,</div>
+        <div class="lyrics">And a poet's gut reaction is to search his very soul</div>
+
+        <div class="chords">| C#5 | E5 | C#5 | E5 | C#5 | E5 | A5 | B5 * * * |</div>
+        <div class="lyrics">So much damn confusion before my eyes,</div>
+        <div class="lyrics">But nothing seems to phase me and this one still survives</div>
+
+        <div class="highlight">
+        <div class="chords">| A5 | B5 | C#5 B5 | A5 |</div>
+        <div class="lyrics">Well, I just want to walk right out of this world,</div>
+        <div class="chords">| A5 | B5 | C#5 | - |</div>
+        <div class="lyrics">'Cause everybody has a poison heart</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| A5 | B5 | C#5 B5 | A5 |</div>
+        <div class="lyrics">I just want to walk right out of this world,</div>
+        <div class="chords">| A5 | B5 | C#5 | - |</div>
+        <div class="lyrics">'Cause everybody has a poison heart</div>
+      </div>
+      <div class="highlight">
+        <div class="chords">| A5 | B5 | C#5 B5 | A5 |</div>
+        <div class="lyrics">I just want to walk right out of this world,</div>
+        <div class="chords">| A5 | B5 |</div>
+        <div class="lyrics">'Cause everybody has a poison heart</div>
+      </div>
+      <div class="highlight2">
+        <div class="chords">| C#m | B | 7x</div>
+        <div class="lyrics">A poison heart…</div>
+      </div>
+      <div class="highlight3">
+        <div class="chords">| A | - | - | A B | C#m |</div>
+      </div>
+    </div><div class="hr"></div>
+
+    <div class="container" id="pet-sematary">
+      <div class="title">Pet Sematary</div>
+      <div class="author">Ramones</div>
+      <div class="bpm">BPM: 148 (74 or 296)</div>
+      <div class="time">3:29</div>
+      <button class="scroll-button">Scroll</button>
+
+      <div class="section">INTRO</div>
+      <div class="no-highlight">
+        <div class="alert">CONTAGEM DA BATERIA 1 2 3 4</div>
+        <div class="chords">| Dm E | F | 2x</div>
+      </div>
+
+      <div class="section">PARTE 1</div>
+      <div class="no-highlight">
+        <div class="chords">| Dm E | F | 4x</div>
+        <div class="lyrics">Under the arc of a weather stain boards</div>
+        <div class="lyrics">Ancient goblins, and warlords</div>
+        <div class="lyrics">Come out of the ground, not making a sound</div>
+        <div class="lyrics">The smell of death is all around</div>
+      </div>
+      <div class="no-highlight">
+        <div class="chords">| C5 | D5 | C5 | D5 | Bb5 | Bb5 C5 |</div>
+        <div class="lyrics">And the night when the cold wind blows, No one cares Nobody knows</div>
+      </div>
+      <div class="no-highlight">
+        <div class="chords">| D5 | F5 | C5 | Bb5 |</div>
+        <div class="lyrics">I don't wanna be buried, In a pet sematary,</div>
+        <div class="chords">| D5 | C5 | Bb5 | C |</div>
+        <div class="lyrics">I don't want to live my life again</div>
+      </div>
+      <div class="no-highlight">
+        <div class="chords">| D5 | F5 | C5 | Bb5 |</div>
+        <div class="lyrics">I don't wanna be buried, In a pet sematary,</div>
+        <div class="chords">| D5 | C5 | Bb5 | C |</div>
+        <div class="lyrics">I don't want to live my life again</div>
+      </div>
+
+      <div class="section">PARTE 2</div>
+      <div class="no-highlight">
+        <div class="chords">| Dm E | F | 4x</div>
+        <div class="lyrics">Follow Victor to the sacred place</div>
+        <div class="lyrics">This ain't a dream, I can't scape</div>
+        <div class="lyrics">Molars and fangs, the clicking of bones</div>
+        <div class="lyrics">Spirits moaning among the tombstones</div>
+
+        <div class="chords">| C5 | D5 | C5 | D5 | Bb5 | Bb5 C5 |</div>
+        <div class="lyrics">And the night, when the moon is bright, Someone cries, something ain't right</div>
+
+        <div class="chords">| D5 | F5 | C5 | Bb5 |</div>
+        <div class="lyrics">I don't wanna be buried, In a pet sematary,</div>
+        <div class="chords">| D5 | C5 | Bb5 | C |</div>
+        <div class="lyrics">I don't want to live my life again</div>
+
+        <div class="chords">| D5 | F5 | C5 | Bb5 |</div>
+        <div class="lyrics">I don't wanna be buried, In a pet sematary,</div>
+        <div class="chords">| D5 | C5 | Bb5 | C |</div>
+        <div class="lyrics">I don't want to live my life again</div>
+
+        <div class="section">KEYBOARD SOLO</div>
+        <div class="chords">| Bb | - | D | - | Bb | - | C | - |</div>
+      </div>
+
+      <div class="section">PARTE 3</div>
+      <div class="no-highlight">
+        <div class="chords">| Dm E | F | 4x</div>
+        <div class="lyrics">The moon is full, the air is still</div>
+        <div class="lyrics">All of a sudden I feel a chill</div>
+        <div class="lyrics">Victor is grinning, flesh rotting away</div>
+        <div class="lyrics">Skeletons dance, I curse this day</div>
+
+        <div class="chords">| C5 | D5 | C5 | D5 | Bb5 | Bb5 C5 |</div>
+        <div class="lyrics">And the night, when the wolves cry out, Listen close and you can hear me shout</div>
+
+        <div class="chords">| D5 | F5 | C5 | Bb5 |</div>
+        <div class="lyrics">I don't wanna be buried, In a pet sematary,</div>
+        <div class="chords">| D5 | C5 | Bb5 | C |</div>
+        <div class="lyrics">I don't want to live my life again</div>
+
+        <div class="chords">| D5 | F5 | C5 | Bb5 |</div>
+        <div class="lyrics">I don't wanna be buried, In a pet sematary,</div>
+        <div class="chords">| D5 | C5 | Bb5 | C |</div>
+        <div class="lyrics">I don't want to live my life again</div>
+
+        <div class="chords">| D5 | C5 | Bb5 | C | 6x…</div>
+      </div>
+    </div><div class="hr"></div>
+
+    <div class="container" id="i-was-made-for-lovin-you">
+      <div class="title">I Was Made For Lovin' You</div>
+      <div class="author">Kiss</div>
+      <div class="bpm">BPM: 128</div>
+      <div class="time">4:31</div>
+      <button class="scroll-button">Scroll</button>
+
+      <div class="section">INTRO</div>
+      <div class="no-highlight">
+        <div class="alert">ONLY DRUMS + BASS | Em | - | - | - |</div>
+        <div class="chords">| Em | - | - | - |</div>
+        <div class="alert">++ GUITAR RIFF 2x</div>
+        <div class="alert">++ VOCAL RIFF 2x</div>
+      </div>
+
+      <div class="section">PARTE 1</div>
+      <div class="no-highlight">
+        <div class="chords">| Em | - | G | - | B | - | Em | - |</div>
+        <div class="lyrics">Tonight, I wanna give it all to you,</div>
+        <div class="lyrics">In the darkness, There's so much I wanna do</div>
+        <div class="chords">| Em | - | G | - | B | - | A7 | - |</div>
+        <div class="lyrics">And tonight, I wanna lay it at your feet,</div>
+        <div class="lyrics">'Cause girl, I was made for you, And girl you were made for me</div>
+      </div>
+      <div class="highlight3">
+        <div class="alert">RIFF</div>
+        <div class="lyrics">I was made for loving you baby, You were made for loving me</div>
+        <div class="lyrics">And I can't get enough of you baby, Can you get enough of me?</div>
+      </div>
+      <div class="section">PARTE 2</div>
+      <div class="no-highlight">
+        <div class="chords">| Em | - | G | - | B | - | Em | - |</div>
+        <div class="lyrics">Tonight, I wanna see it in your eyes,</div>
+        <div class="lyrics">Feel the magic, There's something that drives me wild</div>
+        <div class="chords">| Em | - | G | - | B | - | A7 | - |</div>
+        <div class="lyrics">And tonight, We gonna make it all come true,</div>
+        <div class="lyrics">'Cause girl, you were made for me, And girl, I was made for you</div>
+
+      </div>
+      <div class="highlight3">
+        <div class="alert">RIFF</div>
+        <div class="lyrics">I was made for loving you baby, You were made for loving me</div>
+        <div class="lyrics">And I can't get enough of you baby, Can you get enough of me?</div>
+      </div>
+
+      <div class="section">SOLO</div>
+      <div class="highlight">
+        <div class="chords">| Am | - | D | - | 3x</div>
+        <div class="chords">| Am | - | D | A B | B |</div>
+
+        <div class="alert">GUITAR SOLO</div>
+      </div>
+
+      <div class="section">PARTE FINAL</div>
+      <div class="highlight">
+        <div class="alert">RIFF…</div>
+      </div>
+    </div><div class="hr"></div>
+
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+
+  </div>
+
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+
+  <script>
+    // Polyfill para closest() - Safari 9 não suporta este método
+    if (!Element.prototype.closest) {
+      Element.prototype.closest = function(selector) {
+        var el = this;
+        while (el) {
+          if (el.matches(selector)) {
+            return el;
+          }
+          el = el.parentElement;
+        }
+        return null;
+      };
+    }
+  
+    // Polyfill para scrollBehavior - Safari 9 não suporta rolagem suave
+    if (!('scrollBehavior' in document.documentElement.style)) {
+      window.smoothScrollTo = function(top, duration) {
+        var start = window.pageYOffset,
+            change = top - start,
+            currentTime = 0,
+            increment = 20;
+  
+        function animateScroll() {
+          currentTime += increment;
+          var val = Math.easeInOutQuad(currentTime, start, change, duration);
+          window.scrollTo(0, val);
+          if (currentTime < duration) {
+            setTimeout(animateScroll, increment);
+          }
+        }
+        animateScroll();
+      };
+  
+      // Easing function para suavizar a rolagem
+      Math.easeInOutQuad = function(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t + b;
+        t--;
+        return -c / 2 * (t * (t - 2) - 1) + b;
+      };
+    }
+  
+    document.addEventListener('DOMContentLoaded', function() {
+      var scrollAnimation = null;
+  
+      function smoothScroll(startTime, duration, startScrollTop, targetScrollTop, callback) {
+        var currentTime = (new Date()).getTime() - startTime;
+        var progress = currentTime / duration;
+        var easedProgress = Math.min(progress, 1);
+        var newScrollTop = startScrollTop + (targetScrollTop - startScrollTop) * easedProgress;
+        window.scrollTo(0, newScrollTop);
+  
+        if (easedProgress < 1) {
+          scrollAnimation = setTimeout(function() {
+            smoothScroll(startTime, duration, startScrollTop, targetScrollTop, callback);
+          }, 16); // Aproximadamente 60 FPS
+        } else {
+          scrollAnimation = null; // Animação completa
+          if (callback) callback(); // Executa a função de callback quando o scroll termina
+        }
+      }
+  
+      var buttons = document.querySelectorAll('.scroll-button');
+  
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', function() {
+          var button = this;
+          var container = button.closest('.container');
+  
+          // Se uma animação está rodando, pare-a e redefina o texto do botão
+          if (scrollAnimation) {
+            clearTimeout(scrollAnimation);
+            scrollAnimation = null;
+            button.textContent = 'Scroll';
+            button.classList.remove('running');
+            return;
+          }
+  
+          // Obtém o tempo da div .time
+          var timeText = container.querySelector('.time').textContent;
+          var parts = timeText.split(':');
+          var minutes = parseInt(parts[0], 10);
+          var seconds = parseInt(parts[1], 10);
+          var totalTime = (minutes * 60 + seconds) * 1000;
+  
+          // Calcula a altura do cabeçalho
+          var header = document.querySelector('header');
+          var headerHeight = header ? header.offsetHeight : 0;
+  
+          // Calcula a posição final do scroll
+          var containerRect = container.getBoundingClientRect();
+          var containerTop = containerRect.top + window.pageYOffset - headerHeight;
+          var containerBottom = containerTop + container.offsetHeight;
+          var scrollTop = window.pageYOffset;
+          var windowHeight = window.innerHeight;
+  
+          // Distância até o final do container
+          var distanceToBottom = containerBottom - (scrollTop + windowHeight);
+  
+          // Calcula o tempo ajustado proporcionalmente à distância restante
+          var adjustedTime = (distanceToBottom / container.offsetHeight) * totalTime;
+  
+          // Função de callback para pular para o próximo container
+          function scrollToNextContainer() {
+            var nextContainer = container.nextElementSibling;
+            if (nextContainer && nextContainer.classList.contains('container')) {
+              // Obter o nome da próxima música ou ID da div
+              var nextContainerName = nextContainer.id.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, function(l) {
+                return l.toUpperCase();
+              });
+  
+              // Criar um botão dinâmico para o próximo scroll
+              var nextButton = document.createElement('button');
+              nextButton.textContent = 'Go to Next: ' + nextContainerName;
+              nextButton.classList.add('next-button');
+              document.body.appendChild(nextButton);
+  
+              // Função para rolar para a próxima música
+              nextButton.addEventListener('click', function() {
+                var nextContainerTop = nextContainer.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                scrollAnimation = setTimeout(function() {
+                  smoothScroll((new Date()).getTime(), 1000, window.pageYOffset, nextContainerTop, function() {
+                    button.textContent = 'Scroll';
+                    button.classList.remove('running');
+                    nextButton.remove(); // Remove o botão ao chegar à próxima música
+                  });
+                }, 16);
+              });
+            }
+  
+            button.textContent = 'Scroll';
+            button.classList.remove('running');
+          }
+  
+          var startTime = (new Date()).getTime();
+          scrollAnimation = setTimeout(function() {
+            smoothScroll(startTime, adjustedTime, scrollTop, containerTop + container.offsetHeight - windowHeight + headerHeight, scrollToNextContainer);
+          }, 16); 
+  
+          button.textContent = 'Cancel Scroll';
+          button.classList.add('running');
+        });
+      }
+    });
+  </script>
+  
+  <!-- // -------------------------------------------------------------- // -->
+  
+  <script>
+    (function() {
+      function formatText(id) {
+        return id
+          .replace(/_/g, ' ')
+          .replace(/-/g, ' ')
+          .toLowerCase()
+          .replace(/\b\w/g, function(l) {
+            return l.toUpperCase();
+          });
+      }
+  
+      var list = document.getElementById('container-list');
+      var containers = document.querySelectorAll('.container');
+  
+      Array.prototype.slice.call(containers).forEach(function(container, index) {
+        var id = container.id;
+        if (id) {
+          var listItem = document.createElement('li');
+          var link = document.createElement('a');
+          link.href = '#' + id;
+          link.textContent = (index + 1) + '. ' + formatText(id); 
+          listItem.appendChild(link);
+          list.appendChild(listItem);
+        }
+      });
+    })();
+  </script>
+  
+  <!-- // -------------------------------------------------------------- // -->
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var lyricsDivs = document.querySelectorAll('.chords');
+  
+      for (var i = 0; i < lyricsDivs.length; i++) {
+        var content = lyricsDivs[i].innerHTML;
+        var firstPipeReplaced = false;
+  
+        var newContent = content.split('').map(function(char) {
+          if (char === '|' && !firstPipeReplaced) {
+            firstPipeReplaced = true;
+            return '<span class="first-pipe">|</span>';
+          } else if (char === '|') {
+            return '<span class="highlighted-char">|</span>';
+          } else {
+            return char;
+          }
+        }).join('');
+  
+        lyricsDivs[i].innerHTML = newContent;
+      }
+    });
+  
+    document.getElementById('scroll-top').addEventListener('click', function(e) {
+      if ('scrollBehavior' in document.documentElement.style) {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      } else {
+        window.smoothScrollTo(0, 500); // Polyfill para rolagem suave
+      }
+    });
+  </script>
+
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+
+</body>
+</html>
