@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAESTRO v0.24</title>
+
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+
+  <style>
+    pre {
+      white-space: pre-line;
+      font-size: 16px;
+    }
+  
+    body {
+      background-color: #111;
+      font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #f5f5f5;
+      -webkit-transition: background-color 0.3s, color 0.3s;
+      transition: background-color 0.3s, color 0.3s;
+      max-width: 728px;
+      margin: 0 auto; /* Centraliza o conteúdo na tela */
+    }
+  
+    .hr {
+      border: none;
+      border-top: 1px solid #333;
+      margin: 60px 0px;
+    }
+  
+    .page {
+      max-width: 768px;
+      width: 100%; /* Garantir que a página se ajuste ao máximo de 768px */
+      margin: 0 auto;
+    }
+  
+    .container {
+      padding: 0px 5px;
+      position: relative;
+      z-index: 1;
+    }
+  
+    /* --------------------------------------------------------------------- */
+  
+    .title {
+      font-weight: bold;
+      color: #fff;
+      color: #d85675;
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+  
+    .author {
+      font-weight: bold;
+      color: #888;
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+  
+    .bpm {
+      font-weight: bold;
+      color: #555;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+  
+    .section {
+      color: #f39c12;
+      font-weight: bold;
+      font-size: 20px;
+      margin-top: 25px;
+      margin-bottom: 10px;
+    }
+
+    .pedal.on {
+        color: #e74c3c;
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+    .pedal.off {
+        color: #2ecc71;
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+  
+  
+    /* --------------------------------------------------------------------- */
+  
+    .highlighted-char, .first-pipe {
+      color: #bdc3c7;
+      font-size: 10px;
+      font-weight: normal !important;
+    }
+  
+    .chords, .lyrics, .comment, .alert {
+      font-size: 18px;
+      margin-bottom: 9px;
+    }
+  
+    .chords {
+      font-weight: bold;
+      color: #1abc9c;
+      white-space: pre-wrap;
+      word-spacing: 20px;
+    }
+  
+    .lyrics {
+      color: #bdc3c7;
+    }
+  
+    .comment {
+      color: #999;
+      font-weight: bold;
+    }
+  
+    .alert {
+      color: #fff;
+      font-weight: bold;
+    }
+  
+    .no-highlight,
+    .highlight, 
+    .highlight2, 
+    .highlight3 {
+      border-radius: 0px;
+      margin: 0px -15px 30px !important;
+      padding: 15px 15px 10px !important;
+      border-left: none !important;
+      border-right: none !important;
+    }
+  
+    .no-highlight {
+      padding: 0px 0px 0px !important;
+      margin: 0px 0px 30px !important;
+    }
+  
+    .highlight {
+      background-color: #222;
+      border: 1px solid #666;
+    }
+  
+    .highlight2 {
+      background-color: #333;
+      border: 1px solid #777;
+    }
+  
+    .highlight3 {
+      background-color: #444;
+      border: 1px solid #888;
+    }
+  
+    .new-line {
+      margin-top: 40px;
+    }
+  
+    .time {
+      display: none;
+    }
+  
+    .scroll-button {
+      float: right;
+      margin-top: -100px;
+      background-color: #1abc9c;
+      color: white;
+      border: none;
+      text-align: center;
+      font-size: 12px;
+      cursor: pointer;
+      z-index: 9999;
+      font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
+      font-weight: bold;
+      height: 80px;
+      width: 80px;
+      border-radius: 10px; /* Corrigido para formato padrão */
+    }
+
+    .scroll-top {
+      position: fixed;
+      height: 100px;
+      width: 100px;
+      background-color: #d85675;
+      color: white;
+      border: none;
+      text-align: center;
+      font-size: 12px;
+      cursor: pointer;
+      z-index: 99;
+      font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
+      font-weight: bold;
+      right: 0; /* Corrigido para '0' sem 'px' */
+      top: 0;   /* Corrigido para '0' sem 'px' */
+      border-radius: 0 0 0 10px; /* Corrigido para formato padrão */
+      line-height: 30px; /* Alinha o texto verticalmente */
+      opacity: 0.4; /* 70% opacidade */
+    }
+  
+    .scroll-button.running {      
+      height: 100px;
+      width: 100px;
+      position: fixed;
+      bottom: 0px;
+      right: 0px;
+      background-color: #e74c3c;
+      z-index: 99999 !important;
+      border-radius: 10px 0px 0px 0px; /* Corrigido para formato padrão */
+      opacity: 0.7; /* 70% opacidade */
+    }
+      
+    /* --------------------------------------------------------------------- */
+  
+    #container-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        margin-bottom: 80px;
+    }
+    #container-list li {
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+    a.index,
+    #container-list a {
+        text-decoration: none;
+        color: #fff;
+        font-size: 18px;
+        -webkit-transition: color 0.3s;
+        transition: color 0.3s;
+        display: block;
+        padding: 20px;
+        background-color: #d85675;
+        border-radius: 10px;
+    }
+    #container-list a:hover {
+        color: #eee;
+        text-decoration: underline;
+    }
+
+    a.index {
+      text-align: center;
+      background-color: #e74c3c;
+    }
+  
+    /* --------------------------------------------------------------------- */
+  
+  </style>
+
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+
+</head>
+<body>
+
+  <br /><a href="index.html" class="button index">GO TO HOME</a>
+
+  <h1>Stone Shelter - Repertório Completo</h1>
+
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+
+  <div class="page" id="page">
+
+    <!-- // ------------------------------------------------------------ // -->
+
+    <ul id="container-list"></ul>
+
+    <button href="#page" id="scroll-top" class="scroll-top">Menu</button>
+    <div class="hr"></div>
+
+<!--
+- Dont Stop Believin
+- Layla 
+- Pain Lies on the Riverside
+-->
+
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+
+    <div class="container" id="dont-stop-believin">
+        <div class="title">Don't Stop Believin'</div>
+        <div class="author">Journey</div>
+        <div class="bpm">BPM: 118 (59 OR 236)</div>
+        <div class="time">4:10</div>
+        <div class="pedal on">PEDAL DROP ON</div>
+        <button class="scroll-button">Scroll</button>
+  
+        <div class="section">INTRO</div>
+        <div class="highlight">
+          <div class="alert">ONLY KEYBOARD</div>
+        </div>
+  
+        <div class="section">PARTE 1</div>
+        <div class="no-highlight">
+            <div class="lyrics">Just a small town girl</div>
+            <div class="lyrics">Livin' in a lonely world</div>
+            <div class="lyrics">She took the midnight train going anywhere (EH7*)</div>
+        </div>
+        <div class="no-highlight">
+            <div class="lyrics">Just a city boy</div>
+            <div class="lyrics">Born and raised in South Detroit</div>
+            <div class="lyrics">He took the midnight train going anywhere (EH5*)</div>
+        </div>
+
+        <div class="highlight">
+          <div class="alert">GUITAR RIFF</div>
+        </div>
+
+        <div class="no-highlight">
+            <div class="lyrics">A singer in a smokey room</div>
+            <div class="lyrics">A smell of wine and cheap perfume</div>
+            <div class="lyrics">For a smile they can share the night</div>
+            <div class="lyrics">It goes on and on and on and on</div>
+        </div>
+
+        <div class="highlight">        
+            <div class="chords">| B A | B B4 | B E | B E |</div>
+            <div class="lyrics">Strangers waitin'</div>
+            <div class="lyrics">Up and down the boulevard</div>
+            <div class="chords">| B A | B B4 | B E | B E |</div>
+            <div class="lyrics">Their shadows searchin' in the night</div><br />
+
+            <div class="chords">| B A | B B4 | B E | B E |</div>
+            <div class="lyrics">Streetlights, people</div>
+            <div class="lyrics">Livin' just to find emotion</div>
+            <div class="chords">| B A | B B4 | B B4 | B A |</div>
+            <div class="lyrics">Hidin' somewhere in the night</div>
+        </div>
+
+        <div class="highlight">
+            <div class="alert">GUITAR RIFF (RITMO)</div>
+        </div>
+
+        <div class="section">PARTE 2</div>
+        <div class="no-highlight">     
+            <div class="lyrics">Workin' hard to get my fill</div>
+            <div class="lyrics">Everybody wants a thrill</div>
+            <div class="lyrics">Payin' anything to roll the dice</div>
+            <div class="lyrics">Just one more time</div>
+        </div>
+        <div class="no-highlight">   
+            <div class="lyrics">Some'll win, some will lose</div>
+            <div class="lyrics">Some are born to sing the blues</div>
+            <div class="lyrics">Whoa, the movie never ends</div>
+            <div class="lyrics">It goes on and on and on and on</div>
+        </div>
+        <div class="highlight">        
+            <div class="chords">| B A | B B4 | B E | B E |</div>
+            <div class="lyrics">Strangers waitin'</div>
+            <div class="lyrics">Up and down the boulevard</div>
+            <div class="chords">| B A | B B4 | B E | B E |</div>
+            <div class="lyrics">Their shadows searchin' in the night</div><br />
+
+            <div class="chords">| B A | B B4 | B E | B E |</div>
+            <div class="lyrics">Streetlights, people</div>
+            <div class="lyrics">Livin' just to find emotion</div>
+            <div class="chords">| B A | B B4 | B B4 | B A |</div>
+            <div class="lyrics">Hidin' somewhere in the night</div>
+        </div>
+
+        <div class="section">SOLO</div>
+        <div class="highlight">
+            <div class="alert">GUITAR</div>
+        </div>
+
+        <div class="section">FINAL</div>
+        <div class="highlight">
+            <div class="lyrics">Don't stop believin'</div>
+            <div class="lyrics">Hold on to that feelin'</div>
+            <div class="lyrics">Streetlights, people</div>
+        </div>
+        <div class="highlight">
+            <div class="lyrics">Don't stop believin'</div>
+            <div class="lyrics">Hold on</div>
+            <div class="lyrics">Streetlights, people</div>
+        </div>
+        <div class="highlight">
+            <div class="lyrics">Don't stop believin'</div>
+            <div class="lyrics">Hold on to that feelin'</div>
+            <div class="lyrics">Streetlights, people</div>
+        </div>
+    </div><div class="hr"></div>
+
+    <!-- // ------------------------------------------------------------ // -->
+
+    <div class="container" id="layla">
+        <div class="title">Layla</div>
+        <div class="author">Eric Clapton</div>
+        <div class="bpm">BPM: 115</div>
+        <div class="time">8:00</div>
+        <div class="pedal off">PEDAL DROP OFF</div>
+        <button class="scroll-button">Scroll</button>
+  
+        <div class="section">INTRO</div>
+        <div class="highlight">
+          <div class="alert">KEYBOARD PLAY BASE</div>
+          <div class="alert">GUITAR IMPROVISATION</div>
+          <div class="alert">GUITAR BASE RIFF 2x</div>
+          <div class="alert">GUITAR SOLO 2x (theme)</div>
+        </div>
+  
+        <div class="section">PARTE 1</div>
+        <div class="no-highlight">
+            <div class="chords">| C#m7 | G#m7 |</div>
+            <div class="lyrics">What will you do when you get lonely?</div>
+            <div class="chords">| C#m7 C7 D7 |</div>
+            <div class="lyrics">No one waiting by your side</div>
+            <div class="chords">| E7 | F#m7 B | E7 A |</div>
+            <div class="lyrics">You've been runnin', hidin' much too long</div>
+            <div class="chords">| F#m7 B | E7 ***e |</div>
+            <div class="lyrics">You know it's just your foolish pride</div>
+        </div>
+        <div class="highlight">        
+            <div class="alert">GUITAR SOLO 2x (theme)</div>
+            <div class="lyrics">You got me on my knees, Layla</div>
+            <div class="lyrics">Begging, darling please, Layla</div>
+            <div class="lyrics">Darling, won't you ease my worried mind?</div>
+        </div>
+
+        <div class="section">PARTE 2</div>
+        <div class="no-highlight">
+            <div class="chords">| C#m7 | G#m7 |</div>
+            <div class="lyrics">Tried to give you consolation</div>
+            <div class="chords">| C#m7 C7 D7 |</div>
+            <div class="lyrics">When your old man had let you down</div>
+            <div class="chords">| E7 | F#m7 B | E7 A |</div>
+            <div class="lyrics">Like a fool, I fell in love with you</div>
+            <div class="chords">| F#m7 B | E7 ***e |</div>
+            <div class="lyrics">You turned my whole world upside down</div>
+        </div>
+        <div class="highlight">            
+            <div class="alert">GUITAR SOLO 2x (theme)</div>
+            <div class="lyrics">You got me on my knees, Layla</div>
+            <div class="lyrics">Begging, darling please, Layla</div>
+            <div class="lyrics">Darling, won't you ease my worried mind?</div>
+        </div>
+
+        <div class="section">PARTE 3</div>
+        <div class="no-highlight">
+            <div class="chords">| C#m7 | G#m7 |</div>
+            <div class="lyrics">Make the best of the situation</div>
+            <div class="chords">| C#m7 C7 D7 |</div>
+            <div class="lyrics">'Fore I finally go insane</div>
+            <div class="chords">| E7 | F#m7 B | E7 A |</div>
+            <div class="lyrics">Please don't say we'll never find a way</div>
+            <div class="chords">| F#m7 B | E7 ***e |</div>
+            <div class="lyrics">Tell me all my love's in vain</div>
+        </div>
+        <div class="highlight">            
+            <div class="alert">GUITAR SOLO 2x (theme)</div>
+            <div class="lyrics">You got me on my knees, Layla</div>
+            <div class="lyrics">Begging, darling please, Layla</div>
+            <div class="lyrics">Darling, won't you ease my worried mind?</div>
+        </div>
+        <div class="highlight">            
+            <div class="alert">GUITAR SOLO 2x (theme)</div>
+            <div class="lyrics">You got me on my knees, Layla</div>
+            <div class="lyrics">Begging, darling please, Layla</div>
+            <div class="lyrics">Darling, won't you ease my worried mind?</div>
+        </div>
+
+        <div class="section">SOLO</div>
+        <div class="highlight">
+            <div class="alert">GUITAR SOLO</div>
+            <div class="alert">- GUITAR CALL THE THEME 2x TO FINISH...</div>
+        </div>
+        <div class="highlight">
+            <div class="alert">KEYBOARD SOLO</div>
+            <div class="alert">- DRUMS CALL THE BAND...</div>
+        </div>
+        
+        <div class="highlight">
+            <div class="alert">BAND THEME...</div>
+        </div>
+
+    </div><div class="hr"></div>
+
+    <!-- // ------------------------------------------------------------ // -->
+
+    <div class="container" id="pain-lies-on-ther-riverside">
+        <div class="title">Pain Lies on the Riverside</div>
+        <div class="author">Live</div>
+        <div class="bpm">BPM: 125</div>
+        <div class="time">4:28</div>
+        <div class="pedal on">PEDAL DROP ON</div>
+        <button class="scroll-button">Scroll</button>
+  
+        <div class="section">INTRO</div>
+        <div class="highlight">
+          <div class="alert">DRUMS START AND BASS CALL</div>
+        </div>
+        <div class="highlight">
+          <div class="chords">| Am | Am | Dm | Dm | 2x</div>
+        </div>
+  
+        <div class="section">PARTE 1</div>
+        <div class="no-highlight">
+            <div class="lyrics">I have never taken life</div>
+            <div class="lyrics">Yet I have often paid the price</div>
+        </div>
+        <div class="no-highlight">
+            <div class="lyrics">And you, you are a victim of this age</div>
+            <div class="lyrics">And the guilt that hangs around your neck</div>
+            <div class="lyrics">Has got me locked up in a cage</div>
+        </div>
+        <div class="highlight">
+            <div class="lyrics">You've got to learn to live until no end</div><br />
+            <div class="lyrics">But first you must learn to swim</div>
+            <div class="lyrics">All over again</div>
+            <div class="lyrics">Oh no because...</div>
+        </div>
+        <div class="highlight2">
+            <div class="lyrics">Pain lies on the riverside (yes)</div>
+            <div class="lyrics">And pain will never say goodbye (no no)</div>
+            <div class="lyrics">Pain lies on the riverside</div>
+        </div>
+        <div class="highlight3">
+            <div class="lyrics">So put your feet in the water</div>
+            <div class="lyrics">Put your head in the water</div>
+            <div class="lyrics">Put your soul in the water</div>
+            <div class="lyrics"> Join me for a swim tonight</div>
+            <div class="alert">PAUSA</div>
+        </div>
+
+        <div class="section">PARTE 2</div>
+        <div class="no-highlight">
+            <div class="lyrics">I have forever, always tried</div>
+            <div class="lyrics">To stay clean and constantly baptized (oh)</div><br />
+            <div class="lyrics">I'm aware that the river's banks they are dry</div>
+            <div class="lyrics">And to wait for a flood</div>
+            <div class="lyrics">Is to wait for life</div>
+        </div>
+        <div class="highlight">
+            <div class="lyrics">I've got to learn to live until no end</div>
+            <div class="lyrics">But first I must learn to swim all over again (Yeah yeah yeah because)</div>
+        </div>
+        <div class="highlight3">
+            <div class="lyrics">Pain lies on the riverside (yeah)</div>
+            <div class="lyrics">And pain will never say goodbye (no no)</div>
+            <div class="lyrics">Pain lies on the riverside</div>          
+        </div>
+        <div class="highlight3">             
+            <div class="lyrics">So put your feet in the water</div>                 
+            <div class="lyrics">Put your head in the water</div>  
+            <div class="lyrics">C'mon put your soul in the water</div>  
+            <div class="lyrics">Join me for a swim tonight</div>  
+            <div class="lyrics">For a swim tonight</div>  
+        </div>
+
+        <div class="section">"SOLO"</div>
+        <div class="highlight">
+            <div class="chords">| Am | Am | Dm | Dm | 2x</div>
+        </div>
+
+        <div class="section">FINAL</div>
+        <div class="highlight">  
+            <div class="lyrics">I've got to learn to live until no end</div>
+            <div class="lyrics">I've got to learn to swim</div>
+            <div class="lyrics">All over, all over, all over again (Yeah yeah yeah because)</div>
+        </div>
+        <div class="highlight2">         
+            <div class="lyrics">Pain lies on the riverside (oooh nah nah nah nah)</div>
+            <div class="lyrics">And pain will never say goodbye (no no)</div>
+            <div class="lyrics">Pain lies on the riverside</div>
+        </div>
+        <div class="highlight3">  
+            <div class="lyrics">So put your feet in the water</div>
+            <div class="lyrics">Put your head in the water now</div>
+            <div class="lyrics">C'mon put your soul in the water</div>
+            <div class="lyrics">Join me for a swim tonight</div>
+        </div>
+        <div class="highlight2">             
+            <div class="lyrics">For a swim tonight</div>
+            <div class="lyrics">To swim (all over, all over, all over, all over again)</div>
+            <div class="lyrics">To live (all over, all over, all over, all over again)</div>
+            <div class="lyrics">Live (all over again)...</div>
+        </div>
+    </div><div class="hr"></div>
+
+    <!-- // ------------------------------------------------------------ // -->
+
+  </div>
+
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+
+  <script>
+    // Polyfill para closest() - Safari 9 não suporta este método
+    if (!Element.prototype.closest) {
+      Element.prototype.closest = function(selector) {
+        var el = this;
+        while (el) {
+          if (el.matches(selector)) {
+            return el;
+          }
+          el = el.parentElement;
+        }
+        return null;
+      };
+    }
+  
+    // Polyfill para scrollBehavior - Safari 9 não suporta rolagem suave
+    if (!('scrollBehavior' in document.documentElement.style)) {
+      window.smoothScrollTo = function(top, duration) {
+        var start = window.pageYOffset,
+            change = top - start,
+            currentTime = 0,
+            increment = 20;
+  
+        function animateScroll() {
+          currentTime += increment;
+          var val = Math.easeInOutQuad(currentTime, start, change, duration);
+          window.scrollTo(0, val);
+          if (currentTime < duration) {
+            setTimeout(animateScroll, increment);
+          }
+        }
+        animateScroll();
+      };
+  
+      // Easing function para suavizar a rolagem
+      Math.easeInOutQuad = function(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t + b;
+        t--;
+        return -c / 2 * (t * (t - 2) - 1) + b;
+      };
+    }
+  
+    document.addEventListener('DOMContentLoaded', function() {
+      var scrollAnimation = null;
+  
+      function smoothScroll(startTime, duration, startScrollTop, targetScrollTop, callback) {
+        var currentTime = (new Date()).getTime() - startTime;
+        var progress = currentTime / duration;
+        var easedProgress = Math.min(progress, 1);
+        var newScrollTop = startScrollTop + (targetScrollTop - startScrollTop) * easedProgress;
+        window.scrollTo(0, newScrollTop);
+  
+        if (easedProgress < 1) {
+          scrollAnimation = setTimeout(function() {
+            smoothScroll(startTime, duration, startScrollTop, targetScrollTop, callback);
+          }, 16); // Aproximadamente 60 FPS
+        } else {
+          scrollAnimation = null; // Animação completa
+          if (callback) callback(); // Executa a função de callback quando o scroll termina
+        }
+      }
+  
+      var buttons = document.querySelectorAll('.scroll-button');
+  
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', function() {
+          var button = this;
+          var container = button.closest('.container');
+  
+          // Se uma animação está rodando, pare-a e redefina o texto do botão
+          if (scrollAnimation) {
+            clearTimeout(scrollAnimation);
+            scrollAnimation = null;
+            button.textContent = 'Scroll';
+            button.classList.remove('running');
+            return;
+          }
+  
+          // Obtém o tempo da div .time
+          var timeText = container.querySelector('.time').textContent;
+          var parts = timeText.split(':');
+          var minutes = parseInt(parts[0], 10);
+          var seconds = parseInt(parts[1], 10);
+          var totalTime = (minutes * 60 + seconds) * 1000;
+  
+          // Calcula a altura do cabeçalho
+          var header = document.querySelector('header');
+          var headerHeight = header ? header.offsetHeight : 0;
+  
+          // Calcula a posição final do scroll
+          var containerRect = container.getBoundingClientRect();
+          var containerTop = containerRect.top + window.pageYOffset - headerHeight;
+          var containerBottom = containerTop + container.offsetHeight;
+          var scrollTop = window.pageYOffset;
+          var windowHeight = window.innerHeight;
+  
+          // Distância até o final do container
+          var distanceToBottom = containerBottom - (scrollTop + windowHeight);
+  
+          // Calcula o tempo ajustado proporcionalmente à distância restante
+          var adjustedTime = (distanceToBottom / container.offsetHeight) * totalTime;
+  
+          // Função de callback para pular para o próximo container
+          function scrollToNextContainer() {
+            var nextContainer = container.nextElementSibling;
+            if (nextContainer && nextContainer.classList.contains('container')) {
+              // Obter o nome da próxima música ou ID da div
+              var nextContainerName = nextContainer.id.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, function(l) {
+                return l.toUpperCase();
+              });
+  
+              // Criar um botão dinâmico para o próximo scroll
+              var nextButton = document.createElement('button');
+              nextButton.textContent = 'Go to Next: ' + nextContainerName;
+              nextButton.classList.add('next-button');
+              document.body.appendChild(nextButton);
+  
+              // Função para rolar para a próxima música
+              nextButton.addEventListener('click', function() {
+                var nextContainerTop = nextContainer.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                scrollAnimation = setTimeout(function() {
+                  smoothScroll((new Date()).getTime(), 1000, window.pageYOffset, nextContainerTop, function() {
+                    button.textContent = 'Scroll';
+                    button.classList.remove('running');
+                    nextButton.remove(); // Remove o botão ao chegar à próxima música
+                  });
+                }, 16);
+              });
+            }
+  
+            button.textContent = 'Scroll';
+            button.classList.remove('running');
+          }
+  
+          var startTime = (new Date()).getTime();
+          scrollAnimation = setTimeout(function() {
+            smoothScroll(startTime, adjustedTime, scrollTop, containerTop + container.offsetHeight - windowHeight + headerHeight, scrollToNextContainer);
+          }, 16); 
+  
+          button.textContent = 'Cancel Scroll';
+          button.classList.add('running');
+        });
+      }
+    });
+  </script>
+  
+  <!-- // -------------------------------------------------------------- // -->
+  
+  <script>
+    (function() {
+      function formatText(id) {
+        return id
+          .replace(/_/g, ' ')
+          .replace(/-/g, ' ')
+          .toLowerCase()
+          .replace(/\b\w/g, function(l) {
+            return l.toUpperCase();
+          });
+      }
+  
+      var list = document.getElementById('container-list');
+      var containers = document.querySelectorAll('.container');
+  
+      Array.prototype.slice.call(containers).forEach(function(container, index) {
+        var id = container.id;
+        if (id) {
+          var listItem = document.createElement('li');
+          var link = document.createElement('a');
+          link.href = '#' + id;
+          link.textContent = (index + 1) + '. ' + formatText(id); 
+          listItem.appendChild(link);
+          list.appendChild(listItem);
+        }
+      });
+    })();
+  </script>
+  
+  <!-- // -------------------------------------------------------------- // -->
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var lyricsDivs = document.querySelectorAll('.chords');
+  
+      for (var i = 0; i < lyricsDivs.length; i++) {
+        var content = lyricsDivs[i].innerHTML;
+        var firstPipeReplaced = false;
+  
+        var newContent = content.split('').map(function(char) {
+          if (char === '|' && !firstPipeReplaced) {
+            firstPipeReplaced = true;
+            return '<span class="first-pipe">|</span>';
+          } else if (char === '|') {
+            return '<span class="highlighted-char">|</span>';
+          } else {
+            return char;
+          }
+        }).join('');
+  
+        lyricsDivs[i].innerHTML = newContent;
+      }
+    });
+  
+    document.getElementById('scroll-top').addEventListener('click', function(e) {
+      if ('scrollBehavior' in document.documentElement.style) {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      } else {
+        window.smoothScrollTo(0, 500); // Polyfill para rolagem suave
+      }
+    });
+  </script>
+
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+
+</body>
+</html>
