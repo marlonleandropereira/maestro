@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAESTRO v0.21</title>
+
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+
+  <style>
+    pre {
+      white-space: pre-line;
+      font-size: 16px;
+    }
+  
+    body {
+      background-color: #111;
+      font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #f5f5f5;
+      -webkit-transition: background-color 0.3s, color 0.3s;
+      transition: background-color 0.3s, color 0.3s;
+      max-width: 728px;
+      margin: 0 auto; /* Centraliza o conteúdo na tela */
+    }
+  
+    .hr {
+      border: none;
+      border-top: 1px solid #333;
+      margin: 60px 0px;
+    }
+  
+    .page {
+      max-width: 768px;
+      width: 100%; /* Garantir que a página se ajuste ao máximo de 768px */
+      margin: 0 auto;
+    }
+  
+    .container {
+      padding: 0px 5px;
+      position: relative;
+      z-index: 1;
+    }
+  
+    /* --------------------------------------------------------------------- */
+  
+    .title {
+      font-weight: bold;
+      color: #fff;
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+  
+    .author {
+      font-weight: bold;
+      color: #888;
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+  
+    .bpm {
+      font-weight: bold;
+      color: #555;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+  
+    .section {
+      color: #f39c12;
+      font-weight: bold;
+      font-size: 20px;
+      margin-top: 25px;
+      margin-bottom: 10px;
+    }
+
+    .pedal.on {
+        color: #e74c3c;
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+    .pedal.off {
+        color: #2ecc71;
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+  
+  
+    /* --------------------------------------------------------------------- */
+  
+    .highlighted-char, .first-pipe {
+      color: #bdc3c7;
+      font-size: 10px;
+      font-weight: normal !important;
+    }
+  
+    .chords, .lyrics, .comment, .alert {
+      font-size: 18px;
+      margin-bottom: 9px;
+    }
+  
+    .chords {
+      font-weight: bold;
+      color: #1abc9c;
+      white-space: pre-wrap;
+      word-spacing: 20px;
+    }
+  
+    .lyrics {
+      color: #bdc3c7;
+    }
+  
+    .comment {
+      color: #999;
+      font-weight: bold;
+    }
+  
+    .alert {
+      color: #fff;
+      font-weight: bold;
+    }
+  
+    .no-highlight,
+    .highlight, 
+    .highlight2, 
+    .highlight3 {
+      border-radius: 0px;
+      margin: 0px -15px 15px !important;
+      padding: 15px 15px 10px !important;
+      border-left: none !important;
+      border-right: none !important;
+    }
+  
+    .no-highlight {
+      padding: 0px 0px 0px !important;
+      margin: 0px 0px 15px !important;
+    }
+  
+    .highlight {
+      background-color: #222;
+      border: 1px solid #666;
+    }
+  
+    .highlight2 {
+      background-color: #333;
+      border: 1px solid #777;
+    }
+  
+    .highlight3 {
+      background-color: #444;
+      border: 1px solid #888;
+    }
+  
+    .new-line {
+      margin-top: 40px;
+    }
+  
+    .time {
+      display: none;
+    }
+  
+    .scroll-button {
+      float: right;
+      margin-top: -100px;
+      height: 40px;
+      width: 60px;
+      background-color: #1abc9c;
+      color: white;
+      border: none;
+      text-align: center;
+      font-size: 12px;
+      cursor: pointer;
+      z-index: 9999;
+      font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
+      font-weight: bold;
+      height: 60px;
+      width: 60px;
+      border-radius: 10px; /* Corrigido para formato padrão */
+    }
+
+    .scroll-top {
+      position: fixed;
+      height: 30px;
+      width: 50px;
+      background-color: #9b59b6;
+      color: white;
+      border: none;
+      text-align: center;
+      font-size: 12px;
+      cursor: pointer;
+      z-index: 99;
+      font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
+      font-weight: bold;
+      right: 0; /* Corrigido para '0' sem 'px' */
+      top: 0;   /* Corrigido para '0' sem 'px' */
+      border-radius: 0 0 0 10px; /* Corrigido para formato padrão */
+      line-height: 30px; /* Alinha o texto verticalmente */
+      opacity: 0.7; /* 70% opacidade */
+    }
+  
+    .scroll-button.running {
+      height: 60px;
+      width: 60px;
+      position: fixed;
+      bottom: 0px;
+      right: 0px;
+      background-color: #e74c3c;
+      z-index: 99999 !important;
+      border-radius: 10px 0px 0px 0px; /* Corrigido para formato padrão */
+      opacity: 0.7; /* 70% opacidade */
+    }
+      
+    /* --------------------------------------------------------------------- */
+  
+    #container-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        margin-bottom: 80px;
+    }
+    #container-list li {
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+    a.index,
+    #container-list a {
+        text-decoration: none;
+        color: #fff;
+        font-size: 18px;
+        -webkit-transition: color 0.3s;
+        transition: color 0.3s;
+        display: block;
+        padding: 20px;
+        background-color: #d85675;
+        border-radius: 10px;
+    }
+    #container-list a:hover {
+        color: #eee;
+        text-decoration: underline;
+    }
+
+    a.index {
+      text-align: center;
+      background-color: #e74c3c;
+    }
+  
+    /* --------------------------------------------------------------------- */
+  
+  </style>
+
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+
+</head>
+<body>
+
+  <br /><a href="index.html" class="button index">GO TO HOME</a>
+
+  <h1>Stone Shelter - Maestro v0.21</h1>
+  <h1>29-Set-2024 - Sumaré</h1>
+
+
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+
+  <div class="page" id="page">
+
+    <!-- // ------------------------------------------------------------ // -->
+
+    <ul id="container-list"></ul>
+
+    <button href="#page" id="scroll-top" class="scroll-top">Menu</button>
+    <div class="hr"></div>
+
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+
+    
+
+    <div class="container" id="carry-on-wayward-son">
+    </div><div class="hr"></div>
+
+    <div class="container" id="november-rain">
+    </div><div class="hr"></div>
+
+    <div class="container" id="power-of-love">
+    </div><div class="hr"></div>
+
+    <div class="container" id="no-more-tears">
+    </div><div class="hr"></div>
+
+    <div class="container" id="dream-on">
+    </div><div class="hr"></div>
+
+    <div class="container" id="rebel-yell">
+    </div><div class="hr"></div>
+
+    <div class="container" id="detroit-rock-city">
+    </div><div class="hr"></div>
+
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+    <!-- // ------------------------------------------------------------ // -->
+
+  </div>
+
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+
+  <script>
+    // Polyfill para closest() - Safari 9 não suporta este método
+    if (!Element.prototype.closest) {
+      Element.prototype.closest = function(selector) {
+        var el = this;
+        while (el) {
+          if (el.matches(selector)) {
+            return el;
+          }
+          el = el.parentElement;
+        }
+        return null;
+      };
+    }
+  
+    // Polyfill para scrollBehavior - Safari 9 não suporta rolagem suave
+    if (!('scrollBehavior' in document.documentElement.style)) {
+      window.smoothScrollTo = function(top, duration) {
+        var start = window.pageYOffset,
+            change = top - start,
+            currentTime = 0,
+            increment = 20;
+  
+        function animateScroll() {
+          currentTime += increment;
+          var val = Math.easeInOutQuad(currentTime, start, change, duration);
+          window.scrollTo(0, val);
+          if (currentTime < duration) {
+            setTimeout(animateScroll, increment);
+          }
+        }
+        animateScroll();
+      };
+  
+      // Easing function para suavizar a rolagem
+      Math.easeInOutQuad = function(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t + b;
+        t--;
+        return -c / 2 * (t * (t - 2) - 1) + b;
+      };
+    }
+  
+    document.addEventListener('DOMContentLoaded', function() {
+      var scrollAnimation = null;
+  
+      function smoothScroll(startTime, duration, startScrollTop, targetScrollTop, callback) {
+        var currentTime = (new Date()).getTime() - startTime;
+        var progress = currentTime / duration;
+        var easedProgress = Math.min(progress, 1);
+        var newScrollTop = startScrollTop + (targetScrollTop - startScrollTop) * easedProgress;
+        window.scrollTo(0, newScrollTop);
+  
+        if (easedProgress < 1) {
+          scrollAnimation = setTimeout(function() {
+            smoothScroll(startTime, duration, startScrollTop, targetScrollTop, callback);
+          }, 16); // Aproximadamente 60 FPS
+        } else {
+          scrollAnimation = null; // Animação completa
+          if (callback) callback(); // Executa a função de callback quando o scroll termina
+        }
+      }
+  
+      var buttons = document.querySelectorAll('.scroll-button');
+  
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', function() {
+          var button = this;
+          var container = button.closest('.container');
+  
+          // Se uma animação está rodando, pare-a e redefina o texto do botão
+          if (scrollAnimation) {
+            clearTimeout(scrollAnimation);
+            scrollAnimation = null;
+            button.textContent = 'Scroll';
+            button.classList.remove('running');
+            return;
+          }
+  
+          // Obtém o tempo da div .time
+          var timeText = container.querySelector('.time').textContent;
+          var parts = timeText.split(':');
+          var minutes = parseInt(parts[0], 10);
+          var seconds = parseInt(parts[1], 10);
+          var totalTime = (minutes * 60 + seconds) * 1000;
+  
+          // Calcula a altura do cabeçalho
+          var header = document.querySelector('header');
+          var headerHeight = header ? header.offsetHeight : 0;
+  
+          // Calcula a posição final do scroll
+          var containerRect = container.getBoundingClientRect();
+          var containerTop = containerRect.top + window.pageYOffset - headerHeight;
+          var containerBottom = containerTop + container.offsetHeight;
+          var scrollTop = window.pageYOffset;
+          var windowHeight = window.innerHeight;
+  
+          // Distância até o final do container
+          var distanceToBottom = containerBottom - (scrollTop + windowHeight);
+  
+          // Calcula o tempo ajustado proporcionalmente à distância restante
+          var adjustedTime = (distanceToBottom / container.offsetHeight) * totalTime;
+  
+          // Função de callback para pular para o próximo container
+          function scrollToNextContainer() {
+            var nextContainer = container.nextElementSibling;
+            if (nextContainer && nextContainer.classList.contains('container')) {
+              // Obter o nome da próxima música ou ID da div
+              var nextContainerName = nextContainer.id.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, function(l) {
+                return l.toUpperCase();
+              });
+  
+              // Criar um botão dinâmico para o próximo scroll
+              var nextButton = document.createElement('button');
+              nextButton.textContent = 'Go to Next: ' + nextContainerName;
+              nextButton.classList.add('next-button');
+              document.body.appendChild(nextButton);
+  
+              // Função para rolar para a próxima música
+              nextButton.addEventListener('click', function() {
+                var nextContainerTop = nextContainer.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                scrollAnimation = setTimeout(function() {
+                  smoothScroll((new Date()).getTime(), 1000, window.pageYOffset, nextContainerTop, function() {
+                    button.textContent = 'Scroll';
+                    button.classList.remove('running');
+                    nextButton.remove(); // Remove o botão ao chegar à próxima música
+                  });
+                }, 16);
+              });
+            }
+  
+            button.textContent = 'Scroll';
+            button.classList.remove('running');
+          }
+  
+          var startTime = (new Date()).getTime();
+          scrollAnimation = setTimeout(function() {
+            smoothScroll(startTime, adjustedTime, scrollTop, containerTop + container.offsetHeight - windowHeight + headerHeight, scrollToNextContainer);
+          }, 16); 
+  
+          button.textContent = 'Cancel Scroll';
+          button.classList.add('running');
+        });
+      }
+    });
+  </script>
+  
+  <!-- // -------------------------------------------------------------- // -->
+  
+  <script>
+    (function() {
+      function formatText(id) {
+        return id
+          .replace(/_/g, ' ')
+          .replace(/-/g, ' ')
+          .toLowerCase()
+          .replace(/\b\w/g, function(l) {
+            return l.toUpperCase();
+          });
+      }
+  
+      var list = document.getElementById('container-list');
+      var containers = document.querySelectorAll('.container');
+  
+      Array.prototype.slice.call(containers).forEach(function(container, index) {
+        var id = container.id;
+        if (id) {
+          var listItem = document.createElement('li');
+          var link = document.createElement('a');
+          link.href = '#' + id;
+          link.textContent = (index + 1) + '. ' + formatText(id); 
+          listItem.appendChild(link);
+          list.appendChild(listItem);
+        }
+      });
+    })();
+  </script>
+  
+  <!-- // -------------------------------------------------------------- // -->
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var lyricsDivs = document.querySelectorAll('.chords');
+  
+      for (var i = 0; i < lyricsDivs.length; i++) {
+        var content = lyricsDivs[i].innerHTML;
+        var firstPipeReplaced = false;
+  
+        var newContent = content.split('').map(function(char) {
+          if (char === '|' && !firstPipeReplaced) {
+            firstPipeReplaced = true;
+            return '<span class="first-pipe">|</span>';
+          } else if (char === '|') {
+            return '<span class="highlighted-char">|</span>';
+          } else {
+            return char;
+          }
+        }).join('');
+  
+        lyricsDivs[i].innerHTML = newContent;
+      }
+    });
+  
+    document.getElementById('scroll-top').addEventListener('click', function(e) {
+      if ('scrollBehavior' in document.documentElement.style) {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      } else {
+        window.smoothScrollTo(0, 500); // Polyfill para rolagem suave
+      }
+    });
+  </script>
+
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+  <!--// --------------------------------------------------------------- // -->
+
+</body>
+</html>

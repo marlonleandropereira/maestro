@@ -1,231 +1,246 @@
 pre {
-      white-space: pre-line;
-      font-size: 16px;
-    }
-  
-    body {
-      background-color: #111;
-      font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
-      margin: 0;
+    white-space: pre-line;
+    font-size: 16px;
+  }
+
+  body {
+    background-color: #111;
+    font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #f5f5f5;
+    -webkit-transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.3s, color 0.3s;
+    max-width: 728px;
+    margin: 0 auto; /* Centraliza o conteúdo na tela */
+  }
+
+  .hr {
+    border: none;
+    border-top: 1px solid #333;
+    margin: 60px 0px;
+  }
+
+  .page {
+    max-width: 768px;
+    width: 100%; /* Garantir que a página se ajuste ao máximo de 768px */
+    margin: 0 auto;
+  }
+
+  .container {
+    padding: 0px 5px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* --------------------------------------------------------------------- */
+
+  .logo-bar {
+    width: 200px;
+    margin: 20px auto;
+    display: block;
+  }
+
+  .title {
+    font-weight: bold;
+    color: #fff;
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+
+  .author {
+    font-weight: bold;
+    color: #888;
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  .bpm {
+    font-weight: bold;
+    color: #555;
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .section {
+    color: #f39c12;
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+  }
+
+  /* --------------------------------------------------------------------- */
+
+  .highlighted-char, .first-pipe {
+    color: #bdc3c7;
+    font-size: 10px;
+    font-weight: normal !important;
+  }
+
+  .chords, .lyrics, .comment, .alert {
+    font-size: 18px;
+    margin-bottom: 9px;
+  }
+
+  .chords {
+    font-weight: bold;
+    color: #1abc9c;
+    white-space: pre-wrap;
+    word-spacing: 20px;
+  }
+
+  .lyrics {
+    color: #bdc3c7;
+  }
+
+  .comment {
+    color: #999;
+    font-weight: bold;
+  }
+
+  .alert {
+    color: #fff;
+    font-weight: bold;
+  }
+
+  .no-highlight,
+  .highlight, 
+  .highlight2, 
+  .highlight3 {
+    border-radius: 0px;
+    margin: 0px -15px 15px !important;
+    padding: 15px 15px 10px !important;
+    border-left: none !important;
+    border-right: none !important;
+  }
+
+  .no-highlight {
+    padding: 0px 0px 0px !important;
+    margin: 0px 0px 15px !important;
+  }
+
+  .highlight {
+    background-color: #222;
+    border: 1px solid #666;
+  }
+
+  .highlight2 {
+    background-color: #333;
+    border: 1px solid #777;
+  }
+
+  .highlight3 {
+    background-color: #444;
+    border: 1px solid #888;
+  }
+
+  .new-line {
+    margin-top: 40px;
+  }
+
+  .time {
+    display: none;
+  }
+
+  .scroll-button {
+    float: right;
+    margin-top: -100px;
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    text-align: center;
+    font-size: 12px;
+    cursor: pointer;
+    z-index: 9999;
+    font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    height: 80px;
+    width: 80px;
+    border-radius: 10px; /* Corrigido para formato padrão */
+  }
+
+  .scroll-top {
+    position: fixed;
+    height: 100px;
+    width: 100px;
+    background-color: #d85675;
+    color: white;
+    border: none;
+    text-align: center;
+    font-size: 12px;
+    cursor: pointer;
+    z-index: 99;
+    font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    right: 0; /* Corrigido para '0' sem 'px' */
+    top: 0;   /* Corrigido para '0' sem 'px' */
+    border-radius: 0 0 0 10px; /* Corrigido para formato padrão */
+    line-height: 30px; /* Alinha o texto verticalmente */
+    opacity: 0.4; /* 70% opacidade */
+  }
+
+  .scroll-button.running {      
+    height: 100px;
+    width: 100px;
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    background-color: #e74c3c;
+    z-index: 99999 !important;
+    border-radius: 10px 0px 0px 0px; /* Corrigido para formato padrão */
+    opacity: 0.7; /* 70% opacidade */
+  }
+    
+  /* --------------------------------------------------------------------- */
+
+  #container-list {
+      list-style-type: none;
       padding: 0;
-      color: #f5f5f5;
-      -webkit-transition: background-color 0.3s, color 0.3s;
-      transition: background-color 0.3s, color 0.3s;
-      max-width: 728px;
-      margin: 0 auto; /* Centraliza o conteúdo na tela */
-    }
-  
-    .hr {
-      border: none;
-      border-top: 1px solid #333;
-      margin: 60px 0px;
-    }
-  
-    .page {
-      max-width: 768px;
-      width: 100%; /* Garantir que a página se ajuste ao máximo de 768px */
-      margin: 0 auto;
-    }
-  
-    .container {
-      padding: 0px 5px;
-      position: relative;
-      z-index: 1;
-    }
-  
-    /* --------------------------------------------------------------------- */
-  
-    .title {
-      font-weight: bold;
+      margin: 0;
+      margin-bottom: 80px;
+  }
+  #container-list li {
+      box-sizing: border-box;
+      margin-bottom: 10px;
+  }
+  #container-list a {
+      text-decoration: none;
       color: #fff;
-      font-size: 32px;
-      margin-bottom: 10px;
-    }
-  
-    .author {
-      font-weight: bold;
-      color: #888;
-      font-size: 22px;
-      margin-bottom: 10px;
-    }
-  
-    .bpm {
-      font-weight: bold;
-      color: #555;
       font-size: 18px;
-      margin-bottom: 15px;
-    }
-  
-    .section {
-      color: #f39c12;
-      font-weight: bold;
-      font-size: 20px;
-      margin-top: 25px;
-      margin-bottom: 10px;
-    }
+      -webkit-transition: color 0.3s;
+      transition: color 0.3s;
+      display: block;
+      padding: 20px;
+      background-color: #d85675;
+      border-radius: 10px;
+  }
+  #container-list a:hover {
+      color: #eee;
+      text-decoration: underline;
+  }
 
-    .pedal.on {
-        color: #e74c3c;
-        font-weight: bold;
-        font-size: 18px;
-        margin-bottom: 15px;
-    }
-    .pedal.off {
-        color: #2ecc71;
-        font-weight: bold;
-        font-size: 18px;
-        margin-bottom: 15px;
-    }
-  
-  
-    /* --------------------------------------------------------------------- */
-  
-    .highlighted-char, .first-pipe {
-      color: #bdc3c7;
-      font-size: 10px;
-      font-weight: normal !important;
-    }
-  
-    .chords, .lyrics, .comment, .alert {
-      font-size: 18px;
-      margin-bottom: 9px;
-    }
-  
-    .chords {
-      font-weight: bold;
-      color: #1abc9c;
-      white-space: pre-wrap;
-      word-spacing: 20px;
-    }
-  
-    .lyrics {
-      color: #bdc3c7;
-    }
-  
-    .comment {
-      color: #999;
-      font-weight: bold;
-    }
-  
-    .alert {
-      color: #fff;
-      font-weight: bold;
-    }
-  
-    .no-highlight,
-    .highlight, 
-    .highlight2, 
-    .highlight3 {
-      border-radius: 0px;
-      margin: 0px -15px 15px !important;
-      padding: 15px 15px 10px !important;
-      border-left: none !important;
-      border-right: none !important;
-    }
-  
-    .no-highlight {
-      padding: 0px 0px 0px !important;
-      margin: 0px 0px 15px !important;
-    }
-  
-    .highlight {
-      background-color: #222;
-      border: 1px solid #666;
-    }
-  
-    .highlight2 {
-      background-color: #333;
-      border: 1px solid #777;
-    }
-  
-    .highlight3 {
-      background-color: #444;
-      border: 1px solid #888;
-    }
-  
-    .new-line {
-      margin-top: 40px;
-    }
-  
-    .time {
-      display: none;
-    }
-  
-    .scroll-button {
-      float: right;
-      margin-top: -100px;
-      height: 40px;
-      width: 60px;
-      background-color: #1abc9c;
-      color: white;
-      border: none;
-      text-align: center;
-      font-size: 12px;
-      cursor: pointer;
-      z-index: 9999;
-      font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
-      font-weight: bold;
-      height: 60px;
-      width: 60px;
-      border-radius: 10px; /* Corrigido para formato padrão */
-    }
 
-    .scroll-top {
-      position: fixed;
-      height: 30px;
-      width: 50px;
-      background-color: #9b59b6;
-      color: white;
-      border: none;
-      text-align: center;
-      font-size: 12px;
-      cursor: pointer;
-      z-index: 99;
-      font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
-      font-weight: bold;
-      right: 0; /* Corrigido para '0' sem 'px' */
-      top: 0;   /* Corrigido para '0' sem 'px' */
-      border-radius: 0 0 0 10px; /* Corrigido para formato padrão */
-      line-height: 30px; /* Alinha o texto verticalmente */
-      opacity: 0.7; /* 70% opacidade */
-    }
-  
-    .scroll-button.running {
-      height: 60px;
-      width: 60px;
-      position: fixed;
-      bottom: 0px;
-      right: 0px;
-      background-color: #e74c3c;
-      z-index: 99999 !important;
-      border-radius: 10px 0px 0px 0px; /* Corrigido para formato padrão */
-      opacity: 0.7; /* 70% opacidade */
-    }
-      
-    /* --------------------------------------------------------------------- */
-  
-    #container-list {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-        margin-bottom: 80px;
-    }
-    #container-list li {
-        box-sizing: border-box;
-        margin-bottom: 10px;
-    }
-    #container-list a {
-        text-decoration: none;
-        color: #fff;
-        font-size: 18px;
-        -webkit-transition: color 0.3s;
-        transition: color 0.3s;
-        display: block;
-        padding: 20px;
-        background-color: #555;
-        border-radius: 10px;
-    }
-    #container-list a:hover {
-        color: #eee;
-        text-decoration: underline;
-    }
+/* .home */
+.button {
+    max-width: 728px;
+    background-color: #d85675;
+    color: white;
+    font-size: 18px;
+    padding: 40px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+    display: block;
+}
+
+.button:hover {
+    background-color: #c53d5e;
+}
+
+.button:active {
+    background-color: #d85675;
+}
