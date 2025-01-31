@@ -161,9 +161,45 @@ body {
   display: none;
 }
 
+.previous-button {
+  float: right;
+  margin-top: -180px;
+  margin-right: 200px;
+  background-color: #1abc9c;
+  color: white;
+  border: none;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
+  z-index: 9999;
+  font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
+  height: 80px;
+  width: 80px;
+  border-radius: 10px; /* Corrigido para formato padrão */
+}
+
+.next-button {
+  float: right;
+  margin-top: -180px;
+  margin-right: 100px;
+  background-color: #1abc9c;
+  color: white;
+  border: none;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
+  z-index: 9999;
+  font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
+  height: 80px;
+  width: 80px;
+  border-radius: 10px; /* Corrigido para formato padrão */
+}
+
 .scroll-button {
   float: right;
-  margin-top: -100px;
+  margin-top: -180px;
   background-color: #1abc9c;
   color: white;
   border: none;
