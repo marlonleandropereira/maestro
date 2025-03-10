@@ -83,7 +83,7 @@ body {
 
 .chords, .lyrics, .comment, .alert {
   font-size: 18px;
-  margin: 10px 0px !important;
+  margin: 5px 0px !important;
 }
 
 .chords {
@@ -128,7 +128,7 @@ body {
 .highlight3 {
   border-radius: 0px;
   margin: 0px -15px 15px !important;
-  padding: 10px 15px 10px !important;
+  padding: 5px 15px 5px !important;
   border-left: none !important;
   border-right: none !important;
 }
@@ -199,7 +199,7 @@ body {
 
 .scroll-button {
   float: right;
-  margin-top: -180px;
+  margin-top: -120px;
   background-color: #1abc9c;
   color: white;
   border: none;
@@ -297,4 +297,172 @@ body {
 
 .button:active {
     background-color: #d85675;
+}
+
+/** NEW COLORS **/
+pre {
+  white-space: pre-line;
+  font-size: 16px;
+}
+pre.minor {
+  font-size: 14px;
+}
+
+body {
+  background-color: #000;
+  font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #ffffff;
+  -webkit-transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.3s, color 0.3s;
+  max-width: 728px;
+  margin: 0 auto;
+}
+
+.hr {
+  border: none;
+  border-top: 1px solid #444;
+  margin: 60px 0px;
+}
+
+.page {
+  max-width: 768px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.container {
+  padding: 0px 5px;
+  position: relative;
+  z-index: 1;
+}
+
+.logo-bar {
+  width: 200px;
+  margin: 20px auto;
+  display: block;
+}
+
+.title {
+  font-weight: bold;
+  color: #ffcc00;
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.author {
+  font-weight: bold;
+  color: #cccccc;
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.bpm {
+  font-weight: bold;
+  color: #aaaaaa;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.section {
+  color: #ff9900;
+  font-weight: bold;
+  font-size: 20px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.highlighted-char, .first-pipe {
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: normal !important;
+}
+
+.chords {
+  font-weight: bold;
+  color: #66ff66;
+  white-space: pre-wrap;
+  word-spacing: 20px;
+}
+
+.lyrics {
+  color: #ffffff;
+}
+
+.comment {
+  color: #999999;
+  font-weight: bold;
+}
+
+.alert {
+  color: #ff6666;
+  font-weight: bold;
+}
+
+.pedal {
+  font-weight: bold;
+  padding: 20px;
+}
+
+.pedal.off {
+  color: #ffffff;
+  background-color: #008000;
+}
+
+.pedal.on {
+  font-weight: bold;
+  background-color: #ff0000;
+}
+
+.highlight {
+  background-color: #222222;
+  border: 1px solid #555555;
+}
+
+.highlight2 {
+  background-color: #333333;
+  border: 1px solid #666666;
+}
+
+.highlight3 {
+  background-color: #444444;
+  border: 1px solid #777777;
+}
+
+.previous-button, .next-button, .scroll-button {
+  background-color: #ffcc00;
+  color: #000000;
+}
+
+.scroll-top {
+  background-color: #ffcc00;
+  color: #000000;
+}
+
+.scroll-button.running {
+  background-color: #ff4444;
+  opacity: 0.9;
+}
+
+#container-list a {
+  background-color: #ffcc00;
+  color: #000000;
+}
+
+#container-list a:hover {
+  color: #ffffff;
+}
+
+.button {
+  background-color: #ffcc00;
+  color: #000000;
+}
+
+.button:hover {
+  background-color: #ffaa00;
+}
+
+.button:active {
+  background-color: #ffcc00;
 }
