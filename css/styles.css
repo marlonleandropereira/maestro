@@ -2,6 +2,12 @@ pre {
   white-space: pre-line;
   font-size: 16px;
 }
+pre.chords {
+  color: #66ff66;
+  margin-bottom: 0px;
+  font-weight: normal;
+  font-size: 16px;
+}
 pre.minor {
   font-size: 14px;
 }
@@ -56,13 +62,6 @@ body {
   color: #999;
   font-size: 22px;
   margin-bottom: 10px;
-}
-
-.bpm {
-  font-weight: bold;
-  color: #555;
-  font-size: 18px;
-  margin-bottom: 15px;
 }
 
 .section {
@@ -359,6 +358,13 @@ body {
 }
 
 .bpm {
+  font-weight: bold;
+  color: #aaaaaa;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.key {
   font-weight: bold;
   color: #aaaaaa;
   font-size: 18px;
