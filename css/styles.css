@@ -321,7 +321,7 @@ body {
 
 .hr {
   border: none;
-  border-top: 1px solid #444;
+  border-top: 10px solid #BBB;
   margin: 60px 0px;
 }
 
@@ -380,14 +380,15 @@ body {
 }
 
 .highlighted-char, .first-pipe {
-  color: #ffffff;
-  font-size: 10px;
+  color: #9b9292;
+  font-size: 20px;
   font-weight: normal !important;
 }
 
 .chords {
   font-weight: bold;
   color: #66ff66;
+  color: #ff6666;
   white-space: pre-wrap;
   word-spacing: 20px;
 }
