@@ -387,10 +387,15 @@ body {
 
 .chords {
   font-weight: bold;
-  color: #66ff66;
-  color: #ff6666;
   white-space: pre-wrap;
   word-spacing: 20px;
+  color: #66ff66;
+
+
+  /*
+  color: #ffcc00;
+  color: #ff6666;
+  */
 }
 
 .lyrics {
