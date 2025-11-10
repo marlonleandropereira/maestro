@@ -4,62 +4,59 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 10px;
-}
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 10px;
+  }
 
-.line {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
-}
+  .line {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
 
-.section {
-  display: table-cell;
-  width: 40px;
-  vertical-align: middle;
-  text-align: center;
-  background: #f4f4f4;
-  position: relative;
-}
+  .section {
+    display: table-cell;
+    width: 36px;
+    vertical-align: middle;
+    text-align: center;
+    background: #f4f4f4;
+    padding: 6px 4px;
+    box-sizing: border-box;
+  }
 
-.vertical-letters {
-  position: relative;
-  height: 200px; /* ajuste para controlar a altura da coluna */
-  width: 100%;
-}
+  .vertical-letters {
+    display: inline-block;
+    line-height: 1;
+  }
 
-.vertical-letters span {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-weight: bold;
-  font-size: 12px;
-}
+  .vertical-letters span {
+    display: block;
+    font-weight: bold;
+    font-size: 12px;
+  }
 
-/* conteúdo principal */
-.content {
-  display: table-cell;
-  padding-left: 12px;
-  vertical-align: middle;
-}
+  .content {
+    display: table-cell;
+    padding-left: 12px;
+    vertical-align: middle;
+  }
 
-.chords {
-  font-weight: bold;
-  margin-top: 6px;
-}
+  .chords {
+    font-weight: bold;
+    margin-top: 6px;
+  }
 
-.lyrics {
-  margin-bottom: 8px;
-}
+  .lyrics {
+    margin-bottom: 8px;
+  }
 </style>
 </head>
 <body>
 
 <div class="line">
-  <div class="section" id="side-1" data-text="VERSO 1">
+  <div class="section" id="side-1" data-text="1 OSREV">
     <div class="vertical-letters"></div>
   </div>
 
@@ -85,19 +82,15 @@ body {
     var container = el.querySelector('.vertical-letters');
     container.innerHTML = '';
 
-    // calcula espaçamento entre letras
-    var spacing = 16; // px
-    var start = 0;    // parte de baixo
-
-    for (var i = 0; i < txt.length; i++) {
+    // adiciona as letras de TRÁS pra FRENTE, pra ficarem empilhadas de baixo pra cima
+    for (var i = txt.length - 1; i >= 0; i--) {
       var ch = txt.charAt(i);
-      var safe = ch === ' ' ? '&nbsp;' :
-                 ch.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-
-      var y = start + i * spacing;
-      container.insertAdjacentHTML('afterbegin',
-        '<span style="bottom:'+y+'px">'+safe+'</span>'
-      );
+      if (ch === ' ') {
+        container.insertAdjacentHTML('beforeend', '<span>&nbsp;</span>');
+      } else {
+        var safe = ch.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        container.insertAdjacentHTML('beforeend', '<span>'+safe+'</span>');
+      }
     }
   }
 
