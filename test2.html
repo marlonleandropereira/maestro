@@ -4,44 +4,56 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
-  body { font-family: Arial, sans-serif; margin: 0; padding: 10px; }
-  .line { display: table; width: 100%; table-layout: fixed; }
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 10px;
+}
 
-  .section {
-    display: table-cell;
-    width: 36px;
-    vertical-align: middle;
-    text-align: center;
-    background: #f4f4f4;
-    padding: 6px 4px;
-    box-sizing: border-box;
-  }
+.line {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
 
-  .vertical-letters {
-    display: inline-block;
-    line-height: 1;
-    white-space: nowrap;
-    /* Inverte o contêiner para o texto subir de baixo pra cima */
-    transform: rotate(180deg);
-    -webkit-transform: rotate(180deg);
-  }
+.section {
+  display: table-cell;
+  width: 40px;
+  vertical-align: middle;
+  text-align: center;
+  background: #f4f4f4;
+  position: relative;
+}
 
-  .vertical-letters span {
-    display: block;
-    transform: rotate(180deg);
-    -webkit-transform: rotate(180deg);
-    font-weight: bold;
-    font-size: 12px;
-  }
+.vertical-letters {
+  position: relative;
+  height: 200px; /* ajuste para controlar a altura da coluna */
+  width: 100%;
+}
 
-  .content {
-    display: table-cell;
-    padding-left: 12px;
-    vertical-align: middle;
-  }
+.vertical-letters span {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
+  font-size: 12px;
+}
 
-  .chords { font-weight: bold; margin-top: 6px; }
-  .lyrics { margin-bottom: 8px; }
+/* conteúdo principal */
+.content {
+  display: table-cell;
+  padding-left: 12px;
+  vertical-align: middle;
+}
+
+.chords {
+  font-weight: bold;
+  margin-top: 6px;
+}
+
+.lyrics {
+  margin-bottom: 8px;
+}
 </style>
 </head>
 <body>
@@ -73,14 +85,19 @@
     var container = el.querySelector('.vertical-letters');
     container.innerHTML = '';
 
+    // calcula espaçamento entre letras
+    var spacing = 16; // px
+    var start = 0;    // parte de baixo
+
     for (var i = 0; i < txt.length; i++) {
       var ch = txt.charAt(i);
-      if (ch === ' ') {
-        container.insertAdjacentHTML('beforeend', '<span>&nbsp;</span>');
-      } else {
-        var safe = ch.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-        container.insertAdjacentHTML('beforeend', '<span>'+safe+'</span>');
-      }
+      var safe = ch === ' ' ? '&nbsp;' :
+                 ch.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+      var y = start + i * spacing;
+      container.insertAdjacentHTML('afterbegin',
+        '<span style="bottom:'+y+'px">'+safe+'</span>'
+      );
     }
   }
 
