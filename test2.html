@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  body { font-family: Arial, sans-serif; margin: 0; padding: 10px; }
+  /* container principal: usa table para compatibilidade */
+  .line { display: table; width: 100%; table-layout: fixed; }
+  /* coluna lateral fixa */
+  .section {
+    display: table-cell;
+    width: 36px;               /* ajuste aqui a largura da faixa lateral */
+    vertical-align: middle;
+    text-align: center;
+    background: #f4f4f4;
+    padding: 6px 4px;
+    box-sizing: border-box;
+  }
+  /* contêiner que vai receber os spans de letras empilhados */
+  .vertical-letters {
+    display: inline-block;     /* conteúdo centralizado */
+    line-height: 1;
+    white-space: nowrap;
+  }
+  /* cada letra vira um bloco (empilha) */
+  .vertical-letters span.letter {
+    display: block;
+    font-weight: bold;
+    font-size: 12px;           /* ajuste o tamanho conforme quiser */
+    margin: 0;
+    padding: 0;
+    letter-spacing: 0;
+  }
+  /* um pequeno espaçamento para espaços (entre palavras) */
+  .vertical-letters span.space {
+    display: block;
+    height: 6px;
+  }
+
+  /* conteúdo (letras e cifras) */
+  .content {
+    display: table-cell;
+    padding-left: 12px;
+    vertical-align: middle;
+  }
+
+  .chords { font-weight: bold; margin-top: 6px; }
+  .lyrics { margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<div class="line">
+  <div class="section" id="side-1" data-text="VERSO 1">
+    <!-- JavaScript vai popular aqui com spans -->
+    <div class="vertical-letters"></div>
+  </div>
+
+  <div class="content">
+    <div class="chords">| F#m | - | - | Bm |</div>
+    <div class="lyrics">We're leavin' together | But still it's farewell</div>
+
+    <div class="chords">| F#m | - | F#m G#m | A |</div>
+    <div class="lyrics">And maybe we'll come back | To Earth, who can tell?</div>
+
+    <div class="chords">| D | E | A G#m | F#m E |</div>
+    <div class="lyrics">I guess there is no one to blame | We're leaving ground (leaving ground)</div>
+
+    <div class="chords">| D | C#m | E | - |</div>
+    <div class="lyrics">Will things ever be the same again?</div>
+  </div>
+</div>
+
+<script>
+/* Fallback JS que funciona sem suporte a writing-mode.
+   Para cada .section com data-text, cria spans empilhados e insere em ordem invertida
+   para que o texto apareça de baixo para cima. */
+(function(){
+  function makeVertical(el) {
+    var txt = el.getAttribute('data-text') || el.textContent || '';
+    // Limpa nó interno para evitar duplicação
+    var container = el.querySelector('.vertical-letters');
+    if (!container) {
+      container = document.createElement('div');
+      container.className = 'vertical-letters';
+      el.innerHTML = '';
+      el.appendChild(container);
+    } else {
+      container.innerHTML = '';
+    }
+
+    // percorre os caracteres e cria spans; we'll append in reverse order
+    var chars = [];
+    for (var i = 0; i < txt.length; i++) {
+      var ch = txt.charAt(i);
+      if (ch === ' ') {
+        chars.push('<span class="space" aria-hidden="true"></span>');
+      } else {
+        // escape HTML por segurança
+        var safe = ch.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        chars.push('<span class="letter">'+safe+'</span>');
+      }
+    }
+    // Insere em ordem invertida (para ficar bottom-to-top)
+    for (var j = chars.length - 1; j >= 0; j--) {
+      container.insertAdjacentHTML('beforeend', chars[j]);
+    }
+  }
+
+  // Aplica para todos que tenham data-text
+  var secs = document.querySelectorAll('.section[data-text]');
+  for (var k = 0; k < secs.length; k++) makeVertical(secs[k]);
+
+  // Se quiser, permite atualizar dinamicamente chamando makeVertical em outros elementos.
+})();
+</script>
+
+</body>
+</html>
