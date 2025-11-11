@@ -507,24 +507,26 @@ body {
   padding: 0px !important;
   background-color: inherit !important;
 }
-
+/*
 .alternative .section {
   display: table-cell;
   width: 30px;
   text-align: center;
   vertical-align: middle;
   writing-mode: vertical-rl;
-  transform: rotate(180deg); /* inverte o texto */
-  -webkit-transform: rotate(180deg); /* compatível com Safari antigo */
+  transform: rotate(180deg); /* inverte o texto * /
+  -webkit-transform: rotate(180deg); /* compatível com Safari antigo * /
   font-weight: bold;
   padding: 5px;
   border-left: 1px solid #666;
 }
-
+*/
+/*
 .alternative .content {
   display: table-cell;
   padding: 5px 10px;
 }
+*/
 
 .alternative .chords {
   font-weight: bold;
@@ -533,4 +535,37 @@ body {
 .alternative .lyrics {
   margin-bottom: 10px;
 }
+
+
+
+
+  .alternative .content {
+    display: table-cell;
+    padding: 8px 14px;
+    vertical-align: middle;
+  }
+  .alternative .line {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  .alternative .section {
+    display: table-cell;
+    width: 20px;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+  }
+
+  .alternative .section .label {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-90deg);          /* ← aqui é o segredo */
+    -webkit-transform: translate(-50%, -50%) rotate(-90deg);  /* Safari antigo */
+    transform-origin: center;
+    white-space: nowrap;
+    font-weight: bold;
+  }
 /*/
