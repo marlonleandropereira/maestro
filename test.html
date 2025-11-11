@@ -1,49 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
-body {
-  font-family: Arial, sans-serif;
-}
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 12px;
+  }
 
-.line {
-  display: table;
-  width: 100%;
-}
+  .line {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
 
-.section {
-  display: table-cell;
-  width: 30px;
-  text-align: center;
-  vertical-align: middle;
-  background: #f0f0f0;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg); /* inverte o texto */
-  -webkit-transform: rotate(180deg); /* compatível com Safari antigo */
-  font-weight: bold;
-  padding: 5px;
-}
+  .section {
+    display: table-cell;
+    width: 60px;
+    background: #f0f0f0;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+  }
 
-.content {
-  display: table-cell;
-  padding: 5px 10px;
-}
+  .section .label {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-90deg);          /* ← aqui é o segredo */
+    -webkit-transform: translate(-50%, -50%) rotate(-90deg);  /* Safari antigo */
+    transform-origin: center;
+    white-space: nowrap;
+    font-weight: bold;
+  }
 
-.chords {
-  font-weight: bold;
-  color: #333;
-}
+  .content {
+    display: table-cell;
+    padding: 8px 14px;
+    vertical-align: middle;
+  }
 
-.lyrics {
-  margin-bottom: 10px;
-}
+  .chords {
+    font-weight: bold;
+    margin-top: 6px;
+  }
+
+  .lyrics {
+    margin-bottom: 10px;
+  }
 </style>
 </head>
 <body>
 
 <div class="line">
-  <div class="section">VERSO 1</div>
+  <div class="section"><span class="label">VERSO 1</span></div>
   <div class="content">
     <div class="chords">| F#m | - | - | Bm |</div>
     <div class="lyrics">We're leavin' together | But still it's farewell</div>
