@@ -203,3 +203,53 @@
           window.smoothScrollTo(0, 500); // Polyfill para rolagem suave
         }
       });
+
+      // Adicione <div class="label"></div> nas divs de section
+      // Obtém todas as divs
+  var divs = document.getElementsByTagName("div");
+  var i;
+
+  for (i = 0; i < divs.length; i++) {
+    var div = divs[i];
+
+    // Verifica se tem a classe "section"
+    if (div.className && div.className.indexOf("section") !== -1) {
+
+      // Verifica se já há uma div com class="label" dentro
+      var hasLabel = false;
+      var children = div.getElementsByTagName("div");
+      var j;
+      for (j = 0; j < children.length; j++) {
+        if (children[j].className && children[j].className.indexOf("label") !== -1) {
+          hasLabel = true;
+          break;
+        }
+      }
+
+      // Se não tiver label, cria uma
+      if (!hasLabel) {
+        // Pega o texto atual da div.section
+        var text = "";
+        if (div.textContent) {
+          text = div.textContent;
+        } else if (div.innerText) {
+          text = div.innerText;
+        } else {
+          text = div.innerHTML;
+        }
+
+        text = text.replace(/^\s+|\s+$/g, ""); // remove espaços extras
+
+        // Cria nova div.label
+        var newDiv = document.createElement("div");
+        newDiv.className = "label";
+        newDiv.appendChild(document.createTextNode(text));
+
+        // Limpa o conteúdo da div.section e insere a nova label
+        while (div.firstChild) {
+          div.removeChild(div.firstChild);
+        }
+        div.appendChild(newDiv);
+      }
+    }
+  }

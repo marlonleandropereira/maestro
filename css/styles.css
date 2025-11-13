@@ -481,12 +481,6 @@ body {
 }
 
 /** Test **/
-.alternative .line {
-  display: table;
-  width: 100%;
-  border-left: 1px solid #666;
-  margin: 20px 0px;
-}
 
 .alternative .line1 {
   background-color: #111;
@@ -507,26 +501,6 @@ body {
   padding: 0px !important;
   background-color: inherit !important;
 }
-/*
-.alternative .section {
-  display: table-cell;
-  width: 30px;
-  text-align: center;
-  vertical-align: middle;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg); /* inverte o texto * /
-  -webkit-transform: rotate(180deg); /* compatível com Safari antigo * /
-  font-weight: bold;
-  padding: 5px;
-  border-left: 1px solid #666;
-}
-*/
-/*
-.alternative .content {
-  display: table-cell;
-  padding: 5px 10px;
-}
-*/
 
 .alternative .chords {
   font-weight: bold;
@@ -538,6 +512,13 @@ body {
 
 
 
+  .alternative .line {
+    display: table;
+    width: 100%;
+    border-left: 1px solid #666;
+    border-right: 1px solid #666;
+    margin: 20px 0px;
+  }
 
   .alternative .content {
     display: table-cell;
@@ -556,6 +537,8 @@ body {
     text-align: center;
     vertical-align: middle;
     position: relative;
+    border-right: 1px solid #666;
+    padding: 0px 5px;
   }
 
   .alternative .section .label {
