@@ -383,14 +383,14 @@ body {
 
 .highlighted-char, .first-pipe {
   color: #9b9292;
-  font-size: 19px;
+  font-size: 18px;
   font-weight: normal !important;
 }
 
 .chords {
   font-weight: bold;
   white-space: pre-wrap;
-  word-spacing: 19px;
+  word-spacing: 18px;
   color: #66ff66;
 
 
