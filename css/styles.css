@@ -228,8 +228,9 @@ body {
   font-family: "Proxima Nova", Verdana, Geneva, Tahoma, sans-serif;
   font-weight: bold;
   right: 0; /* Corrigido para '0' sem 'px' */
-  top: 0;   /* Corrigido para '0' sem 'px' */
-  border-radius: 0 0 0 10px; /* Corrigido para formato padrão */
+  /*top: 0;   /* Corrigido para '0' sem 'px' */
+  bottom: 0;
+  border-radius: 10px 0 0 0px; /* Corrigido para formato padrão */
   line-height: 30px; /* Alinha o texto verticalmente */
   opacity: 0.4; /* 70% opacidade */
 }
@@ -238,11 +239,11 @@ body {
   height: 100px;
   width: 100px;
   position: fixed;
-  bottom: 0px;
+  bottom: 200px;
   right: 0px;
   background-color: #e74c3c;
   z-index: 99999 !important;
-  border-radius: 10px 0px 0px 0px; /* Corrigido para formato padrão */
+  border-radius: 10px 0px 0px 10px; /* Corrigido para formato padrão */
   opacity: 0.7; /* 70% opacidade */
 }
   
