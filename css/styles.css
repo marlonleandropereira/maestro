@@ -277,6 +277,13 @@ body {
 
 
 /* .home */
+.home .button {
+  line-height: 30px;
+  margin-bottom: 20px;
+}.home .button::last-child {
+  line-height: 30px;
+  margin-bottom: 00px;
+}
 .button {
     max-width: 728px;
     background-color: #d85675;
