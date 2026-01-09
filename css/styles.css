@@ -107,21 +107,6 @@ body {
   font-weight: bold;
 }
 
-.pedal {
-  font-weight: bold;
-  padding: 20px;
-}
-
-.pedal.off {
-  color: #fff;
-  background-color: green;
-}
-
-.pedal.on {
-  font-weight: bold;
-  background-color: red;
-}
-
 .no-highlight,
 .highlight, 
 .highlight2, 
@@ -436,6 +421,7 @@ body {
   background-color: #ff0000;
 }
 
+
 .highlight {
   background-color: #222222;
   border: 1px solid #555555;
@@ -560,3 +546,25 @@ body {
     font-weight: bold;
   }
 /*/
+
+/* 2026 */
+.bg1 {
+  background-color: #222;
+}
+.bg2 {
+  background-color: #333;
+}
+.bg3 {
+  background-color: #555;
+}
+.pedal {
+  font-weight: bold;
+  padding: 10px;
+}
+.pedal.off {
+  color: #fff;
+  background-color: green;
+}
+.pedal.on {
+  background-color: red;
+}
