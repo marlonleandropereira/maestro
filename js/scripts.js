@@ -92,7 +92,7 @@
             var containerRect = container.getBoundingClientRect();
             var containerTop = containerRect.top + window.pageYOffset - headerHeight;
             var containerBottom = containerTop + container.offsetHeight;
-            var scrollTop = window.pageYOffset;
+            var scrollTop = window.pageYOffset + 50;
             var windowHeight = window.innerHeight;
     
             // Distância até o final do container
