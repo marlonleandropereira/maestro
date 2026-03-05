@@ -1,255 +1,437 @@
+// ------------------------------------------------
+// POLYFILL (Safari antigo)
+// ------------------------------------------------
 
-    // Polyfill para closest() - Safari 9 não suporta este método
-    if (!Element.prototype.closest) {
-        Element.prototype.closest = function(selector) {
-          var el = this;
-          while (el) {
-            if (el.matches(selector)) {
-              return el;
-            }
-            el = el.parentElement;
-          }
-          return null;
-        };
-      }
-    
-      // Polyfill para scrollBehavior - Safari 9 não suporta rolagem suave
-      if (!('scrollBehavior' in document.documentElement.style)) {
-        window.smoothScrollTo = function(top, duration) {
-          var start = window.pageYOffset,
-              change = top - start,
-              currentTime = 0,
-              increment = 20;
-    
-          function animateScroll() {
-            currentTime += increment;
-            var val = Math.easeInOutQuad(currentTime, start, change, duration);
-            window.scrollTo(0, val);
-            if (currentTime < duration) {
-              setTimeout(animateScroll, increment);
-            }
-          }
-          animateScroll();
-        };
-    
-        // Easing function para suavizar a rolagem
-        Math.easeInOutQuad = function(t, b, c, d) {
-          t /= d / 2;
-          if (t < 1) return c / 2 * t * t + b;
-          t--;
-          return -c / 2 * (t * (t - 2) - 1) + b;
-        };
-      }
-    
-      document.addEventListener('DOMContentLoaded', function() {
-        var scrollAnimation = null;
-    
-        function smoothScroll(startTime, duration, startScrollTop, targetScrollTop, callback) {
-          var currentTime = (new Date()).getTime() - startTime;
-          var progress = currentTime / duration;
-          var easedProgress = Math.min(progress, 1);
-          var newScrollTop = startScrollTop + (targetScrollTop - startScrollTop) * easedProgress;
-          window.scrollTo(0, newScrollTop);
-    
-          if (easedProgress < 1) {
-            scrollAnimation = setTimeout(function() {
-              smoothScroll(startTime, duration, startScrollTop, targetScrollTop, callback);
-            }, 16); // Aproximadamente 60 FPS
-          } else {
-            scrollAnimation = null; // Animação completa
-            if (callback) callback(); // Executa a função de callback quando o scroll termina
-          }
-        }
-    
-        var buttons = document.querySelectorAll('.scroll-button');
-    
-        for (var i = 0; i < buttons.length; i++) {
-          buttons[i].addEventListener('click', function() {
-            var button = this;
-            var container = button.closest('.container');
-    
-            // Se uma animação está rodando, pare-a e redefina o texto do botão
-            if (scrollAnimation) {
-              clearTimeout(scrollAnimation);
-              scrollAnimation = null;
-              button.textContent = 'Scroll';
-              button.classList.remove('running');
-              return;
-            }
-    
-            // Obtém o tempo da div .time
-            var timeText = container.querySelector('.time').textContent;
-            var parts = timeText.split(':');
-            var minutes = parseInt(parts[0], 10);
-            var seconds = parseInt(parts[1], 10);
-            var totalTime = (minutes * 60 + seconds) * 1000;
-    
-            // Calcula a altura do cabeçalho
-            var header = document.querySelector('header');
-            var headerHeight = header ? header.offsetHeight : 0;
-    
-            // Calcula a posição final do scroll
-            var containerRect = container.getBoundingClientRect();
-            var containerTop = containerRect.top + window.pageYOffset - headerHeight;
-            var containerBottom = containerTop + container.offsetHeight;
-            var scrollTop = window.pageYOffset + 50;
-            var windowHeight = window.innerHeight;
-    
-            // Distância até o final do container
-            var distanceToBottom = containerBottom - (scrollTop + windowHeight);
-    
-            // Calcula o tempo ajustado proporcionalmente à distância restante
-            var adjustedTime = (distanceToBottom / container.offsetHeight) * totalTime;
-    
-            // Função de callback para pular para o próximo container
-            function scrollToNextContainer() {
-              var nextContainer = container.nextElementSibling;
-              if (nextContainer && nextContainer.classList.contains('container')) {
-                // Obter o nome da próxima música ou ID da div
-                var nextContainerName = nextContainer.id.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, function(l) {
-                  return l.toUpperCase();
-                });
-    
-                // Criar um botão dinâmico para o próximo scroll
-                var nextButton = document.createElement('button');
-                nextButton.textContent = 'Go to Next: ' + nextContainerName;
-                nextButton.classList.add('next-button');
-                document.body.appendChild(nextButton);
-    
-                // Função para rolar para a próxima música
-                nextButton.addEventListener('click', function() {
-                  var nextContainerTop = nextContainer.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-                  scrollAnimation = setTimeout(function() {
-                    smoothScroll((new Date()).getTime(), 1000, window.pageYOffset, nextContainerTop, function() {
-                      button.textContent = 'Scroll';
-                      button.classList.remove('running');
-                      nextButton.remove(); // Remove o botão ao chegar à próxima música
-                    });
-                  }, 16);
-                });
-              }
-    
-              button.textContent = 'Scroll';
-              button.classList.remove('running');
-            }
-    
-            var startTime = (new Date()).getTime();
-            scrollAnimation = setTimeout(function() {
-              smoothScroll(startTime, adjustedTime, scrollTop, containerTop + container.offsetHeight - windowHeight + headerHeight, scrollToNextContainer);
-            }, 16); 
-    
-            button.textContent = 'Cancel Scroll';
-            button.classList.add('running');
-          });
-        }
-      });
-      
-      (function() {
-        function formatText(id) {
-          return id
-            .replace(/_/g, ' ')
-            .replace(/-/g, ' ')
-            .toLowerCase()
-            .replace(/\b\w/g, function(l) {
-              return l.toUpperCase();
-            });
-        }
-    
-        var list = document.getElementById('container-list');
-        var containers = document.querySelectorAll('.container');
-    
-        Array.prototype.slice.call(containers).forEach(function(container, index) {
-          var id = container.id;
-          if (id) {
-            var listItem = document.createElement('li');
-            var link = document.createElement('a');
-            link.href = '#' + id;
-            link.textContent = (index + 1) + '. ' + formatText(id); 
-            listItem.appendChild(link);
-            list.appendChild(listItem);
-          }
-        });
-      })();
-      
-      document.addEventListener('DOMContentLoaded', function() {
-        var lyricsDivs = document.querySelectorAll('.chords');
-    
-        for (var i = 0; i < lyricsDivs.length; i++) {
-          var content = lyricsDivs[i].innerHTML;
-          var firstPipeReplaced = false;
-    
-          var newContent = content.split('').map(function(char) {
-            if (char === '|' && !firstPipeReplaced) {
-              firstPipeReplaced = true;
-              return '<span class="first-pipe">|</span>';
-            } else if (char === '|') {
-              return '<span class="highlighted-char">|</span>';
-            } else {
-              return char;
-            }
-          }).join('');
-    
-          lyricsDivs[i].innerHTML = newContent;
-        }
-      });
-    
-      document.getElementById('scroll-top').addEventListener('click', function(e) {
-        if ('scrollBehavior' in document.documentElement.style) {
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-          });
-        } else {
-          window.smoothScrollTo(0, 500); // Polyfill para rolagem suave
-        }
-      });
-
-      // Adicione <div class="label"></div> nas divs de section
-      // Obtém todas as divs
-  var divs = document.getElementsByTagName("div");
-  var i;
-
-  for (i = 0; i < divs.length; i++) {
-    var div = divs[i];
-
-    // Verifica se tem a classe "section"
-    if (div.className && div.className.indexOf("section") !== -1) {
-
-      // Verifica se já há uma div com class="label" dentro
-      var hasLabel = false;
-      var children = div.getElementsByTagName("div");
-      var j;
-      for (j = 0; j < children.length; j++) {
-        if (children[j].className && children[j].className.indexOf("label") !== -1) {
-          hasLabel = true;
-          break;
-        }
-      }
-
-      // Se não tiver label, cria uma
-      if (!hasLabel) {
-        // Pega o texto atual da div.section
-        var text = "";
-        if (div.textContent) {
-          text = div.textContent;
-        } else if (div.innerText) {
-          text = div.innerText;
-        } else {
-          text = div.innerHTML;
-        }
-
-        text = text.replace(/^\s+|\s+$/g, ""); // remove espaços extras
-
-        // Cria nova div.label
-        var newDiv = document.createElement("div");
-        newDiv.className = "label";
-        newDiv.appendChild(document.createTextNode(text));
-
-        // Limpa o conteúdo da div.section e insere a nova label
-        while (div.firstChild) {
-          div.removeChild(div.firstChild);
-        }
-        div.appendChild(newDiv);
-      }
+if (!Element.prototype.closest) {
+  Element.prototype.closest = function(selector) {
+    var el = this;
+    while (el) {
+      if (el.matches && el.matches(selector)) return el;
+      el = el.parentElement;
     }
+    return null;
+  };
+}
+
+
+// ------------------------------------------------
+// MAIN
+// ------------------------------------------------
+
+document.addEventListener('DOMContentLoaded', function() {
+
+  var scrollAnimation = null;
+  var activeContainer = null;
+  var autoScrolling = false;
+
+  var lastClickTime = 0;
+  var doubleClickDelay = 400;
+
+  // ------------------------------------------------
+  // BOTAO GLOBAL
+  // ------------------------------------------------
+
+  var button = document.createElement("button");
+  button.className = "song-scroll-button";
+  button.innerHTML = "Scroll";
+  button.style.display = "none";
+
+  document.body.appendChild(button);
+
+
+  // ------------------------------------------------
+  // DETECTAR MUSICA ATIVA
+  // ------------------------------------------------
+
+  function getActiveContainer() {
+
+    var containers = document.querySelectorAll('.container');
+    var middle = window.innerHeight / 2;
+
+    for (var i = 0; i < containers.length; i++) {
+
+      var rect = containers[i].getBoundingClientRect();
+
+      if (rect.top <= middle && rect.bottom >= middle) {
+        return containers[i];
+      }
+
+    }
+
+    return null;
+
   }
+
+  function updateActiveContainer() {
+    activeContainer = getActiveContainer();
+  }
+
+
+  // ------------------------------------------------
+  // VISIBILIDADE BOTAO
+  // ------------------------------------------------
+
+  function updateButtonVisibility() {
+
+    if (!activeContainer) {
+      button.style.display = "none";
+      return;
+    }
+
+    var rect = activeContainer.getBoundingClientRect();
+
+    if (rect.bottom > window.innerHeight) {
+      button.style.display = "block";
+    } else {
+      button.style.display = "none";
+    }
+
+  }
+
+
+  // ------------------------------------------------
+  // ENGINE SCROLL
+  // ------------------------------------------------
+
+  function smoothScroll(container, startTime, duration, startScrollTop, targetScrollTop, callback) {
+
+    var currentTime = (new Date()).getTime() - startTime;
+
+    var progress = currentTime / duration;
+
+    if (progress > 1) progress = 1;
+
+    var newScrollTop =
+      startScrollTop +
+      (targetScrollTop - startScrollTop) * progress;
+
+    window.scrollTo(0, newScrollTop);
+
+
+    var rect = container.getBoundingClientRect();
+
+    if (rect.bottom <= window.innerHeight) {
+
+      autoScrolling = false;
+      scrollAnimation = null;
+
+      if (callback) callback();
+
+      return;
+
+    }
+
+    if (progress < 1) {
+
+      scrollAnimation = setTimeout(function() {
+
+        smoothScroll(
+          container,
+          startTime,
+          duration,
+          startScrollTop,
+          targetScrollTop,
+          callback
+        );
+
+      }, 16);
+
+    } else {
+
+      autoScrolling = false;
+      scrollAnimation = null;
+
+      if (callback) callback();
+
+    }
+
+  }
+
+
+  // ------------------------------------------------
+  // START SCROLL
+  // ------------------------------------------------
+
+  function startScroll(container) {
+
+    if (!container) return;
+
+    var timeText = container.querySelector('.time').textContent;
+
+    var parts = timeText.split(':');
+
+    var minutes = parseInt(parts[0], 10);
+    var seconds = parseInt(parts[1], 10);
+
+    var totalTime = (minutes * 60 + seconds) * 1000;
+
+
+    var rect = container.getBoundingClientRect();
+
+    var containerTop = rect.top + window.pageYOffset;
+    var containerHeight = container.offsetHeight;
+
+    var containerBottom = containerTop + containerHeight;
+
+    var scrollTop = window.pageYOffset;
+    var windowHeight = window.innerHeight;
+
+
+    var distanceRemaining =
+      containerBottom - (scrollTop + windowHeight);
+
+    if (distanceRemaining < 0) distanceRemaining = 0;
+
+
+    var adjustedTime =
+      (distanceRemaining / containerHeight) * totalTime;
+
+
+    var targetScroll = containerBottom - windowHeight;
+
+
+    function finishScroll() {
+
+      button.innerHTML = "Scroll";
+      button.className = "song-scroll-button";
+
+      updateButtonVisibility();
+
+    }
+
+
+    autoScrolling = true;
+
+    var startTime = (new Date()).getTime();
+
+    scrollAnimation = setTimeout(function() {
+
+      smoothScroll(
+        container,
+        startTime,
+        adjustedTime,
+        scrollTop,
+        targetScroll,
+        finishScroll
+      );
+
+    }, 16);
+
+
+    button.innerHTML = "Cancel";
+    button.className = "song-scroll-button running";
+
+  }
+
+
+  // ------------------------------------------------
+  // CANCEL
+  // ------------------------------------------------
+
+  function cancelScroll() {
+
+    autoScrolling = false;
+
+    if (scrollAnimation) {
+
+      clearTimeout(scrollAnimation);
+      scrollAnimation = null;
+
+    }
+
+    button.innerHTML = "Scroll";
+    button.className = "song-scroll-button";
+
+  }
+
+
+  // ------------------------------------------------
+  // BOTAO CLICK
+  // ------------------------------------------------
+
+  button.addEventListener("click", function(e) {
+
+    e.stopPropagation();
+
+    if (autoScrolling) {
+      cancelScroll();
+    } else {
+      startScroll(activeContainer);
+    }
+
+  });
+
+
+  // ------------------------------------------------
+  // SCROLL MANUAL AJUSTE
+  // ------------------------------------------------
+
+  function manualAdjust() {
+
+    if (!autoScrolling) return;
+
+    clearTimeout(scrollAnimation);
+
+    startScroll(activeContainer);
+
+  }
+
+  window.addEventListener("wheel", manualAdjust);
+  window.addEventListener("touchmove", manualAdjust);
+
+
+  // ------------------------------------------------
+  // DOUBLE CLICK NA TELA
+  // ------------------------------------------------
+
+  document.addEventListener("click", function(e) {
+
+    if (e.target === button) return;
+
+    var now = new Date().getTime();
+
+    if (now - lastClickTime < doubleClickDelay) {
+
+      if (autoScrolling) {
+        cancelScroll();
+      } else {
+        startScroll(activeContainer);
+      }
+
+      lastClickTime = 0;
+
+    } else {
+
+      lastClickTime = now;
+
+    }
+
+  });
+
+
+  // ------------------------------------------------
+  // SCROLL LISTENER
+  // ------------------------------------------------
+
+  window.addEventListener("scroll", function() {
+
+    updateActiveContainer();
+    updateButtonVisibility();
+
+  });
+
+  updateActiveContainer();
+  updateButtonVisibility();
+
+
+  // ------------------------------------------------
+  // MENU AUTOMATICO
+  // ------------------------------------------------
+
+  function formatText(id) {
+
+    return id
+      .replace(/_/g, ' ')
+      .replace(/-/g, ' ')
+      .toLowerCase()
+      .replace(/\b\w/g, function(l) { return l.toUpperCase(); });
+
+  }
+
+  var list = document.getElementById('container-list');
+  var containers = document.querySelectorAll('.container');
+
+  for (var i = 0; i < containers.length; i++) {
+
+    var id = containers[i].id;
+
+    if (id) {
+
+      var li = document.createElement('li');
+      var link = document.createElement('a');
+
+      link.href = "#" + id;
+      link.textContent = (i + 1) + ". " + formatText(id);
+
+      li.appendChild(link);
+      list.appendChild(li);
+
+    }
+
+  }
+
+
+  // ------------------------------------------------
+  // HIGHLIGHT |
+  // ------------------------------------------------
+
+  var chords = document.querySelectorAll('.chords');
+
+  for (var c = 0; c < chords.length; c++) {
+
+    var content = chords[c].innerHTML;
+    var first = false;
+
+    var newContent = content.split('').map(function(char) {
+
+      if (char === "|" && !first) {
+        first = true;
+        return '<span class="first-pipe">|</span>';
+      }
+
+      if (char === "|") {
+        return '<span class="highlighted-char">|</span>';
+      }
+
+      return char;
+
+    }).join('');
+
+    chords[c].innerHTML = newContent;
+
+  }
+
+
+  // ------------------------------------------------
+  // SCROLL TOP
+  // ------------------------------------------------
+
+  var scrollTopButton = document.getElementById('scroll-top');
+
+  if (scrollTopButton) {
+
+    scrollTopButton.addEventListener('click', function() {
+      window.scrollTo(0, 0);
+    });
+
+  }
+
+
+  // ------------------------------------------------
+  // AUTO LABEL
+  // ------------------------------------------------
+
+  var sections = document.querySelectorAll(".section");
+
+  for (var s = 0; s < sections.length; s++) {
+
+    var section = sections[s];
+
+    if (!section.querySelector(".label")) {
+
+      var text = section.textContent.replace(/^\s+|\s+$/g, "");
+
+      section.innerHTML = "";
+
+      var label = document.createElement("div");
+
+      label.className = "label";
+      label.appendChild(document.createTextNode(text));
+
+      section.appendChild(label);
+
+    }
+
+  }
+
+});
