@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var doubleClickDelay = 400;
 
   // ------------------------------------------------
-  // BOTAO GLOBAL
+  // BOTAO SCROLL
   // ------------------------------------------------
 
   var button = document.createElement("button");
@@ -37,6 +37,56 @@ document.addEventListener('DOMContentLoaded', function() {
   button.style.display = "none";
 
   document.body.appendChild(button);
+
+
+  // ------------------------------------------------
+  // BOTAO LIGHT / DARK
+  // ------------------------------------------------
+
+  var themeButton = document.createElement("button");
+  themeButton.innerHTML = "LIGHT / DARK";
+  themeButton.className = "theme-toggle";
+
+  document.body.insertBefore(themeButton, document.body.firstChild);
+
+  themeButton.addEventListener("click", function() {
+
+    if (document.body.classList.contains("light-version")) {
+
+      document.body.classList.remove("light-version");
+
+    } else {
+
+      document.body.classList.add("light-version");
+
+    }
+
+  });
+
+
+  // ------------------------------------------------
+  // BOTAO ONLY LYRIC
+  // ------------------------------------------------
+
+  var lyricButton = document.createElement("button");
+  lyricButton.innerHTML = "ONLY LYRIC / WITH CHORDS";
+  lyricButton.className = "lyric-toggle";
+
+  document.body.insertBefore(lyricButton, themeButton.nextSibling);
+
+  lyricButton.addEventListener("click", function() {
+
+    if (document.body.classList.contains("only-lyric")) {
+
+      document.body.classList.remove("only-lyric");
+
+    } else {
+
+      document.body.classList.add("only-lyric");
+
+    }
+
+  });
 
 
   // ------------------------------------------------
@@ -286,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.addEventListener("click", function(e) {
 
-    if (e.target === button) return;
+    if (e.target === button || e.target === themeButton) return;
 
     var now = new Date().getTime();
 
@@ -363,7 +413,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // ------------------------------------------------
   // HIGHLIGHT |
-  // ------------------------------------------------
+// ------------------------------------------------
 
   var chords = document.querySelectorAll('.chords');
 

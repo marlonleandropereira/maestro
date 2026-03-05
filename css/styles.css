@@ -90,7 +90,7 @@ body {
   font-weight: bold;
   color: #1abc9c;
   white-space: pre-wrap;
-  word-spacing: 10px;
+  word-spacing: 2px;
 }
 
 .lyrics {
@@ -107,10 +107,11 @@ body {
   font-weight: bold;
 }
 
+.content/*,
 .no-highlight,
 .highlight, 
 .highlight2, 
-.highlight3 {
+.highlight3*/ {
   border-radius: 0px;
   margin: 0px -15px 15px !important;
   padding: 5px 15px 5px !important;
@@ -118,6 +119,7 @@ body {
   border-right: none !important;
 }
 
+/*
 .no-highlight {
   padding: 0px 0px 0px !important;
   margin: 0px 0px 20px !important;
@@ -137,7 +139,7 @@ body {
   background-color: #444;
   border: 1px solid #888;
 }
-
+*/
 .new-line {
   margin-top: 40px;
 }
@@ -382,7 +384,6 @@ body {
 .chords {
   font-weight: bold;
   white-space: pre-wrap;
-  word-spacing: 10px;
   color: #66ff66;
 
 
@@ -421,7 +422,7 @@ body {
   background-color: #ff0000;
 }
 
-
+/*
 .highlight {
   background-color: #222222;
   border: 1px solid #555555;
@@ -436,7 +437,7 @@ body {
   background-color: #444444;
   border: 1px solid #777777;
 }
-
+*/
 .previous-button, .next-button, .scroll-button {
   background-color: #ffcc00;
   color: #000000;
@@ -486,10 +487,11 @@ body {
   background-color: #333;
 }
 
+.content/*,
 .alternative .line .highlight2,
 .alternative .line .highlight3,
 .alternative .line .highlight,
-.alternative .line .no-highlight {
+.alternative .line .no-highlight*/{
   border: 0px !important;
   margin: 0px 0px 0px 15px !important;
   padding: 0px !important;
@@ -513,12 +515,13 @@ body {
     border-right: 1px solid #666;
     margin: 20px 0px;
   }
-
+/*
   .alternative .content {
     display: table-cell;
     padding: 8px 14px;
     vertical-align: middle;
   }
+*/
   .alternative .line {
     display: table;
     width: 100%;
@@ -569,94 +572,91 @@ body {
   background-color: red;
 }
 
-/* ONLY-LYRIC */
-body.only-lyric .title {
+/* LIGHT VERSION */
+body.light-version .title {
   color: #ED4801
 }
-body.only-lyric .author {
+body.light-version .author {
   color: #99A608
 }
-
-body.only-lyric {
+body.light-version {
   background-color: #FFFFFF;
 }
 
-body.only-lyric .lyrics {
+body.light-version .lyrics {
   color: #333333;
 }
 
-body.only-lyric h1 {
+body.light-version h1 {
   color: #000;
 }
 
-body.only-lyric .highlight,
-body.only-lyric .highlight1,
-body.only-lyric .highlight2,
-body.only-lyric .highlight3,
-body.only-lyric .line1,
-body.only-lyric .line2,
-body.only-lyric .line3,
-body.only-lyric .highlight3,
-body.only-lyric .bg1,
-body.only-lyric .bg2,
-body.only-lyric .bg3 {
+/*
+body.light-version .highlight,
+body.light-version .highlight1,
+body.light-version .highlight2,
+body.light-version .highlight3,
+body.light-version .line1,
+body.light-version .line2,
+body.light-version .line3,
+body.light-version .highlight3,*/
+body.light-version .bg1,
+body.light-version .bg2,
+body.light-version .bg3 {
   background-color: #ffffff !important;
   background-color: #ffffff !important;
 }
 
-body.only-lyric .bg1{
+body.light-version .bg1{
   background-color: #f1f1f1 !important;
-  background-color: #ffffff !important;
 }
 
-body.only-lyric .bg2 {
+body.light-version .bg2 {
   background-color: #f5f5f5 !important;
-  background-color: #ffffff !important;
 }
 
-body.only-lyric .bg3 {
+body.light-version .bg3 {
   background-color: #f9f9f9 !important;
-  background-color: #ffffff !important;
+}
+body.light-version .chords {
+  color: #99A608;
 }
 
+body.light-version .highlight {
+  background-color: #eee;
+}
+body.light-version .pedal.on {
+  background-color: #ed4801;
+}
+body.light-version .pedal.off {
+  background-color:#99A608
+}
+body.light-version pre {
+  color: #000;
+}
+
+
+
+/* ONLY LYRIC */
 body.only-lyric .pedal,
 body.only-lyric .bpm,
 body.only-lyric pre,
 body.only-lyric .chords {
-  /* */
-  display: none;//**/
+  display: none;
 }
 
-body.only-lyric .section .label {
+/* GENERIC */
+.section .label {
   font-size: 12px !important;
 }
-body.only-lyric .section {
+.section {
   padding: 0px !important;
 }
-
-body.only-lyric .chords {
-  word-spacing: 1px;
-  color: #99A608;
-}
-
-body.only-lyric .emphasis {
-  background-color: #eee;
-}
-body.only-lyric .pedal.on {
-  background-color: #ed4801;
-}
-body.only-lyric .pedal.off {
-  background-color:#99A608
-}
-
-
-
-
 .song-scroll-button {
   position: fixed;
 
   right: 0;
-  bottom: 40%; /* mais central na tela */
+  top: 0%; /* mais central na tela */
 
   height: 100px;
   width: 100px;
@@ -665,7 +665,7 @@ body.only-lyric .pedal.off {
   color: #000;
 
   border: none;
-  border-radius: 12px 0 0 12px;
+  border-radius: 0 0px 0px 10px;
 
   font-size: 16px;
   font-weight: bold;
@@ -674,7 +674,7 @@ body.only-lyric .pedal.off {
 
   z-index: 99999;
 
-  opacity: 0.9;
+  opacity: 0.4;
 
   display: flex;
   align-items: center;
@@ -685,4 +685,40 @@ body.only-lyric .pedal.off {
 
 .song-scroll-button.running {
   background-color: #ff4444;
+}
+
+
+.theme-toggle,
+.lyric-toggle {
+
+  display: block;
+  width: 100%;
+
+  padding: 30px 30px;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  background-color: #ffcc00;
+  color: #000;
+
+  border: none;
+
+  text-align: center;
+
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.theme-toggle:hover,
+.lyric-toggle:hover {
+  background-color: #ffaa00;
+  transition: background-color 0.3s ease;
+}
+
+.highlight {
+  background-color: #222;
+}
+body.light-version .highlight {
+  background-color: #eee;
 }
