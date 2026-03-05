@@ -24,8 +24,8 @@ document.addEventListener('DOMContentLoaded', function() {
   var activeContainer = null;
   var autoScrolling = false;
 
-  var lastClickTime = 0;
-  var doubleClickDelay = 400;
+  var lastTapTime = 0;
+  var doubleTapDelay = 400;
 
   // ------------------------------------------------
   // BOTAO SCROLL
@@ -40,53 +40,86 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
   // ------------------------------------------------
-  // BOTAO LIGHT / DARK
+  // BOTOES TOPO (se não for home)
   // ------------------------------------------------
 
-  var themeButton = document.createElement("button");
-  themeButton.innerHTML = "LIGHT / DARK";
-  themeButton.className = "theme-toggle";
+  var themeButton = null;
+  var lyricButton = null;
 
-  document.body.insertBefore(themeButton, document.body.firstChild);
+  if (!document.body.classList.contains("home")) {
 
-  themeButton.addEventListener("click", function() {
+    // -----------------------------
+    // BOTAO LIGHT / DARK
+    // -----------------------------
 
-    if (document.body.classList.contains("light-version")) {
+    themeButton = document.createElement("button");
+    themeButton.className = "theme-toggle";
 
-      document.body.classList.remove("light-version");
+    function updateThemeButtonText() {
 
-    } else {
-
-      document.body.classList.add("light-version");
+      if (document.body.classList.contains("light-version")) {
+        themeButton.innerHTML = "Versão escura";
+      } else {
+        themeButton.innerHTML = "Versão clara";
+      }
 
     }
 
-  });
+    updateThemeButtonText();
+
+    document.body.insertBefore(themeButton, document.body.firstChild);
+
+    themeButton.addEventListener("click", function(e) {
+
+      e.stopPropagation();
+
+      if (document.body.classList.contains("light-version")) {
+        document.body.classList.remove("light-version");
+      } else {
+        document.body.classList.add("light-version");
+      }
+
+      updateThemeButtonText();
+
+    });
 
 
-  // ------------------------------------------------
-  // BOTAO ONLY LYRIC
-  // ------------------------------------------------
+    // -----------------------------
+    // BOTAO CHORDS
+    // -----------------------------
 
-  var lyricButton = document.createElement("button");
-  lyricButton.innerHTML = "ONLY LYRIC / WITH CHORDS";
-  lyricButton.className = "lyric-toggle";
+    lyricButton = document.createElement("button");
+    lyricButton.className = "lyric-toggle";
 
-  document.body.insertBefore(lyricButton, themeButton.nextSibling);
+    function updateLyricButtonText() {
 
-  lyricButton.addEventListener("click", function() {
-
-    if (document.body.classList.contains("only-lyric")) {
-
-      document.body.classList.remove("only-lyric");
-
-    } else {
-
-      document.body.classList.add("only-lyric");
+      if (document.body.classList.contains("only-lyric")) {
+        lyricButton.innerHTML = "Mostrar acordes";
+      } else {
+        lyricButton.innerHTML = "Esconder acordes";
+      }
 
     }
 
-  });
+    updateLyricButtonText();
+
+    document.body.insertBefore(lyricButton, themeButton.nextSibling);
+
+    lyricButton.addEventListener("click", function(e) {
+
+      e.stopPropagation();
+
+      if (document.body.classList.contains("only-lyric")) {
+        document.body.classList.remove("only-lyric");
+      } else {
+        document.body.classList.add("only-lyric");
+      }
+
+      updateLyricButtonText();
+
+    });
+
+  }
 
 
   // ------------------------------------------------
@@ -156,7 +189,6 @@ document.addEventListener('DOMContentLoaded', function() {
       (targetScrollTop - startScrollTop) * progress;
 
     window.scrollTo(0, newScrollTop);
-
 
     var rect = container.getBoundingClientRect();
 
@@ -321,7 +353,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!autoScrolling) return;
 
     clearTimeout(scrollAnimation);
-
     startScroll(activeContainer);
 
   }
@@ -331,16 +362,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
   // ------------------------------------------------
-  // DOUBLE CLICK NA TELA
-  // ------------------------------------------------
+  // DOUBLE TAP (ipad friendly)
+// ------------------------------------------------
 
-  document.addEventListener("click", function(e) {
+  document.addEventListener("touchend", function(e) {
 
-    if (e.target === button || e.target === themeButton) return;
+    if (
+      e.target === button ||
+      e.target === themeButton ||
+      e.target === lyricButton
+    ) return;
 
     var now = new Date().getTime();
 
-    if (now - lastClickTime < doubleClickDelay) {
+    if (now - lastTapTime < doubleTapDelay) {
 
       if (autoScrolling) {
         cancelScroll();
@@ -348,11 +383,11 @@ document.addEventListener('DOMContentLoaded', function() {
         startScroll(activeContainer);
       }
 
-      lastClickTime = 0;
+      lastTapTime = 0;
 
     } else {
 
-      lastClickTime = now;
+      lastTapTime = now;
 
     }
 
