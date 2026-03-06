@@ -545,27 +545,45 @@ document.addEventListener('DOMContentLoaded', function() {
 
     container.appendChild(nextButton);
 
-    nextButton.addEventListener("click", function(e){
+    var lastNextTap = 0;
 
-      e.stopPropagation();
+nextButton.addEventListener("click", function(e){
 
-      var currentContainer = this.closest(".container");
+  e.stopPropagation();
 
-      if (!currentContainer) return;
+  var now = new Date().getTime();
 
-      var next = currentContainer.nextElementSibling;
+  var currentContainer = this.closest(".container");
+  if (!currentContainer) return;
 
-      while (next && !next.classList.contains("container")) {
-        next = next.nextElementSibling;
-      }
+  var next = currentContainer.nextElementSibling;
 
-      if (!next) return;
+  while (next && !next.classList.contains("container")) {
+    next = next.nextElementSibling;
+  }
 
-      var target = next.getBoundingClientRect().top + window.pageYOffset;
+  if (!next) return;
 
-      window.scrollTo(0, target);
+  var target = next.getBoundingClientRect().top + window.pageYOffset;
 
-    });
+  window.scrollTo(0, target);
+
+  // double click inicia scroll automatico
+  if (now - lastNextTap < doubleTapDelay) {
+
+    setTimeout(function(){
+      startScroll(next);
+    }, 200);
+
+    lastNextTap = 0;
+
+  } else {
+
+    lastNextTap = now;
+
+  }
+
+});
 
   }
 
