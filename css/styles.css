@@ -687,7 +687,6 @@ body.only-lyric .chords {
   background-color: #ff4444;
 }
 
-
 .theme-toggle,
 .lyric-toggle {
 
@@ -721,4 +720,24 @@ body.only-lyric .chords {
 }
 body.light-version .highlight {
   background-color: #eee;
+}
+
+.full-width-next {
+
+  display: block;
+  width: 100%;
+
+  margin-top: 20px;
+
+  padding: 25px;
+
+  font-size: 22px;
+  font-weight: bold;
+
+  border: none;
+  cursor: pointer;
+
+  background: #ffcc00;
+  color: black;
+
 }

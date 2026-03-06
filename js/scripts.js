@@ -48,10 +48,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (!document.body.classList.contains("home")) {
 
-    // -----------------------------
-    // BOTAO LIGHT / DARK
-    // -----------------------------
-
     themeButton = document.createElement("button");
     themeButton.className = "theme-toggle";
 
@@ -83,10 +79,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     });
 
-
-    // -----------------------------
-    // BOTAO CHORDS
-    // -----------------------------
 
     lyricButton = document.createElement("button");
     lyricButton.className = "lyric-toggle";
@@ -190,19 +182,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.scrollTo(0, newScrollTop);
 
-    var rect = container.getBoundingClientRect();
-
-    if (rect.bottom <= window.innerHeight) {
-
-      autoScrolling = false;
-      scrollAnimation = null;
-
-      if (callback) callback();
-
-      return;
-
-    }
-
     if (progress < 1) {
 
       scrollAnimation = setTimeout(function() {
@@ -247,29 +226,47 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var totalTime = (minutes * 60 + seconds) * 1000;
 
-
     var rect = container.getBoundingClientRect();
 
     var containerTop = rect.top + window.pageYOffset;
     var containerHeight = container.offsetHeight;
 
-    var containerBottom = containerTop + containerHeight;
-
     var scrollTop = window.pageYOffset;
     var windowHeight = window.innerHeight;
 
 
+    // ------------------------------------------------
+    // PARAR NO BOTAO NEXT
+    // ------------------------------------------------
+
+    var nextButton = container.querySelector(".next-song-button");
+
+    var stopPosition;
+
+    if (nextButton) {
+
+      var rectButton = nextButton.getBoundingClientRect();
+
+      stopPosition =
+        rectButton.top +
+        window.pageYOffset +
+        nextButton.offsetHeight;
+
+    } else {
+
+      stopPosition = containerTop + containerHeight;
+
+    }
+
     var distanceRemaining =
-      containerBottom - (scrollTop + windowHeight);
+      stopPosition - (scrollTop + windowHeight);
 
     if (distanceRemaining < 0) distanceRemaining = 0;
-
 
     var adjustedTime =
       (distanceRemaining / containerHeight) * totalTime;
 
-
-    var targetScroll = containerBottom - windowHeight;
+    var targetScroll = stopPosition - windowHeight;
 
 
     function finishScroll() {
@@ -363,7 +360,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // ------------------------------------------------
   // DOUBLE TAP (ipad friendly)
-// ------------------------------------------------
+  // ------------------------------------------------
 
   document.addEventListener("touchend", function(e) {
 
@@ -516,6 +513,59 @@ document.addEventListener('DOMContentLoaded', function() {
       section.appendChild(label);
 
     }
+
+  }
+
+
+  // ------------------------------------------------
+  // BOTAO NEXT COM NOME DA PROXIMA MUSICA
+  // ------------------------------------------------
+
+  var containersNext = document.querySelectorAll(".container");
+
+  for (var i = 0; i < containersNext.length; i++) {
+
+    var container = containersNext[i];
+
+    var next = container.nextElementSibling;
+
+    while (next && !next.classList.contains("container")) {
+      next = next.nextElementSibling;
+    }
+
+    if (!next) continue;
+
+    var titleElement = next.querySelector(".title");
+    var nextTitle = titleElement ? titleElement.textContent : "Next Song";
+
+    var nextButton = document.createElement("button");
+
+    nextButton.className = "next-song-button full-width-next";
+    nextButton.innerHTML = "Next → " + nextTitle;
+
+    container.appendChild(nextButton);
+
+    nextButton.addEventListener("click", function(e){
+
+      e.stopPropagation();
+
+      var currentContainer = this.closest(".container");
+
+      if (!currentContainer) return;
+
+      var next = currentContainer.nextElementSibling;
+
+      while (next && !next.classList.contains("container")) {
+        next = next.nextElementSibling;
+      }
+
+      if (!next) return;
+
+      var target = next.getBoundingClientRect().top + window.pageYOffset;
+
+      window.scrollTo(0, target);
+
+    });
 
   }
 
