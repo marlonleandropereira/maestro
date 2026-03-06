@@ -537,11 +537,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var titleElement = next.querySelector(".title");
     var nextTitle = titleElement ? titleElement.textContent : "Next Song";
+    var pedalWarning = container.querySelector(".pedal.on");
 
     var nextButton = document.createElement("button");
 
     nextButton.className = "next-song-button full-width-next";
-    nextButton.innerHTML = "Next → " + nextTitle;
+    if (pedalWarning) {
+
+  nextButton.innerHTML =
+    "Next → " + nextTitle +
+    "<span class='pedal-warning'>⚠ A musica atual sou o pedal DROP. Lembre de desligar.</span>";
+
+} else {
+
+  nextButton.innerHTML = "Next → " + nextTitle;
+
+}
 
     container.appendChild(nextButton);
 

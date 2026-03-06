@@ -729,7 +729,7 @@ body.light-version .highlight {
 
   margin-top: 20px;
 
-  padding: 25px;
+  padding: 20px;
 
   font-size: 22px;
   font-weight: bold;
@@ -739,5 +739,63 @@ body.light-version .highlight {
 
   background: #ffcc00;
   color: black;
+
+}
+
+.pedal {
+
+  -webkit-animation: pedalBlink 1s infinite;
+  animation: pedalBlink 1s infinite;
+
+}
+
+
+/* Safari antigo */
+@-webkit-keyframes pedalBlink {
+
+  0%   { opacity:1; }
+  50%  { opacity:0; }
+  100% { opacity:1; }
+
+}
+
+/* navegadores modernos */
+@keyframes pedalBlink {
+
+  0%   { opacity:1; }
+  50%  { opacity:0; }
+  100% { opacity:1; }
+
+}
+
+
+.pedal-warning{
+  font-size: 12px;
+  display:block;
+  margin-top:0px;
+
+  color:#ff0000;
+  font-weight:bold;
+
+  -webkit-animation: pedalBlink 1s infinite;
+  animation: pedalBlink 1s infinite;
+
+}
+
+/* Safari antigo (iPad 1) */
+@-webkit-keyframes pedalBlink {
+
+  0%   { opacity:1; }
+  50%  { opacity:0; }
+  100% { opacity:1; }
+
+}
+
+/* browsers modernos */
+@keyframes pedalBlink {
+
+  0%   { opacity:1; }
+  50%  { opacity:0; }
+  100% { opacity:1; }
 
 }
