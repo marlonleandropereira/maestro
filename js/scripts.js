@@ -546,7 +546,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   nextButton.innerHTML =
     "Next → " + nextTitle +
-    "<span class='pedal-warning'>⚠ A musica atual sou o pedal DROP. Lembre de desligar.</span>";
+    "<span class='pedal-warning'>⚠ A musica atual usou o pedal DROP. Lembre de desligar.</span>";
 
 } else {
 
