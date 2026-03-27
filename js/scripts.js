@@ -406,23 +406,43 @@ document.addEventListener('DOMContentLoaded', function() {
   updateButtonVisibility();
 
 
-  // ------------------------------------------------
-  // MENU AUTOMATICO
-  // ------------------------------------------------
+// ------------------------------------------------
+// MENU AUTOMATICO
+// ------------------------------------------------
 
-  function formatText(id) {
+function formatText(id) {
 
-    return id
-      .replace(/_/g, ' ')
-      .replace(/-/g, ' ')
-      .toLowerCase()
-      .replace(/\b\w/g, function(l) { return l.toUpperCase(); });
+  return id
+    .replace(/_/g, ' ')
+    .replace(/-/g, ' ')
+    .toLowerCase()
+    .replace(/\b\w/g, function(l) { return l.toUpperCase(); });
 
-  }
+}
 
-  var list = document.getElementById('container-list');
-  var containers = document.querySelectorAll('.container');
+var list = document.getElementById('container-list');
 
+// proteção: se não existir a lista, não quebra o script
+if (list) {
+
+  var containers = Array.prototype.slice.call(document.querySelectorAll('.container'));
+
+  // ordenar alfabeticamente pelo nome formatado
+  containers.sort(function(a, b) {
+
+    var nameA = formatText(a.id || "").toLowerCase();
+    var nameB = formatText(b.id || "").toLowerCase();
+
+    if (nameA < nameB) return -1;
+    if (nameA > nameB) return 1;
+    return 0;
+
+  });
+
+  // limpa lista antes (evita duplicação se rodar mais de uma vez)
+  list.innerHTML = "";
+
+  // montar menu já ordenado
   for (var i = 0; i < containers.length; i++) {
 
     var id = containers[i].id;
@@ -441,6 +461,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
   }
+
+}
 
 
   // ------------------------------------------------
@@ -599,3 +621,41 @@ nextButton.addEventListener("click", function(e){
   }
 
 });
+
+// ------------------------------------------------
+// TOGGLE LINES (RIGHT SQUARE BUTTON)
+// ------------------------------------------------
+
+var containersToggle = document.querySelectorAll(".container");
+
+for (var i = 0; i < containersToggle.length; i++) {
+
+  var container = containersToggle[i];
+
+  var toggleButton = document.createElement("button");
+  toggleButton.className = "toggle-lines-button square";
+
+  // começa fechado
+  container.classList.add("collapsed");
+  toggleButton.innerHTML = "+";
+
+  container.appendChild(toggleButton);
+
+  toggleButton.addEventListener("click", function(e) {
+
+    e.stopPropagation();
+
+    var parent = this.closest(".container");
+    if (!parent) return;
+
+    parent.classList.toggle("collapsed");
+
+    if (parent.classList.contains("collapsed")) {
+      this.innerHTML = "+";
+    } else {
+      this.innerHTML = "−";
+    }
+
+  });
+
+}

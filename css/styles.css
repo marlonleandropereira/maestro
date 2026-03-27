@@ -815,3 +815,85 @@ body.light-version .highlight {
 h1 {
   text-align: center;
 }
+
+.toggle-lines-button.big {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: bold;
+
+  background: #ffd400;
+  color: #000;
+
+  border: none;
+  cursor: pointer;
+
+  text-align: center;
+}
+
+/* botão quadrado */
+.toggle-lines-button.square {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  width: 40px;
+  height: 40px;
+
+  font-size: 22px;
+  font-weight: bold;
+
+  background: #ffd400;
+  color: #000;
+
+  border: none;
+  border-radius: 6px;
+
+  cursor: pointer;
+  z-index: 20;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* hover */
+.toggle-lines-button.square:hover {
+  background: #ffcc00;
+}
+
+
+
+/* hover opcional */
+.container {
+  position: relative;
+}
+
+
+/* já deve ter isso */
+.container.collapsed .body {
+  display: none;
+}
+
+/* esconder infos quando colapsado */
+
+.container.collapsed .line,
+.container.collapsed .next-song-button,
+.container.collapsed .bpm,
+.container.collapsed .time {
+  display: none;
+}
+
+.set-divider.block {
+  margin: 40px 0;
+  padding: 40px;
+
+  text-align: center;
+  font-weight: bold;
+  font-size: 24px;
+
+  background: #fff;
+  color: #000;
+
+  border-radius: 6px;
+}
