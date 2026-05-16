@@ -425,38 +425,41 @@ var list = document.getElementById('container-list');
 // proteção: se não existir a lista, não quebra o script
 if (list) {
 
-  var containers = Array.prototype.slice.call(document.querySelectorAll('.container'));
-
-  // ordenar alfabeticamente pelo nome formatado
-  containers.sort(function(a, b) {
-
-    var nameA = formatText(a.id || "").toLowerCase();
-    var nameB = formatText(b.id || "").toLowerCase();
-
-    if (nameA < nameB) return -1;
-    if (nameA > nameB) return 1;
-    return 0;
-
-  });
-
   // limpa lista antes (evita duplicação se rodar mais de uma vez)
   list.innerHTML = "";
 
-  // montar menu já ordenado
-  for (var i = 0; i < containers.length; i++) {
+  var menuItems = document.querySelectorAll('.set-divider.block, .container');
+  var songNumber = 1;
 
-    var id = containers[i].id;
+  // montar menu na mesma ordem do HTML, mantendo os divisores dos blocos
+  for (var i = 0; i < menuItems.length; i++) {
+
+    if ((" " + menuItems[i].className + " ").indexOf(" set-divider ") > -1) {
+
+      var li = document.createElement('li');
+      li.className = 'menu-block';
+      li.textContent = menuItems[i].textContent;
+      list.appendChild(li);
+
+      continue;
+
+    }
+
+    var id = menuItems[i].id;
 
     if (id) {
 
       var li = document.createElement('li');
       var link = document.createElement('a');
+      var title = menuItems[i].querySelector('.title');
+      var label = title ? title.textContent : formatText(id);
 
       link.href = "#" + id;
-      link.textContent = (i + 1) + ". " + formatText(id);
+      link.textContent = songNumber + ". " + label;
 
       li.appendChild(link);
       list.appendChild(li);
+      songNumber++;
 
     }
 
