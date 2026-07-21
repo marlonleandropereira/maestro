@@ -839,6 +839,25 @@ h1 {
   text-align: center;
 }
 
+.collapsed-content-toggle {
+  display: inline-block;
+  margin: 6px 0;
+  padding: 5px 9px;
+
+  background: transparent;
+  border: 1px solid #666;
+  border-radius: 4px;
+  color: #bbb;
+
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.collapsed-content-toggle:hover {
+  border-color: #aaa;
+  color: #fff;
+}
+
 /* botão quadrado */
 .toggle-lines-button.square {
   position: absolute;
