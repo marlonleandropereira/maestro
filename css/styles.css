@@ -433,6 +433,12 @@ body {
   background-color: #ff0000;
 }
 
+.harmonist {
+  font-weight: bold;
+  background-color: blue;
+  padding: 10px 20px;
+}
+
 /*
 .highlight {
   background-color: #222222;
